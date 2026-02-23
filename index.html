@@ -1258,7 +1258,9 @@
                     card.className = 'card';
                     card.style.textDecoration = 'none';
                     card.style.color = 'inherit';
-                    card.href = 'makes/week' + String(item.week).padStart(2, '0') + '.md';
+                    card.href = item.week === 5
+                        ? 'makes/week05.html'
+                        : 'makes/week' + String(item.week).padStart(2, '0') + '.md';
                     card.innerHTML = `
                         <div class="card-icon">🛠️</div>
                         <div class="card-title">Week ${item.week}</div>

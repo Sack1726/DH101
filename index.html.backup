@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DH QUEST - Digital Humanities Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital@0;1&display=swap');
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background-color: #000000;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(50, 50, 50, 0.3) 0px, rgba(50, 50, 50, 0.3) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, rgba(50, 50, 50, 0.3) 0px, rgba(50, 50, 50, 0.3) 1px, transparent 1px, transparent 60px),
+                repeating-linear-gradient(45deg, transparent 0px, transparent 2px, rgba(0, 255, 0, 0.01) 2px, rgba(0, 255, 0, 0.01) 4px),
+                repeating-linear-gradient(-45deg, transparent 0px, transparent 2px, rgba(0, 255, 0, 0.01) 2px, rgba(0, 255, 0, 0.01) 4px),
+                radial-gradient(circle at 20% 30%, rgba(20, 20, 20, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(20, 20, 20, 0.8) 0%, transparent 50%),
+                linear-gradient(180deg, #0d0d0d 0%, #000000 100%);
+            color: #00ff00;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Dungeon-style scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+            border: 1px solid #00ff00;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border: 1px solid #003300;
+        }
+
+        .screen {
+            min-height: 100vh;
+            padding: 20px;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(30, 30, 30, 0.4) 0px,
+                    rgba(30, 30, 30, 0.4) 1px,
+                    transparent 1px,
+                    transparent 35px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(30, 30, 30, 0.4) 0px,
+                    rgba(30, 30, 30, 0.4) 1px,
+                    transparent 1px,
+                    transparent 50px
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(0, 255, 0, 0.015) 8px,
+                    rgba(0, 255, 0, 0.015) 10px
+                ),
+                repeating-linear-gradient(
+                    -45deg,
+                    transparent,
+                    transparent 8px,
+                    rgba(0, 255, 0, 0.015) 8px,
+                    rgba(0, 255, 0, 0.015) 10px
+                ),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 0, 0.03) 0px,
+                    rgba(0, 255, 0, 0.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                ),
+                radial-gradient(circle at 25% 25%, rgba(15, 15, 15, 0.6) 0%, transparent 40%),
+                radial-gradient(circle at 75% 75%, rgba(15, 15, 15, 0.6) 0%, transparent 40%),
+                #000000;
+            border: 3px double #00ff00;
+            border-style: double;
+            margin: 10px;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 0, 0.4), 
+                inset 0 0 30px rgba(0, 255, 0, 0.05),
+                inset 0 0 100px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .screen::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 85% 75%, rgba(0, 255, 0, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.3) 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .screen > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed #00ff00;
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 
+                0 0 10px #00ff00,
+                0 0 20px #00ff00,
+                2px 2px 0px #003300,
+                -1px -1px 0px #006600;
+            letter-spacing: 3px;
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.1em;
+            color: #00cc00;
+            margin-bottom: 10px;
+        }
+
+        .ascii-art {
+            font-size: 0.7em;
+            color: #00ff00;
+            white-space: pre;
+            overflow-x: auto;
+            margin: 10px 0;
+            line-height: 1;
+            text-shadow: 
+                0 0 5px #00ff00,
+                0 0 10px #00ff00,
+                1px 1px 0px #003300;
+            font-weight: bold;
+            letter-spacing: -1px;
+        }
+
+        .nav-menu {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            padding: 15px;
+            border: 2px solid #00ff00;
+            background-color: rgba(0, 255, 0, 0.05);
+        }
+
+        .nav-btn {
+            background-color: #003300;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn:hover {
+            background-color: #00ff00;
+            color: #0a0a0a;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+        }
+
+        .nav-btn.active {
+            background-color: #00ff00;
+            color: #0a0a0a;
+            font-weight: bold;
+        }
+
+        .content-container {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .content-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .room {
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin: 20px 0;
+            background-image:
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 0, 0.02),
+                    rgba(0, 255, 0, 0.02) 20px,
+                    rgba(0, 255, 0, 0.01) 20px,
+                    rgba(0, 255, 0, 0.01) 40px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(0, 255, 0, 0.01),
+                    rgba(0, 255, 0, 0.01) 30px,
+                    rgba(0, 255, 0, 0.02) 30px,
+                    rgba(0, 255, 0, 0.02) 60px
+                );
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .room::before {
+            content: '┌─ CHAMBER ─┐';
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background-color: #0a0a0a;
+            padding: 0 10px;
+            color: #00ff00;
+            font-size: 0.9em;
+        }
+
+        .room h3 {
+            color: #00ff00;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .treasure {
+            border: 1px dashed #00ff00;
+            padding: 15px;
+            margin: 15px 0;
+            background-color: rgba(0, 255, 0, 0.03);
+        }
+
+        .treasure-header {
+            color: #ffff00;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .stat-box {
+            border: 1px solid #00ff00;
+            padding: 10px;
+            background-color: rgba(0, 255, 0, 0.02);
+            text-align: center;
+        }
+
+        .stat-label {
+            color: #00cc00;
+            font-size: 0.9em;
+        }
+
+        .stat-value {
+            color: #00ff00;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .quest-log {
+            border: 2px solid #00ff00;
+            padding: 15px;
+            margin: 15px 0;
+            background-color: rgba(0, 255, 0, 0.02);
+        }
+
+        .quest-item {
+            border-left: 3px solid #ffff00;
+            padding-left: 15px;
+            margin: 10px 0;
+            color: #00ff00;
+        }
+
+        .quest-status {
+            font-size: 0.9em;
+            color: #00cc00;
+            margin-top: 5px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .project-card {
+            border: 2px solid #00ff00;
+            padding: 15px;
+            background-color: rgba(0, 255, 0, 0.02);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            transform: translateY(-5px);
+        }
+
+        .project-title {
+            color: #ffff00;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .project-number {
+            color: #00cc00;
+            font-size: 0.9em;
+            margin-bottom: 8px;
+        }
+
+        .project-description {
+            color: #00ff00;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .curriculum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .curriculum-card {
+            border: 2px solid #00ff00;
+            padding: 15px;
+            background-color: rgba(0, 255, 0, 0.02);
+            transition: all 0.3s;
+        }
+
+        .curriculum-card:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        .week-badge {
+            display: inline-block;
+            background-color: #003300;
+            color: #ffff00;
+            padding: 5px 10px;
+            border: 1px solid #ffff00;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .reflection-icon {
+            color: #00cc00;
+            margin-right: 5px;
+        }
+
+        .make-icon {
+            color: #ffff00;
+            margin-right: 5px;
+        }
+
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #001100;
+            border-top: 2px solid #00ff00;
+            padding: 10px 20px;
+            font-size: 0.9em;
+            color: #00ff00;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .status-message {
+            flex: 1;
+        }
+
+        .status-location {
+            color: #ffff00;
+        }
+
+        body {
+            padding-bottom: 50px;
+        }
+
+        .divider {
+            border-top: 1px dashed #00ff00;
+            margin: 20px 0;
+            padding-top: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 1.8em;
+            }
+
+            .nav-menu {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .project-grid,
+            .curriculum-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screen {
+                margin: 5px;
+                padding: 10px;
+            }
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .about-stat {
+            border: 2px solid #00ff00;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(0, 255, 0, 0.02);
+        }
+
+        .about-stat-title {
+            color: #ffff00;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .about-stat-value {
+            color: #00ff00;
+            font-size: 1.5em;
+        }
+
+        .links-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .link-btn {
+            background-color: #003300;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 10px 15px;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .link-btn:hover {
+            background-color: #00ff00;
+            color: #0a0a0a;
+        }
+
+        .milestone-item {
+            display: flex;
+            align-items: center;
+            padding: 8px;
+            border: 1px solid #00ff00;
+            background-color: rgba(0, 255, 0, 0.02);
+            cursor: pointer;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .milestone-item:hover {
+            background-color: rgba(0, 255, 0, 0.08);
+        }
+
+        .milestone-item.completed {
+            background-color: rgba(0, 255, 0, 0.15);
+            border-color: #00cc00;
+        }
+
+        .milestone-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            cursor: pointer;
+            accent-color: #00ff00;
+        }
+
+        .milestone-label {
+            color: #00ff00;
+            cursor: pointer;
+            flex: 1;
+            font-size: 0.9em;
+        }
+
+        .milestone-item.completed .milestone-label {
+            color: #00cc00;
+            text-decoration: line-through;
+        }
+
+        .milestone-xp {
+            color: #ffff00;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-left: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="screen">
+        <div class="header">
+            <div class="ascii-art">
+╔═══════════════════════════════════════════════════════════════════════════╗
+║█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█║
+║░                                                                         ░║
+║░  ▓█████▄  ██▓  ▄████  ██▓▄▄▄█████▓ ▄▄▄       ██▓         ██░ ██  █  █░ ░║
+║░  ▒██▀ ██▌▓██▒ ██▒ ▀█▒▓██▒▓  ██▒ ▓▒▒████▄    ▓██▒        ▓██░ ██▒ █  █░ ░║
+║░  ░██   █▌▒██▒▒██░▄▄▄░▒██▒▒ ▓██░ ▒░▒██  ▀█▄  ▒██░        ▒██▀▀██░░█  █░ ░║
+║░  ░▓█▄   ▌░██░░▓█  ██▓░██░░ ▓██▓ ░ ░██▄▄▄▄██ ▒██░        ░▓█ ░██ ░▓██▓░ ░║
+║░  ░▒████▓ ░██░░▒▓███▀▒░██░  ▒██▒ ░  ▓█   ▓██▒░██████▒    ░▓█▒░██▓ ▒░▓█░ ░║
+║░   ▒▒▓  ▒ ░▓   ░▒   ▒ ░▓    ▒ ░░    ▒▒   ▓▒█░░ ▒░▓  ░     ▒ ░░▒░▒ ░ ▒▓░ ░║
+║░   ░ ▒  ▒  ▒ ░  ░   ░  ▒ ░    ░      ▒   ▒▒ ░░ ░ ▒  ░     ▒ ░▒░ ░   ░▒░ ░║
+║░   ░ ░  ░  ▒ ░░ ░   ░  ▒ ░  ░        ░   ▒     ░ ░        ░  ░░ ░   ░░░ ░║
+║░     ░     ░        ░  ░                 ░  ░    ░  ░     ░  ░  ░    ░░  ░║
+║░   ░                                                                     ░║
+║░                ~ A DIGITAL HUMANITIES DUNGEON CRAWL ~                  ░║
+║░                                                                         ░║
+║█░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░█║
+╚═══════════════════════════════════════════════════════════════════════════╝
+            </div>
+            <h1 class="title">> QUEST LOG ACTIVATED</h1>
+            <p class="subtitle">[ DH101 Portfolio & Curriculum Quest ]</p>
+        </div>
+
+        <div class="nav-menu">
+            <button class="nav-btn active" onclick="switchRoom('profile')">⚔ PROFILE</button>
+            <button class="nav-btn" onclick="switchRoom('curriculum')">📖 CURRICULUM</button>
+            <button class="nav-btn" onclick="switchRoom('projects')">🏆 PROJECTS</button>
+            <button class="nav-btn" onclick="switchRoom('skills')">✦ ABILITIES</button>
+        </div>
+
+        <!-- PROFILE ROOM -->
+        <div id="profile" class="content-container active">
+            <div class="room">
+                <h3>⚔ ADVENTURER'S PROFILE</h3>
+                <p style="margin-bottom: 15px; font-style: italic;">Welcome to the DH101 Quest. This semester documents my critical thinking journey through Digital Humanities.</p>
+                
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <div class="about-stat-title">Current Level</div>
+                        <div class="about-stat-value">Student</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-title">Weeks Completed</div>
+                        <div class="about-stat-value">13</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-title">Reflections Logged</div>
+                        <div class="about-stat-value">13</div>
+                    </div>
+                    <div class="about-stat">
+                        <div class="about-stat-title">Makes Crafted</div>
+                        <div class="about-stat-value">12</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3>🗺 Key Chambers</h3>
+                <div class="treasure">
+                    <div class="treasure-header">📜 About Me</div>
+                    <p>Introduce yourself and your interests in this quest for digital humanities understanding.</p>
+                </div>
+                
+                <div class="treasure">
+                    <div class="treasure-header">💡 How I Use AI</div>
+                    <p>Strategies and reflections on incorporating AI as a tool in the digital humanities journey.</p>
+                </div>
+
+                <div class="treasure">
+                    <div class="treasure-header">♿ Accessibility</div>
+                    <p>Commitment to inclusive design and accessible digital practices.</p>
+                </div>
+
+                <div class="treasure">
+                    <div class="treasure-header">🌍 Sustainability</div>
+                    <p>Exploring sustainable practices in digital humanities work.</p>
+                </div>
+
+                <div class="links-container">
+                    <a href="pages/about.md" class="link-btn">📄 About</a>
+                    <a href="pages/how-i-use-ai.md" class="link-btn">🤖 AI Guide</a>
+                    <a href="pages/accessibility.md" class="link-btn">♿ Access</a>
+                    <a href="pages/sustainability.md" class="link-btn">🌿 Sustain</a>
+                    <a href="pages/markdown-guide.md" class="link-btn">📝 MD Guide</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- CURRICULUM ROOM -->
+        <div id="curriculum" class="content-container">
+            <div class="room">
+                <h3>📖 CURRICULUM GRIMOIRE</h3>
+                <p style="margin-bottom: 20px;">Track all reflections and makes from your semester-long quest through Digital Humanities.</p>
+
+                <div class="quest-log">
+                    <h3 style="font-size: 1.1em; margin-bottom: 15px;">⚡ QUEST PROGRESS</h3>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <div class="stat-label">Reflections Complete</div>
+                            <div class="stat-value"><span id="reflectionsCount">0</span>/13</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Makes Complete</div>
+                            <div class="stat-value"><span id="makesCount">0</span>/12</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Completion Rate</div>
+                            <div class="stat-value"><span id="completionRate">0</span>%</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-label">Experience Gained</div>
+                            <div class="stat-value"><span id="experienceGained">0</span> XP</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 20px; border-top: 1px dashed #00ff00; padding-top: 15px;">
+                        <h4 style="color: #ffff00; margin-bottom: 12px; font-size: 0.95em;">► WEEKLY MILESTONES</h4>
+                        <div id="weeklyCheckboxes" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px;">
+                            <!-- Generated by JavaScript -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <h3 style="margin-top: 30px;">📚 CURRICULUM COLLECTION</h3>
+                <div class="curriculum-grid" id="curriculumGrid">
+                    <!-- Generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- PROJECTS ROOM -->
+        <div id="projects" class="content-container">
+            <div class="room">
+                <h3>🏆 CREATIONS & MAKES</h3>
+                <p style="margin-bottom: 20px;">Artifacts and projects crafted throughout the semester quest.</p>
+
+                <div class="project-grid" id="projectsGrid">
+                    <!-- Generated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- SKILLS ROOM -->
+        <div id="skills" class="content-container">
+            <div class="room">
+                <h3>✦ ABILITIES ACQUIRED</h3>
+                <p style="margin-bottom: 20px;">Skills and knowledge gained during the DH101 journey.</p>
+
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-label">Critical Thinking</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Digital Literacy</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Project Execution</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-label">Reflection & Analysis</div>
+                        <div class="stat-value">★★★★★</div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="room">
+                    <h3>🧭 CORE COMPETENCIES</h3>
+                    
+                    <div class="treasure">
+                        <div class="treasure-header">🔍 Digital Humanities</div>
+                        <p>Understanding the intersection of digital technology and humanistic inquiry, applying computational thinking to cultural analysis.</p>
+                    </div>
+
+                    <div class="treasure">
+                        <div class="treasure-header">🎨 Creative Problem Solving</div>
+                        <p>Developing innovative approaches to challenges using digital tools and methodologies.</p>
+                    </div>
+
+                    <div class="treasure">
+                        <div class="treasure-header">📊 Data Literacy</div>
+                        <p>Analyzing and interpreting data within humanistic contexts.</p>
+                    </div>
+
+                    <div class="treasure">
+                        <div class="treasure-header">🤝 Collaborative Learning</div>
+                        <p>Engaging with peers and instructors to collectively explore digital humanities challenges.</p>
+                    </div>
+
+                    <div class="treasure">
+                        <div class="treasure-header">⚙️ Technical Skills</div>
+                        <p>Proficiency with various digital tools and platforms for humanities research and creation.</p>
+                    </div>
+
+                    <div class="treasure">
+                        <div class="treasure-header">✍️ Clear Communication</div>
+                        <p>Articulating complex ideas through writing, reflection, and project documentation.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-message">
+            > Ready to explore <span class="status-location" id="locationDisplay">PROFILE CHAMBER</span>
+        </div>
+        <div id="timeDisplay" style="color: #ffff00;"></div>
+    </div>
+
+    <script>
+        // Week data for curriculum
+        const weeks = [
+            { week: 1, reflection: true, make: true },
+            { week: 2, reflection: true, make: false },
+            { week: 3, reflection: true, make: true },
+            { week: 4, reflection: true, make: true },
+            { week: 5, reflection: true, make: true },
+            { week: 6, reflection: true, make: true },
+            { week: 7, reflection: true, make: true },
+            { week: 8, reflection: true, make: true },
+            { week: 9, reflection: true, make: true },
+            { week: 10, reflection: true, make: true },
+            { week: 11, reflection: true, make: true },
+            { week: 12, reflection: true, make: true },
+            { week: 13, reflection: true, make: true }
+        ];
+
+        // Progress tracking with localStorage
+        const questProgress = {
+            data: {},
+            
+            init() {
+                const saved = localStorage.getItem('dh101-quest-progress');
+                this.data = saved ? JSON.parse(saved) : {};
+            },
+            
+            save() {
+                localStorage.setItem('dh101-quest-progress', JSON.stringify(this.data));
+            },
+            
+            toggle(id) {
+                this.data[id] = !this.data[id];
+                this.save();
+            },
+            
+            isComplete(id) {
+                return this.data[id] || false;
+            },
+            
+            getStats() {
+                let reflectionsComplete = 0;
+                let makesComplete = 0;
+                
+                weeks.forEach(w => {
+                    if (w.reflection && this.isComplete(`reflection-${w.week}`)) {
+                        reflectionsComplete++;
+                    }
+                    if (w.make && this.isComplete(`make-${w.week}`)) {
+                        makesComplete++;
+                    }
+                });
+                
+                const totalTasks = 13 + 12; // 13 reflections + 12 makes
+                const completedTasks = reflectionsComplete + makesComplete;
+                const completionRate = Math.round((completedTasks / totalTasks) * 100);
+                const xpGained = completedTasks * 50; // 50 XP per task
+                
+                return {
+                    reflectionsComplete,
+                    makesComplete,
+                    completionRate,
+                    xpGained
+                };
+            }
+        };
+
+        // Room navigation
+        function switchRoom(room) {
+            // Hide all rooms
+            document.querySelectorAll('.content-container').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Deactivate all buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected room
+            document.getElementById(room).classList.add('active');
+            
+            // Activate corresponding button
+            event.target.classList.add('active');
+            
+            // Update status bar
+            const locationNames = {
+                'profile': 'PROFILE CHAMBER',
+                'curriculum': 'CURRICULUM GRIMOIRE',
+                'projects': 'CREATIONS VAULT',
+                'skills': 'ABILITIES NEXUS'
+            };
+            
+            document.getElementById('locationDisplay').textContent = locationNames[room];
+            addStatusMessage(`Entering ${locationNames[room]}...`);
+        }
+
+        // Update progress display
+        function updateProgressDisplay() {
+            const stats = questProgress.getStats();
+            document.getElementById('reflectionsCount').textContent = stats.reflectionsComplete;
+            document.getElementById('makesCount').textContent = stats.makesComplete;
+            document.getElementById('completionRate').textContent = stats.completionRate;
+            document.getElementById('experienceGained').textContent = stats.xpGained;
+        }
+
+        // Generate weekly milestones checkboxes
+        function generateWeeklyMilestones() {
+            const container = document.getElementById('weeklyCheckboxes');
+            
+            weeks.forEach(item => {
+                let content = '';
+                
+                if (item.reflection) {
+                    const id = `reflection-${item.week}`;
+                    const isComplete = questProgress.isComplete(id);
+                    content += `
+                        <label class="milestone-item ${isComplete ? 'completed' : ''}" onclick="toggleMilestone('${id}', event)">
+                            <input type="checkbox" class="milestone-checkbox" ${isComplete ? 'checked' : ''} onchange="toggleMilestone('${id}', event)">
+                            <span class="milestone-label">Week ${item.week} Reflection</span>
+                            <span class="milestone-xp">+50 XP</span>
+                        </label>
+                    `;
+                }
+                
+                if (item.make) {
+                    const id = `make-${item.week}`;
+                    const isComplete = questProgress.isComplete(id);
+                    content += `
+                        <label class="milestone-item ${isComplete ? 'completed' : ''}" onclick="toggleMilestone('${id}', event)">
+                            <input type="checkbox" class="milestone-checkbox" ${isComplete ? 'checked' : ''} onchange="toggleMilestone('${id}', event)">
+                            <span class="milestone-label">Week ${item.week} Make</span>
+                            <span class="milestone-xp">+50 XP</span>
+                        </label>
+                    `;
+                }
+                
+                container.innerHTML += content;
+            });
+        }
+
+        // Toggle milestone
+        function toggleMilestone(id, event) {
+            event.preventDefault();
+            questProgress.toggle(id);
+            updateProgressDisplay();
+            
+            // Update visual state
+            const label = event.currentTarget;
+            const checkbox = label.querySelector('.milestone-checkbox');
+            checkbox.checked = questProgress.isComplete(id);
+            
+            if (questProgress.isComplete(id)) {
+                label.classList.add('completed');
+                addStatusMessage('Quest milestone completed! XP gained!');
+            } else {
+                label.classList.remove('completed');
+                addStatusMessage('Milestone unchecked.');
+            }
+        }
+
+        // Generate curriculum grid
+        function generateCurriculum() {
+            const container = document.getElementById('curriculumGrid');
+            
+            weeks.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'curriculum-card';
+                
+                let content = `
+                    <div class="week-badge">WEEK ${item.week}</div>
+                    <div style="color: #00ff00;">
+                `;
+                
+                if (item.reflection) {
+                    content += `
+                        <div style="margin-bottom: 8px;">
+                            <span class="reflection-icon">📝</span>
+                            <a href="reflections/week${String(item.week).padStart(2, '0')}.md" 
+                               style="color: #00ff00; text-decoration: none; cursor: pointer;">
+                               Reflection Scroll
+                            </a>
+                        </div>
+                    `;
+                }
+                
+                if (item.make) {
+                    content += `
+                        <div>
+                            <span class="make-icon">🛠</span>
+                            <a href="makes/week${String(item.week).padStart(2, '0')}.md" 
+                               style="color: #00ff00; text-decoration: none; cursor: pointer;">
+                               Make & Build
+                            </a>
+                        </div>
+                    `;
+                }
+                
+                content += `</div>`;
+                card.innerHTML = content;
+                container.appendChild(card);
+            });
+        }
+
+        // Generate projects grid
+        function generateProjects() {
+            const container = document.getElementById('projectsGrid');
+            
+            weeks.forEach(item => {
+                if (item.make) {
+                    const card = document.createElement('div');
+                    card.className = 'project-card';
+                    card.innerHTML = `
+                        <div class="project-number">ARTIFACT #${item.week}</div>
+                        <div class="project-title">Week ${item.week} Creation</div>
+                        <div class="project-description">
+                            A crafted make exploring digital humanities concepts and critical thinking through practical application.
+                        </div>
+                        <div style="margin-top: 15px;">
+                            <a href="makes/week${String(item.week).padStart(2, '0')}.md" 
+                               style="color: #ffff00; text-decoration: underline; cursor: pointer; font-size: 0.9em;">
+                               View Details →
+                            </a>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                }
+            });
+        }
+
+        // Status bar messages
+        const messages = [
+            'Dungeons explored successfully...',
+            'Systems online. Ready for adventure.',
+            'Quest objectives tracking...',
+            'Knowledge compiled. Wisdom buffering...'
+        ];
+
+        let messageIndex = 0;
+
+        function addStatusMessage(msg) {
+            messageIndex = (messageIndex + 1) % messages.length;
+            setTimeout(() => {
+                document.querySelector('.status-message').textContent = 
+                    `> ${messages[messageIndex]}`;
+            }, 500);
+        }
+
+        // Update time display
+        function updateTime() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit' 
+            });
+            document.getElementById('timeDisplay').textContent = `[${time}]`;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            questProgress.init();
+            generateCurriculum();
+            generateProjects();
+            generateWeeklyMilestones();
+            updateProgressDisplay();
+            updateTime();
+            setInterval(updateTime, 1000);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '?' || e.shiftKey && e.key === '/') {
+                alert('⚔ QUEST CONTROLS ⚔\n\nNavigate between chambers using the menu buttons.\n\nCheck off milestones in the Curriculum Grimoire to track progress.\n\nExperience points (XP) are awarded for each completed milestone.\n\nYour progress is automatically saved!\n\n[Enter any chamber to begin!]');
+            }
+        });
+
+        // Random status updates
+        setInterval(() => {
+            const randomMessages = [
+                '> Systems humming...',
+                '> Standing by for your next quest...',
+                '> Dungeons ready to explore...',
+                '> Ancient archives accessible...',
+                '> Awaiting adventurer input...'
+            ];
+            
+            if (Math.random() > 0.7) {
+                document.querySelector('.status-message').textContent = 
+                    randomMessages[Math.floor(Math.random() * randomMessages.length)];
+            }
+        }, 15000);
+    </script>
+</body>
+</html>

@@ -1,8 +1,9 @@
 # Week 5 – GIF & Remix Culture
 
 ## The Artifact
-Describe or embed your artifact here.
-Include images, links, or media as appropriate.
+![Alt text: Week 5 GIF remix artifact](../assets/images/Make_Gifs%20%26%20Remix%20Culture.gif)
+
+[View the rendered Week 5 artifact page](./week05.html)
 
 ## Process Notes
 How did you make this?
