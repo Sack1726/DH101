@@ -17,6 +17,7 @@
             --focus: #0b5bd3;
             --shadow: rgba(37, 25, 14, 0.28);
             --rail-width: 248px;
+            --rail-start-desktop: 10.5rem;
         }
 
         * {
@@ -74,7 +75,7 @@
 
         .nav-rail {
             position: fixed;
-            top: 1rem;
+            top: var(--rail-start-desktop);
             left: 1rem;
             width: var(--rail-width);
             max-height: calc(100vh - 2rem);
@@ -261,6 +262,18 @@
             max-width: 78ch;
         }
 
+        .accessibility-list {
+            margin: 0.7rem 0 0;
+            padding-left: 1.2rem;
+            max-width: 82ch;
+            line-height: 1.6;
+            color: var(--ink-soft);
+        }
+
+        .accessibility-list li {
+            margin-bottom: 0.5rem;
+        }
+
         .resource-grid {
             margin-top: 1rem;
             display: grid;
@@ -327,6 +340,7 @@
             }
 
             .nav-rail {
+                top: 1rem;
                 transform: translateX(-100%);
                 transition: transform 200ms ease;
             }
@@ -459,13 +473,22 @@
                 <section id="accessibility" aria-labelledby="accessibility-title">
                     <hr class="section-divider" aria-hidden="true">
                     <h3 id="accessibility-title">IV. Accessibility Commitments</h3>
-                    <p>This site prioritizes keyboard navigation, visible focus states, semantic landmarks, readable contrast, and reduced-motion support.</p>
-                    <p>All portfolio artifacts remain reachable through stable paths and clear section labels.</p>
+                    <p>This site was built by Brendan S for DH 101.</p>
+                    <p>I have tried to make it accessible by:</p>
+                    <ul class="accessibility-list">
+                        <li>Implemented visible keyboard focus states with <code>:focus-visible</code> outlines and interactive styling to make navigation easier.</li>
+                        <li>Added alt text for artifact and image-related content to describe what is shown.</li>
+                        <li>Included a low-motion sliding side navigation bar for quicker, less overwhelming movement through the page.</li>
+                        <li>Used readable visual choices with larger line height, clear spacing, and high-contrast styling to improve usability.</li>
+                        <li>Designed the website to work across different screen sizes and devices (while noting it may break after future updates).</li>
+                        <li>Used accessibility tools and guidelines, including WCAG references, to review and improve the site.</li>
+                        <li>WAVE Accessibility Evaluator reported an AIM score of 10 out of 10 for screen-reader presentation.</li>
+                    </ul>
                 </section>
         </main>
 
         <footer>
-            <strong>Machina et Humanitas:</strong> A Digital Humanities portfolio in an Ancient Rome visual language.
+            <strong>Machina et Humanitas:</strong> A Digital Humanities portfolio inspired by Ancient Rome.
         </footer>
     </div>
 
@@ -486,6 +509,16 @@
             { week: 13, hasReflection: true, hasMake: true }
         ];
 
+        const makeTitles = {
+            1: 'Make 1: Reverse-engineer a DH/AI project',
+            2: 'Make 2: AI Selfie',
+            3: 'Make 3. Let\'s Make a Comic',
+            4: 'Make 4. Gifs & Remix Culture',
+            5: 'Make 5. Compare Voyant vs GPT text analysis',
+            6: 'Make 6. Build a digital map of AI\'s infrastructures',
+            7: 'Make 7: Networks of Knowledge & Power'
+        };
+
         function makeCard(symbol, title, description, href) {
             const card = document.createElement('a');
             card.className = 'resource-card';
@@ -505,10 +538,11 @@
                 const weekCode = String(item.week).padStart(2, '0');
 
                 if (item.hasMake) {
+                    const makeTitle = makeTitles[item.week] || `Week ${item.week} Make`;
                     makesGrid.appendChild(
                         makeCard(
                             '⚒',
-                            `Week ${item.week} Make`,
+                            makeTitle,
                             'Hands-on DH making artifact.',
                             `folio.html?doc=makes/week${weekCode}.md`
                         )
@@ -569,7 +603,7 @@
                 let ticking = false;
                 const updateRailPosition = () => {
                     if (window.innerWidth > 1024) {
-                        const baseTop = 16;
+                        const baseTop = 168;
                         const maxTop = Math.max(baseTop, window.innerHeight - rail.offsetHeight - 16);
                         const targetTop = Math.min(baseTop + window.scrollY * 0.04, maxTop);
                         rail.style.top = `${targetTop}px`;
