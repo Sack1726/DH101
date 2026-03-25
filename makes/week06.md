@@ -1,8 +1,9 @@
 # Week 6 – Text & Distant Reading
 
 ## The Artifact
-Describe or embed your artifact here.
-Include images, links, or media as appropriate.
+<iframe src="https://www.google.com/maps/d/embed?mid=1ZXVOHVmqaFxqGNhFM_rCiBzE4_fkNIA" width="940" height="600" frameborder="0" title="Digital Map of ChatGPT and Gemini global infrastructures"></iframe>
+
+![Digital Map of ChatGPT & Gemini’s global infrastructures, including locations for corporate headquarters, development, data centers, mining sites, and content moderation & data labeling.](https://www.google.com/maps/d/embed?mid=1ZXVOHVmqaFxqGNhFM_rCiBzE4_fkNIA)
 
 ## Process Notes
 How did you make this?

@@ -1,9 +1,9 @@
 # Week 5 – GIF & Remix Culture
 
 ## The Artifact
-![Alt text: Week 5 GIF remix artifact](../assets/images/Make_Gifs%20%26%20Remix%20Culture.gif)
+<img src="assets/images/Make-5-1_2.png" alt="" style="width: min(780px, 100%); height: auto; margin: 0.5rem auto 1rem; display: block;">
 
-[View the rendered Week 5 artifact page](./week05.html)
+<img src="assets/images/Make-5-2_2.png" alt="" style="width: min(780px, 100%); height: auto; margin: 0 auto; display: block;">
 
 ## Process Notes
 How did you make this?

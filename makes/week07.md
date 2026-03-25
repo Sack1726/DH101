@@ -1,8 +1,9 @@
 # Week 7 – Mapping AI Worlds
 
 ## The Artifact
-Describe or embed your artifact here.
-Include images, links, or media as appropriate.
+<iframe src="https://embed.kumu.io/2b700062e2f87f2d37217b4dd312e0d0" width="940" height="600" frameborder="0" title="Academic Citation Network for AI Military Regulation Debate"></iframe>
+
+![Academic Citation Network for AI Military Regulation Debate](https://embed.kumu.io/2b700062e2f87f2d37217b4dd312e0d0)
 
 ## Process Notes
 How did you make this?

@@ -3,1312 +3,597 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DH QUEST - Digital Humanities Portfolio</title>
+    <title>Machina et Humanitas | Brendan Sack</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --parchment: #efe1c2;
+            --parchment-deep: #dec79d;
+            --ink: #2f2418;
+            --ink-soft: #493a2b;
+            --bronze: #8f642b;
+            --imperial-red: #81291d;
+            --focus: #0b5bd3;
+            --shadow: rgba(37, 25, 14, 0.28);
+            --rail-width: 248px;
+        }
 
         * {
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Cinzel', serif;
-            background-color: #1a1410;
-            background-image: 
-                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(139, 90, 43, 0.3) 2px, rgba(139, 90, 43, 0.3) 4px),
-                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(139, 90, 43, 0.3) 2px, rgba(139, 90, 43, 0.3) 4px),
-                repeating-linear-gradient(45deg, transparent, transparent 3px, rgba(210, 180, 140, 0.1) 3px, rgba(210, 180, 140, 0.1) 6px),
-                repeating-linear-gradient(-45deg, transparent, transparent 3px, rgba(210, 180, 140, 0.1) 3px, rgba(210, 180, 140, 0.1) 6px);
-            color: #d4af37;
-            line-height: 1.6;
+            margin: 0;
+            font-family: 'Cardo', Georgia, serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.24), transparent 34%),
+                radial-gradient(circle at 88% 12%, rgba(129, 41, 29, 0.16), transparent 30%),
+                linear-gradient(180deg, #f2e6cb 0%, #e6d1aa 60%, #d9bc8d 100%);
             min-height: 100vh;
         }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                repeating-linear-gradient(0deg, transparent 0px, transparent 1px, rgba(0, 0, 0, 0.03) 1px, rgba(0, 0, 0, 0.03) 2px),
-                repeating-linear-gradient(90deg, transparent 0px, transparent 1px, rgba(0, 0, 0, 0.03) 1px, rgba(0, 0, 0, 0.03) 2px);
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .main-container {
-            display: flex;
-            min-height: 100vh;
-            position: relative;
-            z-index: 2;
-        }
-
-        .sidebar {
-            width: 120px;
-            background: linear-gradient(90deg, #0f0c0a 0%, #1a1410 100%);
-            border-right: 4px solid #8b5a2b;
-            box-shadow: inset -2px 0px 8px rgba(0, 0, 0, 0.8);
-            padding: 20px 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .sidebar-title {
-            text-align: center;
-            color: #d4af37;
-            font-size: 0.7em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            padding: 10px 0;
-            border-bottom: 2px solid #8b5a2b;
-            margin-bottom: 10px;
-        }
-
-        .character-portrait {
-            width: 100px;
-            height: 100px;
-            border: 3px solid #8b5a2b;
-            background: linear-gradient(135deg, #2a2520 0%, #0f0c0a 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: inset 0 2px 4px rgba(212, 175, 55, 0.2);
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .character-portrait:hover {
-            border-color: #d4af37;
-            box-shadow: inset 0 2px 4px rgba(212, 175, 55, 0.4), 0 0 15px rgba(212, 175, 55, 0.3);
-            background: linear-gradient(135deg, #3a3520 0%, #1a1610 100%);
-        }
-
-        .character-portrait.active {
-            border-color: #dc143c;
-            background: linear-gradient(135deg, #4a2520 0%, #2a1610 100%);
-            box-shadow: inset 0 2px 4px rgba(220, 20, 60, 0.4), 0 0 20px rgba(220, 20, 60, 0.3);
-        }
-
-        .portrait-icon {
-            font-size: 2.5em;
-        }
-
-        .portrait-label {
-            font-size: 0.65em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 5px;
-            color: #c9a961;
-        }
-
-        .content-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            margin: 15px;
-        }
-
-        .viewscreen {
-            flex: 1;
-            border: 8px solid;
-            border-image: linear-gradient(135deg, #8b5a2b 0%, #d4af37 50%, #8b5a2b 100%) 1;
-            background: linear-gradient(135deg, rgba(26, 20, 16, 0.9) 0%, rgba(15, 12, 10, 0.95) 100%);
-            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 0 30px rgba(139, 90, 43, 0.3);
-            padding: 20px;
-            overflow-y: auto;
-            position: relative;
-        }
-
-        .viewscreen::before {
-            content: '';
+        .skip-link {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(0deg, transparent 24%, rgba(255, 0, 0, 0.05) 25%, rgba(255, 0, 0, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 0, 0, 0.05) 75%, rgba(255, 0, 0, 0.05) 76%, transparent 77%, transparent);
-            background-size: 100% 3px;
-            pointer-events: none;
-            z-index: 0;
+            left: calc(var(--rail-width) + 12px);
+            top: -50px;
+            z-index: 1000;
+            padding: 10px 12px;
+            background: #ffffff;
+            color: #111;
+            border: 2px solid #111;
+            font-weight: 700;
+            text-decoration: none;
         }
 
-        .content-panel {
-            display: none;
-            position: relative;
-            z-index: 1;
+        .skip-link:focus {
+            top: 10px;
         }
 
-        .content-panel.active {
-            display: block;
+        body.nav-open {
+            overflow: hidden;
         }
 
-        .content-title {
-            color: #d4af37;
-            font-size: 1.4em;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #8b5a2b;
+        :focus-visible {
+            outline: 3px solid var(--focus);
+            outline-offset: 2px;
         }
 
-        .content-text {
-            color: #e3cf8f;
-            margin-bottom: 20px;
-            line-height: 1.8;
-            font-size: 1.02em;
-            letter-spacing: 0.2px;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.7);
-            background: linear-gradient(180deg, rgba(74, 53, 28, 0.45), rgba(26, 20, 12, 0.15));
-            padding: 14px 16px;
-            box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.45);
-            max-width: 72ch;
-            text-align: center;
-            margin-left: auto;
-            margin-right: auto;
+        .site-shell {
+            width: min(1080px, calc(100vw - var(--rail-width) - 3rem));
+            margin: 1.1rem 1rem 1.5rem calc(var(--rail-width) + 2.2rem);
+            border: 3px solid var(--bronze);
+            background: linear-gradient(180deg, rgba(255, 250, 240, 0.72), rgba(238, 223, 190, 0.78));
+            box-shadow: 0 12px 28px var(--shadow);
         }
 
-        .stat-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin-top: 10px;
-        }
-
-        .stat-box {
-            background: linear-gradient(135deg, rgba(139, 90, 43, 0.3), rgba(212, 175, 55, 0.1));
-            border: 1px solid #8b5a2b;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.9em;
-            color: #c9a961;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-
-        .stat-value {
-            font-size: 1.5em;
-            color: #d4af37;
-            font-weight: bold;
-        }
-
-        .checkbox-item {
-            display: flex;
-            align-items: center;
-            padding: 8px;
-            margin: 5px 0;
-            border-left: 3px solid #8b5a2b;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .checkbox-item:hover {
-            border-left-color: #d4af37;
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .checkbox-item input[type="checkbox"] {
-            margin-right: 10px;
-            cursor: pointer;
-            accent-color: #d4af37;
-        }
-
-        .checkbox-label {
-            flex: 1;
-            color: #c9a961;
-        }
-
-        .checkbox-item.completed .checkbox-label {
-            color: #8b8b3f;
-            text-decoration: line-through;
-        }
-
-        .xp-badge {
-            background: linear-gradient(135deg, #d4af37 0%, #c9a961 100%);
-            color: #1a1410;
-            padding: 2px 8px;
-            font-size: 0.8em;
-            border-radius: 3px;
-            font-weight: bold;
-        }
-
-        .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .card {
-            border: 2px solid #8b5a2b;
-            padding: 12px;
-            background: linear-gradient(135deg, rgba(139, 90, 43, 0.2), rgba(220, 20, 60, 0.1));
-            text-align: center;
-            transition: all 0.3s;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            min-height: 140px;
-            justify-content: flex-start;
-        }
-
-        .card:hover {
-            border-color: #d4af37;
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
-            background: linear-gradient(135deg, rgba(139, 90, 43, 0.4), rgba(212, 175, 55, 0.2));
-        }
-
-        .card-icon {
-            font-size: 2em;
-            margin-bottom: 8px;
-        }
-
-        .card-title {
-            color: #d4af37;
-            font-size: 0.95em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-            word-wrap: break-word;
-            word-break: break-word;
-            line-height: 1.3;
-        }
-
-        .card-description {
-            color: #c9a961;
-            font-size: 0.8em;
-            line-height: 1.3;
-            word-wrap: break-word;
-            word-break: break-word;
-        }
-
-        .message-log {
-            margin-top: 15px;
-            border: 2px solid #8b5a2b;
-            border-top: 3px double #8b5a2b;
-            padding: 15px;
-            max-height: 150px;
+        .nav-rail {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            width: var(--rail-width);
+            max-height: calc(100vh - 2rem);
+            border: 3px solid var(--bronze);
+            border-radius: 10px;
+            background: linear-gradient(180deg, rgba(255, 248, 233, 0.95), rgba(228, 205, 161, 0.95));
+            box-shadow: 0 10px 24px rgba(37, 25, 14, 0.22);
+            padding: 1rem 0.8rem;
+            z-index: 950;
             overflow-y: auto;
-            background: linear-gradient(135deg, rgba(15, 12, 10, 0.8) 0%, rgba(26, 20, 16, 0.9) 100%);
-            box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+            transition: top 180ms ease;
         }
 
-        .message-log-title {
-            color: #d4af37;
-            font-size: 0.9em;
+        .nav-rail-title {
+            margin: 0 0 0.65rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.95rem;
+            color: var(--imperial-red);
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 10px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            padding-bottom: 8px;
-            border-bottom: 1px solid #8b5a2b;
+            letter-spacing: 0.05em;
         }
 
-        .log-message {
-            color: #c9a961;
-            font-size: 0.85em;
-            margin: 5px 0;
-            padding: 5px 8px;
-            background: rgba(139, 90, 43, 0.15);
-            border-left: 2px solid #8b5a2b;
+        .site-header {
+            border-bottom: 4px double var(--bronze);
+            padding: 1rem 1.2rem 1.2rem;
+            background: linear-gradient(90deg, rgba(129, 41, 29, 0.12), rgba(143, 100, 43, 0.15), rgba(129, 41, 29, 0.12));
         }
 
-        .log-message.success {
-            color: #90ee90;
-        }
-
-        .page-title {
+        .title-wrap {
             text-align: center;
-            padding: 20px 15px 10px 15px;
-            background: linear-gradient(135deg, rgba(139, 90, 43, 0.3), rgba(220, 20, 60, 0.1));
-            border-bottom: 3px double #8b5a2b;
-            margin-bottom: 15px;
         }
 
-        .page-title-main {
-            font-size: 2.8em;
-            color: #d4af37;
+        .site-title {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.9rem);
+            font-weight: 900;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            font-weight: 700;
+            color: var(--imperial-red);
             text-shadow:
-                -2px -2px 0 rgba(139, 90, 43, 0.8),
-                2px -2px 0 rgba(139, 90, 43, 0.8),
-                -2px 2px 0 rgba(139, 90, 43, 0.8),
-                2px 2px 0 rgba(139, 90, 43, 0.8),
-                -3px 0 0 rgba(0, 0, 0, 0.9),
-                3px 0 0 rgba(0, 0, 0, 0.9),
-                0 -3px 0 rgba(0, 0, 0, 0.9),
-                0 3px 0 rgba(0, 0, 0, 0.9),
-                -2px -2px 8px rgba(0, 0, 0, 0.7),
-                2px 2px 8px rgba(0, 0, 0, 0.7),
-                0 0 20px rgba(212, 175, 55, 0.4);
-            margin-bottom: 5px;
-            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+                -1px -1px 0 #f8ebd1,
+                1px -1px 0 #f8ebd1,
+                -1px 1px 0 #f8ebd1,
+                1px 1px 0 #f8ebd1,
+                0 3px 0 #6f2418,
+                0 6px 11px rgba(67, 28, 17, 0.34);
         }
 
-        .page-title-subtitle {
-            font-size: 1.1em;
-            color: #d4af37;
-            letter-spacing: 1.5px;
+        .site-title::before,
+        .site-title::after {
+            content: '❦';
+            color: var(--bronze);
+            margin: 0 0.5rem;
+            font-size: 0.68em;
+            vertical-align: middle;
+        }
+
+        .site-subtitle {
+            margin: 0.25rem auto 0;
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            color: var(--bronze);
+            letter-spacing: 0.07em;
+            font-size: clamp(0.88rem, 2vw, 1.03rem);
             text-transform: uppercase;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-            margin-bottom: 8px;
-            font-style: italic;
+            max-width: 100%;
         }
 
-        .page-title-descriptor {
-            font-size: 0.9em;
-            color: #c9a961;
-            letter-spacing: 1px;
-            text-transform: uppercase;
+        .section-nav {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 0.5rem;
         }
 
-        .stats-toggle {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            justify-content: flex-start;
+        .section-nav a {
+            display: block;
+            border: 2px solid var(--bronze);
+            background: linear-gradient(180deg, #f5e6c8, #ebd5ab);
+            color: var(--ink);
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.03em;
+            padding: 0.5rem 0.8rem;
+            transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
         }
 
-        .toggle-btn {
-            padding: 6px 12px;
-            background: linear-gradient(135deg, rgba(139, 90, 43, 0.3), rgba(212, 175, 55, 0.2));
-            border: 2px solid #8b5a2b;
-            color: #c9a961;
+        .section-nav a:hover {
+            border-color: var(--imperial-red);
+            background: linear-gradient(180deg, #f1d3a8, #dfb880);
+            color: #3d1d14;
+            transform: translateY(-1px);
+        }
+
+        .section-nav a:focus-visible {
+            border-color: var(--imperial-red);
+            background: linear-gradient(180deg, #f1d3a8, #dfb880);
+            color: #3d1d14;
+        }
+
+        .rail-toggle {
+            position: fixed;
+            top: 0.85rem;
+            left: 0.85rem;
+            z-index: 980;
+            width: 44px;
+            height: 44px;
+            border: 2px solid var(--bronze);
+            border-radius: 6px;
+            background: linear-gradient(180deg, #f5e6c8, #ebd5ab);
+            color: var(--imperial-red);
+            font-size: 1.05rem;
             cursor: pointer;
-            transition: all 0.3s;
-            text-transform: uppercase;
-            font-size: 0.75em;
-            letter-spacing: 1px;
-            font-family: 'Crimson Text', serif;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
         }
 
-        .toggle-btn:hover {
-            border-color: #d4af37;
-            color: #d4af37;
+        .rail-toggle:hover,
+        .rail-toggle:focus-visible {
+            border-color: var(--imperial-red);
+            background: linear-gradient(180deg, #f1d3a8, #dfb880);
+            color: #3d1d14;
+            transform: translateY(-1px);
         }
 
-        .toggle-btn.active {
-            background: linear-gradient(135deg, #d4af37, #c9a961);
-            color: #1a1410;
-            border-color: #d4af37;
-            font-weight: bold;
-        }
-
-        .stats-container {
+        .rail-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(35, 24, 14, 0.38);
+            z-index: 940;
             display: none;
         }
 
-        .stats-container.active {
-            display: block;
+        main {
+            padding: 1rem;
+            display: grid;
+            gap: 0.95rem;
         }
 
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                flex-direction: row;
-                border-right: none;
-                border-bottom: 4px solid #8b5a2b;
-                padding: 10px;
-                gap: 10px;
-            }
-
-            .character-portrait {
-                width: 80px;
-                height: 80px;
-            }
-
-            .portrait-label {
-                font-size: 0.55em;
-            }
-
-            .content-area {
-                margin: 10px;
-            }
+        section {
+            border: 2px solid var(--bronze);
+            background: rgba(255, 248, 233, 0.82);
+            padding: 1rem 1.05rem;
         }
 
-        /* Intro Screen Styles */
-        .intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(15, 12, 10, 0.85), rgba(26, 20, 16, 0.88));
+        .section-divider {
+            border: 0;
+            height: 14px;
+            margin: 0 0 0.85rem;
+            background:
+                radial-gradient(circle at center, var(--imperial-red) 0 2px, transparent 3px),
+                linear-gradient(90deg, transparent 0%, var(--bronze) 20%, var(--bronze) 80%, transparent 100%);
+            background-size: 14px 14px, 100% 2px;
+            background-repeat: repeat-x, no-repeat;
+            background-position: center center, center center;
+            opacity: 0.7;
+        }
+
+        h3 {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            color: var(--imperial-red);
+            letter-spacing: 0.04em;
             display: flex;
-            justify-content: center;
             align-items: center;
-            z-index: 10000;
-            opacity: 1;
-            transition: opacity 0.8s ease-out;
-            backdrop-filter: blur(2px);
+            gap: 0.5rem;
         }
 
-        .intro-overlay.hidden {
-            opacity: 0;
-            pointer-events: none;
+        h3::before {
+            content: '◈';
+            color: var(--bronze);
+            font-size: 0.88em;
         }
 
-        .intro-container {
-            max-width: 800px;
-            width: 85%;
-            position: relative;
-            z-index: 1;
+        p {
+            margin: 0.6rem 0 0;
+            line-height: 1.65;
+            color: var(--ink-soft);
+            max-width: 78ch;
         }
 
-        .intro-title {
-            font-size: 3.5em;
-            color: #d4af37;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            font-weight: 700;
-            text-shadow:
-                -2px -2px 0 rgba(139, 90, 43, 0.8),
-                2px -2px 0 rgba(139, 90, 43, 0.8),
-                -2px 2px 0 rgba(139, 90, 43, 0.8),
-                2px 2px 0 rgba(139, 90, 43, 0.8),
-                -3px 0 0 rgba(0, 0, 0, 0.9),
-                3px 0 0 rgba(0, 0, 0, 0.9),
-                0 -3px 0 rgba(0, 0, 0, 0.9),
-                0 3px 0 rgba(0, 0, 0, 0.9),
-                -2px -2px 8px rgba(0, 0, 0, 0.7),
-                2px 2px 8px rgba(0, 0, 0, 0.7),
-                0 0 20px rgba(212, 175, 55, 0.4);
-            text-align: center;
-            animation: textReveal 2s ease-out forwards 0s;
-            opacity: 0;
-            filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.3));
+        .resource-grid {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.8rem;
         }
 
-        .intro-subtitle {
-            font-size: 1.8em;
-            color: #d4af37;
-            letter-spacing: 2px;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-            margin-bottom: 40px;
-            text-align: center;
-            animation: textReveal 1.8s ease-out forwards 2s;
-            opacity: 0;
+        .resource-card {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid var(--bronze);
+            background: linear-gradient(155deg, #f7ebd0, var(--parchment-deep) 74%);
+            padding: 0.9rem;
+            min-height: 138px;
+            transition: border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
         }
 
-        .intro-text {
-            font-size: 1.25em;
-            color: #e3cf8f;
-            line-height: 2;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-            text-align: justify;
-            letter-spacing: 0.3px;
-            margin-bottom: 20px;
-            animation: textReveal 1.8s ease-out forwards 4.2s;
-            opacity: 0;
+        .resource-card:hover {
+            border-color: var(--imperial-red);
+            background: linear-gradient(155deg, #f8e2bd, #e7c08a 74%);
+            transform: translateY(-1px);
         }
 
-        .intro-line {
-            display: inline;
-            animation: textReveal 1.8s ease-out forwards;
-            opacity: 0;
+        .resource-card:focus-visible {
+            border-color: var(--imperial-red);
+            background: linear-gradient(155deg, #f8e2bd, #e7c08a 74%);
         }
 
-        .intro-text:nth-child(3) .intro-line:nth-of-type(1) {
-            animation-delay: 4s;
+        .resource-card h4 {
+            margin: 0 0 0.35rem;
+            font-family: 'Cinzel', serif;
+            font-size: 1.02rem;
+            color: var(--imperial-red);
         }
 
-        .intro-text:nth-child(3) .intro-line:nth-of-type(2) {
-            animation-delay: 5.8s;
+        .card-symbol {
+            display: inline-block;
+            width: 1.3rem;
+            color: var(--bronze);
+            font-size: 0.95em;
         }
 
-        .intro-text:nth-child(4) .intro-line:nth-of-type(1) {
-            animation-delay: 7.6s;
+        .resource-card p {
+            margin: 0;
+            font-size: 0.95rem;
         }
 
-        .intro-text:nth-child(4) .intro-line:nth-of-type(2) {
-            animation-delay: 9.4s;
+        footer {
+            border-top: 3px double var(--bronze);
+            padding: 0.9rem 1.2rem;
+            background: rgba(143, 100, 43, 0.14);
+            font-size: 0.92rem;
+            color: var(--ink-soft);
         }
 
-        .intro-text:nth-child(4) .intro-line:nth-of-type(3) {
-            animation-delay: 11.2s;
-        }
-
-        .intro-text:nth-child(4) .intro-line:nth-of-type(4) {
-            animation-delay: 13s;
-        }
-
-        .intro-text:nth-child(5) .intro-line:nth-of-type(1) {
-            animation-delay: 14.8s;
-        }
-
-        .intro-text:nth-child(6) .intro-line:nth-of-type(1) {
-            animation-delay: 16.6s;
-        }
-
-        .intro-closing {
-            font-size: 1.05em;
-            color: #c9a961;
-            text-align: center;
-            font-style: italic;
-            margin-top: 35px;
-            animation: textReveal 1.5s ease-out forwards 18.4s;
-            opacity: 0;
-        }
-
-        @keyframes textReveal {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
+        @media (max-width: 1024px) {
+            .skip-link {
+                left: 12px;
             }
-            to {
-                opacity: 1;
-                transform: translateY(0);
+
+            .rail-toggle {
+                display: inline-flex;
+            }
+
+            .nav-rail {
+                transform: translateX(-100%);
+                transition: transform 200ms ease;
+            }
+
+            body.nav-open .nav-rail {
+                transform: translateX(0);
+            }
+
+            body.nav-open .rail-backdrop {
+                display: block;
+            }
+
+            .site-shell {
+                width: min(1000px, 96vw);
+                margin: 1rem auto 1.3rem;
+            }
+
+            .resource-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
-        .intro-skip {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 0.85em;
-            color: #c9a961;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: blink 1.5s infinite;
+        @media (max-width: 760px) {
+            .site-shell {
+                width: 100%;
+                margin: 0;
+                border-left: none;
+                border-right: none;
+            }
+
+            .site-header,
+            main,
+            footer {
+                padding-left: 0.85rem;
+                padding-right: 0.85rem;
+            }
         }
 
-        @keyframes blink {
-            0%, 50%, 100% { opacity: 0.7; }
-            25%, 75% { opacity: 1; }
+        @media (max-width: 560px) {
+            .site-title::before,
+            .site-title::after {
+                display: none;
+            }
+
+            .resource-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html {
+                scroll-behavior: auto;
+            }
+
+            * {
+                transition: none !important;
+                animation: none !important;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- INTRO SCREEN -->
-    <div id="introOverlay" class="intro-overlay">
-        <div class="intro-container">
-            <div class="intro-title">⚔ DH QUEST ⚔</div>
-            <div class="intro-subtitle">Crusaders of the Digital Codex</div>
-            <div class="intro-text">
-                <span class="intro-line">In the spring of a transformative semester, four souls converge upon the Digital Humanities.</span>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <button class="rail-toggle" id="railToggle" aria-label="Open section menu" aria-expanded="false" aria-controls="primaryRailNav">⇥</button>
+    <div class="rail-backdrop" id="railBackdrop" aria-hidden="true"></div>
+
+    <nav class="nav-rail" id="primaryRailNav" aria-label="Primary sections">
+        <h2 class="nav-rail-title">Sections</h2>
+        <ul class="section-nav">
+            <li><a href="#intro-pages">Introduction Pages</a></li>
+            <li><a href="#makes">Weekly Makes</a></li>
+            <li><a href="#reflections">Weekly Reflections</a></li>
+            <li><a href="#accessibility">Accessibility</a></li>
+        </ul>
+    </nav>
+
+    <div class="site-shell">
+        <header class="site-header">
+            <div class="title-wrap">
+                <h1 class="site-title">Machina et Humanitas</h1>
+                <p class="site-subtitle">Brendan Sack's Digital Humanities Portfolio and Semester Journey</p>
             </div>
-            <div class="intro-text">
-                <span class="intro-line">The Scholar seeks knowledge and self-reflection.</span><br>
-                <span class="intro-line">The Archivist preserves insights and critical thought.</span><br>
-                <span class="intro-line">The Creator manifests ideas into tangible artifacts.</span><br>
-                <span class="intro-line">The Theorist synthesizes wisdom into a lasting framework.</span>
-            </div>
-            <div class="intro-text">
-                <span class="intro-line">Through thirteen trials and sacred assignments, they traverse the realms of reflection and creation.</span>
-            </div>
-            <div class="intro-text">
-                <span class="intro-line">This portfolio chronicles their journey—a testament to growth, exploration, and the critical mind honed by semester's end.</span>
-            </div>
-            <div class="intro-closing">
-                Click to begin your quest.
-            </div>
-        </div>
-        <div class="intro-skip">[ PRESS ESC TO SKIP ]</div>
-    </div>
-    <div class="main-container">
-        <!-- SIDEBAR -->
-        <div class="sidebar">
-            <div class="sidebar-title">Characters</div>
-            <div class="character-portrait active" onclick="switchView('profile')">
-                <div>
-                    <div class="portrait-icon">📚</div>
-                    <div class="portrait-label">Scholar</div>
-                </div>
-            </div>
-            <div class="character-portrait" onclick="switchView('curriculum')">
-                <div>
-                    <div class="portrait-icon">🗂️</div>
-                    <div class="portrait-label">Archivist</div>
-                </div>
-            </div>
-            <div class="character-portrait" onclick="switchView('projects')">
-                <div>
-                    <div class="portrait-icon">🎨</div>
-                    <div class="portrait-label">Creator</div>
-                </div>
-            </div>
-            <div class="character-portrait" onclick="switchView('skills')">
-                <div>
-                    <div class="portrait-icon">💬</div>
-                    <div class="portrait-label">Theorist</div>
-                </div>
-            </div>
-        </div>
+        </header>
 
-        <!-- MAIN CONTENT -->
-        <div class="content-area">
-            <div class="page-title">
-                <div class="page-title-main">⚔ DH QUEST ⚔</div>
-                <div class="page-title-subtitle">Crusaders of the Digital Codex</div>
-                <div class="page-title-descriptor">Brendan Sack's Digital Humanities Portfolio & Semester Journey</div>
-            </div>
-            <div class="viewscreen">
-                <!-- PROFILE VIEW -->
-                <div id="profile" class="content-panel active">
-                    <div class="content-title">📚 SCHOLAR'S PROFILE</div>
-                    <div class="content-text">
-                        In the Scholar’s ledger lies the DH101 journey: a season of inquiry, discovery, and hard‑won critical thought. This portfolio records each step of that quest.
+        <main id="main-content">
+                <section id="intro-pages" aria-labelledby="intro-pages-title">
+                    <hr class="section-divider" aria-hidden="true">
+                    <h3 id="intro-pages-title">I. Introduction Pages</h3>
+                    <p>These pages provide context for identity, method, and course values.</p>
+
+                    <div class="resource-grid">
+                        <a class="resource-card" href="folio.html?doc=pages/about.md">
+                            <h4><span class="card-symbol" aria-hidden="true">◉</span>About</h4>
+                            <p>Background, interests, and academic direction.</p>
+                        </a>
+                        <a class="resource-card" href="folio.html?doc=pages/how-i-use-ai.md">
+                            <h4><span class="card-symbol" aria-hidden="true">⚖</span>How I Use AI</h4>
+                            <p>My use of AI tools, boundaries, and reflective practices.</p>
+                        </a>
+                        <a class="resource-card" href="folio.html?doc=pages/accessibility.md">
+                            <h4><span class="card-symbol" aria-hidden="true">✶</span>Accessibility</h4>
+                            <p>Commitments to inclusive and usable digital work.</p>
+                        </a>
+                        <a class="resource-card" href="folio.html?doc=pages/sustainability.md">
+                            <h4><span class="card-symbol" aria-hidden="true">❖</span>Sustainability</h4>
+                            <p>Approaches to long-term, sustainable DH practice.</p>
+                        </a>
+                        <a class="resource-card" href="folio.html?doc=pages/markdown-guide.md">
+                            <h4><span class="card-symbol" aria-hidden="true">⌘</span>Markdown Guide</h4>
+                            <p>Reference patterns used in portfolio writing and structure.</p>
+                        </a>
                     </div>
+                </section>
 
-                    <div style="border: 2px solid #8b5a2b; padding: 12px; background: linear-gradient(135deg, rgba(139, 90, 43, 0.2), rgba(220, 20, 60, 0.1));">
-                        <div class="stats-toggle">
-                            <button class="toggle-btn active" onclick="toggleStats('profile', 'stats')">Overall Stats</button>
-                            <button class="toggle-btn" onclick="toggleStats('profile', 'progress')">Current Progress</button>
-                        </div>
+                <section id="makes" aria-labelledby="makes-title">
+                    <hr class="section-divider" aria-hidden="true">
+                    <h3 id="makes-title">II. Weekly Makes</h3>
+                    <p>Makes collect practical experiments and project artifacts completed across DH101.</p>
+                    <div class="resource-grid" id="makesGrid"></div>
+                </section>
 
-                        <div id="profile-stats" class="stats-container active">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ OVERALL STATS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Weeks Completed</div>
-                                    <div class="stat-value"><span id="weeksCompleted">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections</div>
-                                    <div class="stat-value"><span id="totalReflections">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes</div>
-                                    <div class="stat-value"><span id="totalMakes">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Total Assignments</div>
-                                    <div class="stat-value"><span id="totalAssignments">0</span>/25</div>
-                                </div>
-                            </div>
-                        </div>
+                <section id="reflections" aria-labelledby="reflections-title">
+                    <hr class="section-divider" aria-hidden="true">
+                    <h3 id="reflections-title">III. Weekly Reflections</h3>
+                    <p>Reflections document interpretation, synthesis, and historical thinking developed during the semester.</p>
+                    <div class="resource-grid" id="reflectionsGrid"></div>
+                </section>
 
-                        <div id="profile-progress" class="stats-container">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ CURRENT PROGRESS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections Complete</div>
-                                    <div class="stat-value"><span id="profileReflectionsCount">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes Complete</div>
-                                    <div class="stat-value"><span id="profileMakesCount">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Completion Rate</div>
-                                    <div class="stat-value"><span id="profileCompletionRate">0</span>%</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Experience Gained</div>
-                                    <div class="stat-value"><span id="profileExperienceGained">0</span> XP</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <section id="accessibility" aria-labelledby="accessibility-title">
+                    <hr class="section-divider" aria-hidden="true">
+                    <h3 id="accessibility-title">IV. Accessibility Commitments</h3>
+                    <p>This site prioritizes keyboard navigation, visible focus states, semantic landmarks, readable contrast, and reduced-motion support.</p>
+                    <p>All portfolio artifacts remain reachable through stable paths and clear section labels.</p>
+                </section>
+        </main>
 
-                    <div style="margin-top: 20px;">
-                        <div class="content-title" style="font-size: 1.1em;">🗺️ KEY CHAMBERS</div>
-                        <div class="card-grid">
-                            <a href="pages/about.md" class="card" style="text-decoration: none; color: inherit;">
-                                <div class="card-icon">👤</div>
-                                <div class="card-title">About Me</div>
-                                <div class="card-description">Background, interests, and academic journey</div>
-                            </a>
-                            <a href="pages/how-i-use-ai.md" class="card" style="text-decoration: none; color: inherit;">
-                                <div class="card-icon">🤖</div>
-                                <div class="card-title">AI Usage</div>
-                                <div class="card-description">My approach to AI tools and reflection</div>
-                            </a>
-                            <a href="pages/accessibility.md" class="card" style="text-decoration: none; color: inherit;">
-                                <div class="card-icon">♿</div>
-                                <div class="card-title">Accessibility</div>
-                                <div class="card-description">Commitment to accessible design</div>
-                            </a>
-                            <a href="pages/sustainability.md" class="card" style="text-decoration: none; color: inherit;">
-                                <div class="card-icon">🌱</div>
-                                <div class="card-title">Sustainability</div>
-                                <div class="card-description">Sustainable practices in DH</div>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ARCHIVIST VIEW (REFLECTIONS) -->
-                <div id="curriculum" class="content-panel">
-                    <div class="content-title">🗂️ ARCHIVIST'S REFLECTIONS</div>
-                    <div class="content-text">
-                        The Archivist gathers weekly reflections as if ink were memory—cataloging insights, testing ideas, and chronicling the growth of a careful mind.
-                    </div>
-
-                    <div style="border: 2px solid #8b5a2b; padding: 12px; background: linear-gradient(135deg, rgba(139, 90, 43, 0.2), rgba(220, 20, 60, 0.1)); margin-bottom: 15px;">
-                        <div class="stats-toggle">
-                            <button class="toggle-btn" onclick="toggleStats('curriculum', 'stats')">Overall Stats</button>
-                            <button class="toggle-btn active" onclick="toggleStats('curriculum', 'progress')">Current Progress</button>
-                        </div>
-
-                        <div id="curriculum-stats" class="stats-container">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ OVERALL STATS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Weeks Completed</div>
-                                    <div class="stat-value"><span id="weeksCompleted2">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections</div>
-                                    <div class="stat-value"><span id="totalReflections2">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes</div>
-                                    <div class="stat-value"><span id="totalMakes2">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Total Assignments</div>
-                                    <div class="stat-value"><span id="totalAssignments2">0</span>/25</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="curriculum-progress" class="stats-container active">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ CURRENT PROGRESS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections Complete</div>
-                                    <div class="stat-value"><span id="reflectionsCount">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes Complete</div>
-                                    <div class="stat-value"><span id="makesCount">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Completion Rate</div>
-                                    <div class="stat-value"><span id="completionRate">0</span>%</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Experience Gained</div>
-                                    <div class="stat-value"><span id="experienceGained">0</span> XP</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-title" style="font-size: 1.1em;">📝 REFLECTION MILESTONES</div>
-                    <div id="reflectionCheckboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #8b5a2b; padding: 10px;">
-                        <!-- Generated by JavaScript -->
-                    </div>
-
-                    <div class="content-title" style="margin-top: 20px; font-size: 1.2em;">📖 WEEKLY REFLECTIONS</div>
-                    <div class="card-grid" id="reflectionsGrid">
-                        <!-- Generated by JavaScript -->
-                    </div>
-                </div>
-
-                <!-- CREATOR VIEW (MAKES) -->
-                <div id="projects" class="content-panel">
-                    <div class="content-title">🎨 CREATOR'S MAKES</div>
-                    <div class="content-text">
-                        The Creator forges tangible artifacts—experiments shaped by craft and critique—each make a proof of concept in the digital humanities.
-                    </div>
-
-                    <div style="border: 2px solid #8b5a2b; padding: 12px; background: linear-gradient(135deg, rgba(139, 90, 43, 0.2), rgba(220, 20, 60, 0.1)); margin-bottom: 15px;">
-                        <div class="stats-toggle">
-                            <button class="toggle-btn" onclick="toggleStats('projects', 'stats')">Overall Stats</button>
-                            <button class="toggle-btn active" onclick="toggleStats('projects', 'progress')">Current Progress</button>
-                        </div>
-
-                        <div id="projects-stats" class="stats-container">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ OVERALL STATS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Weeks Completed</div>
-                                    <div class="stat-value"><span id="weeksCompleted3">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections</div>
-                                    <div class="stat-value"><span id="totalReflections3">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes</div>
-                                    <div class="stat-value"><span id="totalMakes3">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Total Assignments</div>
-                                    <div class="stat-value"><span id="totalAssignments3">0</span>/25</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="projects-progress" class="stats-container active">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ CURRENT PROGRESS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections Complete</div>
-                                    <div class="stat-value"><span id="reflectionsCount2">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes Complete</div>
-                                    <div class="stat-value"><span id="makesCount2">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Completion Rate</div>
-                                    <div class="stat-value"><span id="completionRate2">0</span>%</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Experience Gained</div>
-                                    <div class="stat-value"><span id="experienceGained2">0</span> XP</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="content-title" style="font-size: 1.1em;">🛠️ MAKE MILESTONES</div>
-                    <div id="makeCheckboxes" style="max-height: 200px; overflow-y: auto; border: 1px solid #8b5a2b; padding: 10px;">
-                        <!-- Generated by JavaScript -->
-                    </div>
-
-                    <div class="content-title" style="margin-top: 20px; font-size: 1.2em;">🛠️ WEEKLY MAKES</div>
-                    <div class="card-grid" id="makesGrid">
-                        <!-- Generated by JavaScript -->
-                    </div>
-                </div>
-
-                <!-- SKILLS VIEW -->
-                <div id="skills" class="content-panel">
-                    <div class="content-title">💬 THEORETICAL FRAMEWORK</div>
-                    <div class="content-text">
-                        From the trials of DH101, the Theorist rises: skills tempered, knowledge earned, and a framework of thought fit for deeper study.
-                    </div>
-
-                    <div style="border: 2px solid #8b5a2b; padding: 12px; background: linear-gradient(135deg, rgba(139, 90, 43, 0.2), rgba(220, 20, 60, 0.1)); margin-bottom: 20px;">
-                        <div class="stats-toggle">
-                            <button class="toggle-btn active" onclick="toggleStats('skills', 'stats')">Overall Stats</button>
-                            <button class="toggle-btn" onclick="toggleStats('skills', 'progress')">Current Progress</button>
-                        </div>
-
-                        <div id="skills-stats" class="stats-container active">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ OVERALL STATS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Weeks Completed</div>
-                                    <div class="stat-value"><span id="weeksCompleted4">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections</div>
-                                    <div class="stat-value"><span id="totalReflections4">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes</div>
-                                    <div class="stat-value"><span id="totalMakes4">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Total Assignments</div>
-                                    <div class="stat-value"><span id="totalAssignments4">0</span>/25</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div id="skills-progress" class="stats-container">
-                            <div class="content-title" style="margin: 0 0 15px 0; border: none; font-size: 1.1em;">⚡ CURRENT PROGRESS</div>
-                            <div class="stat-panel">
-                                <div class="stat-box">
-                                    <div class="stat-label">Reflections Complete</div>
-                                    <div class="stat-value"><span id="reflectionsCount3">0</span>/13</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Makes Complete</div>
-                                    <div class="stat-value"><span id="makesCount3">0</span>/12</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Completion Rate</div>
-                                    <div class="stat-value"><span id="completionRate3">0</span>%</div>
-                                </div>
-                                <div class="stat-box">
-                                    <div class="stat-label">Experience Gained</div>
-                                    <div class="stat-value"><span id="experienceGained3">0</span> XP</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-grid">
-                        <div class="card">
-                            <div class="card-icon">📚</div>
-                            <div class="card-title">Critical Analysis</div>
-                            <div class="card-description">Deep examination of texts, media, and digital artifacts</div>
-                        </div>
-                        <div class="card">
-                            <div class="card-icon">🔍</div>
-                            <div class="card-title">Research</div>
-                            <div class="card-description">Scholarly investigation and evidence gathering</div>
-                        </div>
-                        <div class="card">
-                            <div class="card-icon">✍️</div>
-                            <div class="card-title">Writing</div>
-                            <div class="card-description">Clear communication of complex ideas</div>
-                        </div>
-                        <div class="card">
-                            <div class="card-icon">🎯</div>
-                            <div class="card-title">Project Design</div>
-                            <div class="card-description">Planning and execution of digital projects</div>
-                        </div>
-                        <div class="card">
-                            <div class="card-icon">💡</div>
-                            <div class="card-title">Creative Thinking</div>
-                            <div class="card-description">Novel approaches to digital humanities challenges</div>
-                        </div>
-                        <div class="card">
-                            <div class="card-icon">🤝</div>
-                            <div class="card-title">Collaboration</div>
-                            <div class="card-description">Working effectively with peers and mentors</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MESSAGE LOG -->
-                <div class="message-log">
-                    <div class="message-log-title">⚔ QUEST LOG</div>
-                    <div id="messageLog"></div>
-                </div>
-            </div>
-        </div>
+        <footer>
+            <strong>Machina et Humanitas:</strong> A Digital Humanities portfolio in an Ancient Rome visual language.
+        </footer>
     </div>
 
     <script>
         const weeks = [
-            { week: 1, reflection: true, make: true },
-            { week: 2, reflection: true, make: false },
-            { week: 3, reflection: true, make: true },
-            { week: 4, reflection: true, make: true },
-            { week: 5, reflection: true, make: true },
-            { week: 6, reflection: true, make: true },
-            { week: 7, reflection: true, make: true },
-            { week: 8, reflection: true, make: true },
-            { week: 9, reflection: true, make: true },
-            { week: 10, reflection: true, make: true },
-            { week: 11, reflection: true, make: true },
-            { week: 12, reflection: true, make: true },
-            { week: 13, reflection: true, make: true }
+            { week: 1, hasReflection: true, hasMake: true },
+            { week: 2, hasReflection: true, hasMake: true },
+            { week: 3, hasReflection: true, hasMake: true },
+            { week: 4, hasReflection: true, hasMake: true },
+            { week: 5, hasReflection: true, hasMake: true },
+            { week: 6, hasReflection: true, hasMake: true },
+            { week: 7, hasReflection: true, hasMake: true },
+            { week: 8, hasReflection: true, hasMake: true },
+            { week: 9, hasReflection: true, hasMake: true },
+            { week: 10, hasReflection: true, hasMake: true },
+            { week: 11, hasReflection: true, hasMake: true },
+            { week: 12, hasReflection: true, hasMake: true },
+            { week: 13, hasReflection: true, hasMake: true }
         ];
 
-        // Progress tracking
-        const questProgress = {
-            data: {},
-            
-            init() {
-                const saved = localStorage.getItem('dh101-quest-progress');
-                this.data = saved ? JSON.parse(saved) : {};
-            },
-            
-            save() {
-                localStorage.setItem('dh101-quest-progress', JSON.stringify(this.data));
-            },
-            
-            toggle(id) {
-                this.data[id] = !this.data[id];
-                this.save();
-            },
-            
-            isComplete(id) {
-                return this.data[id] || false;
-            },
-            
-            getStats() {
-                let reflectionsComplete = 0;
-                let makesComplete = 0;
-                
-                weeks.forEach(item => {
-                    if (item.reflection && this.isComplete(`reflection-${item.week}`)) {
-                        reflectionsComplete++;
-                    }
-                    if (item.make && this.isComplete(`make-${item.week}`)) {
-                        makesComplete++;
+        function makeCard(symbol, title, description, href) {
+            const card = document.createElement('a');
+            card.className = 'resource-card';
+            card.href = href;
+            card.innerHTML = `<h4><span class="card-symbol" aria-hidden="true">${symbol}</span>${title}</h4><p>${description}</p>`;
+            return card;
+        }
+
+        function buildWeekLists() {
+            const reflectionsGrid = document.getElementById('reflectionsGrid');
+            const makesGrid = document.getElementById('makesGrid');
+
+            reflectionsGrid.innerHTML = '';
+            makesGrid.innerHTML = '';
+
+            weeks.forEach((item) => {
+                const weekCode = String(item.week).padStart(2, '0');
+
+                if (item.hasMake) {
+                    makesGrid.appendChild(
+                        makeCard(
+                            '⚒',
+                            `Week ${item.week} Make`,
+                            'Hands-on DH making artifact.',
+                            `folio.html?doc=makes/week${weekCode}.md`
+                        )
+                    );
+                }
+
+                if (item.hasReflection) {
+                    reflectionsGrid.appendChild(
+                        makeCard(
+                            '✍',
+                            `Week ${item.week} Reflection`,
+                            'Course reflection and analysis.',
+                            `folio.html?doc=reflections/week${weekCode}.md`
+                        )
+                    );
+                }
+            });
+        }
+
+        function initRailNav() {
+            const body = document.body;
+            const toggle = document.getElementById('railToggle');
+            const backdrop = document.getElementById('railBackdrop');
+            const rail = document.getElementById('primaryRailNav');
+            const navLinks = document.querySelectorAll('.nav-rail a');
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function setOpen(open) {
+                body.classList.toggle('nav-open', open);
+                toggle.setAttribute('aria-expanded', String(open));
+                toggle.setAttribute('aria-label', open ? 'Close section menu' : 'Open section menu');
+                toggle.textContent = open ? '⇤' : '⇥';
+            }
+
+            toggle.addEventListener('click', () => {
+                const open = !body.classList.contains('nav-open');
+                setOpen(open);
+            });
+
+            backdrop.addEventListener('click', () => setOpen(false));
+
+            navLinks.forEach((link) => {
+                link.addEventListener('click', () => {
+                    if (window.matchMedia('(max-width: 1024px)').matches) {
+                        setOpen(false);
                     }
                 });
-                
-                const totalItems = 25; // 13 reflections + 12 makes
-                const completedItems = reflectionsComplete + makesComplete;
-                const completionRate = Math.round((completedItems / totalItems) * 100);
-                const xpGained = completedItems * 50;
-                
-                return {
-                    reflectionsComplete,
-                    makesComplete,
-                    completionRate,
-                    xpGained
+            });
+
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 1024) {
+                    setOpen(false);
+                }
+            });
+
+            // Continuous floating motion on desktop while scrolling.
+            if (!reducedMotion) {
+                let ticking = false;
+                const updateRailPosition = () => {
+                    if (window.innerWidth > 1024) {
+                        const baseTop = 16;
+                        const maxTop = Math.max(baseTop, window.innerHeight - rail.offsetHeight - 16);
+                        const targetTop = Math.min(baseTop + window.scrollY * 0.04, maxTop);
+                        rail.style.top = `${targetTop}px`;
+                    } else {
+                        rail.style.top = '16px';
+                    }
+                    ticking = false;
                 };
-            }
-        };
 
-        // Toggle between stats and progress views
-        function toggleStats(page, view) {
-            // Update toggle buttons
-            const buttons = document.querySelectorAll(`#${page} .toggle-btn`);
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
-            
-            // Update containers
-            const statsContainer = document.getElementById(`${page}-stats`);
-            const progressContainer = document.getElementById(`${page}-progress`);
-            
-            if (view === 'stats') {
-                statsContainer.classList.add('active');
-                progressContainer.classList.remove('active');
-            } else {
-                statsContainer.classList.remove('active');
-                progressContainer.classList.add('active');
-            }
-        }
-
-        // View switching
-        function switchView(view) {
-            document.querySelectorAll('.content-panel').forEach(el => {
-                el.classList.remove('active');
-            });
-            document.querySelectorAll('.character-portrait').forEach(el => {
-                el.classList.remove('active');
-            });
-            
-            document.getElementById(view).classList.add('active');
-            event.target.closest('.character-portrait').classList.add('active');
-            
-            const messages = {
-                profile: 'Scholar profile unlocked. Your academic journey awaits...',
-                curriculum: 'Archive opened. Accessing reflection records...',
-                projects: 'Creative vault unlocked. Masterworks revealed!',
-                skills: 'Theoretical framework displayed. Knowledge compiled...'
-            };
-            
-            addLog(messages[view]);
-        }
-
-        // Generate reflection checkboxes (Archivist section)
-        function generateReflectionCheckboxes() {
-            const container = document.getElementById('reflectionCheckboxes');
-            
-            weeks.forEach(item => {
-                if (item.reflection) {
-                    const id = `reflection-${item.week}`;
-                    const isComplete = questProgress.isComplete(id);
-                    const checkbox = document.createElement('label');
-                    checkbox.className = `checkbox-item ${isComplete ? 'completed' : ''}`;
-                    checkbox.innerHTML = `
-                        <input type="checkbox" ${isComplete ? 'checked' : ''} onchange="toggleMilestone('${id}', event)">
-                        <span class="checkbox-label">Week ${item.week} Reflection</span>
-                        <span class="xp-badge">+50 XP</span>
-                    `;
-                    container.appendChild(checkbox);
-                }
-            });
-        }
-
-        // Generate make checkboxes (Creator section)
-        function generateMakeCheckboxes() {
-            const container = document.getElementById('makeCheckboxes');
-            
-            weeks.forEach(item => {
-                if (item.make) {
-                    const id = `make-${item.week}`;
-                    const isComplete = questProgress.isComplete(id);
-                    const checkbox = document.createElement('label');
-                    checkbox.className = `checkbox-item ${isComplete ? 'completed' : ''}`;
-                    checkbox.innerHTML = `
-                        <input type="checkbox" ${isComplete ? 'checked' : ''} onchange="toggleMilestone('${id}', event)">
-                        <span class="checkbox-label">Week ${item.week} Make</span>
-                        <span class="xp-badge">+50 XP</span>
-                    `;
-                    container.appendChild(checkbox);
-                }
-            });
-        }
-
-        // Toggle milestone
-        function toggleMilestone(id, event) {
-            questProgress.toggle(id);
-            updateProgressDisplay();
-            
-            const label = event.target.closest('.checkbox-item');
-            if (questProgress.isComplete(id)) {
-                label.classList.add('completed');
-                addLog(`Milestone completed: ${id.replace('-', ' ')}. +50 XP!`, 'success');
-            } else {
-                label.classList.remove('completed');
-                addLog(`Milestone unchecked.`);
-            }
-        }
-
-        // Calculate and update OVERALL STATS on all pages
-        function updateQuestStats() {
-            let weeksComplete = 0;
-            let reflectionsComplete = 0;
-            let makesComplete = 0;
-            
-            weeks.forEach(item => {
-                let weekComplete = true;
-                
-                // Check if reflection is complete (if it exists for this week)
-                if (item.reflection) {
-                    if (questProgress.isComplete(`reflection-${item.week}`)) {
-                        reflectionsComplete++;
-                    } else {
-                        weekComplete = false;
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(updateRailPosition);
+                        ticking = true;
                     }
-                }
-                
-                // Check if make is complete (if it exists for this week)
-                if (item.make) {
-                    if (questProgress.isComplete(`make-${item.week}`)) {
-                        makesComplete++;
-                    } else {
-                        weekComplete = false;
-                    }
-                }
-                
-                // A week is only complete if all its items are complete
-                if (weekComplete) {
-                    weeksComplete++;
-                }
-            });
-            
-            const totalAssignmentsComplete = reflectionsComplete + makesComplete;
-            
-            // Update all instances across all pages
-            document.getElementById('weeksCompleted').textContent = weeksComplete;
-            document.getElementById('totalReflections').textContent = reflectionsComplete;
-            document.getElementById('totalMakes').textContent = makesComplete;
-            document.getElementById('totalAssignments').textContent = totalAssignmentsComplete;
-            
-            document.getElementById('weeksCompleted2').textContent = weeksComplete;
-            document.getElementById('totalReflections2').textContent = reflectionsComplete;
-            document.getElementById('totalMakes2').textContent = makesComplete;
-            document.getElementById('totalAssignments2').textContent = totalAssignmentsComplete;
-            
-            document.getElementById('weeksCompleted3').textContent = weeksComplete;
-            document.getElementById('totalReflections3').textContent = reflectionsComplete;
-            document.getElementById('totalMakes3').textContent = makesComplete;
-            document.getElementById('totalAssignments3').textContent = totalAssignmentsComplete;
-            
-            document.getElementById('weeksCompleted4').textContent = weeksComplete;
-            document.getElementById('totalReflections4').textContent = reflectionsComplete;
-            document.getElementById('totalMakes4').textContent = makesComplete;
-            document.getElementById('totalAssignments4').textContent = totalAssignmentsComplete;
-        }
+                }, { passive: true });
 
-        // Update progress (shown in all sections)
-        function updateProgressDisplay() {
-            const stats = questProgress.getStats();
-            // Update Archivist section
-            document.getElementById('reflectionsCount').textContent = stats.reflectionsComplete;
-            document.getElementById('makesCount').textContent = stats.makesComplete;
-            document.getElementById('completionRate').textContent = stats.completionRate;
-            document.getElementById('experienceGained').textContent = stats.xpGained;
-            // Update Creator section
-            document.getElementById('reflectionsCount2').textContent = stats.reflectionsComplete;
-            document.getElementById('makesCount2').textContent = stats.makesComplete;
-            document.getElementById('completionRate2').textContent = stats.completionRate;
-            document.getElementById('experienceGained2').textContent = stats.xpGained;
-            // Update Scholar section
-            document.getElementById('profileReflectionsCount').textContent = stats.reflectionsComplete;
-            document.getElementById('profileMakesCount').textContent = stats.makesComplete;
-            document.getElementById('profileCompletionRate').textContent = stats.completionRate;
-            document.getElementById('profileExperienceGained').textContent = stats.xpGained;
-            // Update Theorist section
-            document.getElementById('reflectionsCount3').textContent = stats.reflectionsComplete;
-            document.getElementById('makesCount3').textContent = stats.makesComplete;
-            document.getElementById('completionRate3').textContent = stats.completionRate;
-            document.getElementById('experienceGained3').textContent = stats.xpGained;
-            // Update OVERALL STATS on all pages
-            updateQuestStats();
-        }
-
-        // Generate reflection cards (Archivist section)
-        function generateReflections() {
-            const container = document.getElementById('reflectionsGrid');
-            
-            weeks.forEach(item => {
-                if (item.reflection) {
-                    const card = document.createElement('a');
-                    card.className = 'card';
-                    card.style.textDecoration = 'none';
-                    card.style.color = 'inherit';
-                    card.href = 'reflections/week' + String(item.week).padStart(2, '0') + '.md';
-                    card.innerHTML = `
-                        <div class="card-icon">📝</div>
-                        <div class="card-title">Week ${item.week}</div>
-                        <div class="card-description">Deep reflection on concepts, readings, and critical analysis</div>
-                    `;
-                    container.appendChild(card);
-                }
-            });
-        }
-
-        // Generate make cards (Creator section)
-        function generateMakes() {
-            const container = document.getElementById('makesGrid');
-            
-            weeks.forEach(item => {
-                if (item.make) {
-                    const card = document.createElement('a');
-                    card.className = 'card';
-                    card.style.textDecoration = 'none';
-                    card.style.color = 'inherit';
-                    card.href = item.week === 5
-                        ? 'makes/week05.html'
-                        : 'makes/week' + String(item.week).padStart(2, '0') + '.md';
-                    card.innerHTML = `
-                        <div class="card-icon">🛠️</div>
-                        <div class="card-title">Week ${item.week}</div>
-                        <div class="card-description">Hands-on creation and critical making in digital humanities</div>
-                    `;
-                    container.appendChild(card);
-                }
-            });
-        }
-
-        // Message log
-        function addLog(message, type = 'default') {
-            const log = document.getElementById('messageLog');
-            const msg = document.createElement('div');
-            msg.className = `log-message ${type}`;
-            msg.textContent = `> ${message}`;
-            log.appendChild(msg);
-            log.scrollTop = log.scrollHeight;
-        }
-
-        // Intro screen handler
-        function closeIntro() {
-            const overlay = document.getElementById('introOverlay');
-            overlay.classList.add('hidden');
-        }
-
-        // ESC key to close intro
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeIntro();
+                window.addEventListener('resize', updateRailPosition);
+                updateRailPosition();
             }
-        });
+        }
 
-        // Click on intro to close
-        document.getElementById('introOverlay').addEventListener('click', (e) => {
-            if (e.target.id === 'introOverlay') {
-                closeIntro();
-            }
-        });
-
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            questProgress.init();
-            generateReflectionCheckboxes();
-            generateMakeCheckboxes();
-            generateReflections();
-            generateMakes();
-            updateProgressDisplay();
+            buildWeekLists();
+            initRailNav();
         });
     </script>
 </body>
