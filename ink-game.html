@@ -1,0 +1,1248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hero's Adventure - Visual Novel Prototype</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=M+PLUS+1p:wght@400;500;700&family=Shippori+Mincho:wght@600;700&display=swap");
+
+    :root {
+      --ink: #f8f3e6;
+      --mist: #d7d5cf;
+      --panel: rgba(15, 16, 22, 0.78);
+      --panel-border: rgba(255, 255, 255, 0.2);
+      --choice-bg: rgba(20, 28, 44, 0.82);
+      --choice-hover: rgba(36, 52, 82, 0.9);
+      --choice-border: rgba(151, 196, 245, 0.42);
+      --accent: #9fd0ff;
+      --danger: #ffb2bd;
+      --overlay-top: rgba(3, 8, 18, 0.26);
+      --overlay-bottom: rgba(4, 8, 16, 0.72);
+      --nameplate: rgba(8, 13, 26, 0.86);
+      --bubble-shadow: 0 18px 46px rgba(0, 0, 0, 0.45);
+      --ring: 0 0 0 2px rgba(170, 210, 255, 0.42);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "M PLUS 1p", "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #070a12;
+      overflow: hidden;
+      font-size: 18px;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 100vh;
+      width: 100%;
+      isolation: isolate;
+    }
+
+    .bg-layer {
+      position: absolute;
+      inset: 0;
+      background-color: #0a0e18;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      filter: saturate(0.9) contrast(1.02);
+      transform: scale(1.03);
+      opacity: 0;
+      transition: opacity 640ms ease, transform 1100ms ease;
+      will-change: opacity, transform;
+    }
+
+    .bg-layer.active {
+      opacity: 1;
+      transform: scale(1.01);
+    }
+
+    .bg-layer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, var(--overlay-top) 0%, rgba(7, 12, 23, 0.35) 45%, var(--overlay-bottom) 100%),
+        radial-gradient(circle at 86% 12%, rgba(159, 208, 255, 0.16), transparent 36%),
+        radial-gradient(circle at 16% 72%, rgba(255, 165, 180, 0.14), transparent 40%);
+    }
+
+    .grain {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.14;
+      mix-blend-mode: soft-light;
+      background-image:
+        radial-gradient(circle at 24% 16%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1.5px),
+        radial-gradient(circle at 72% 64%, rgba(255, 255, 255, 0.12) 0 1px, transparent 1.5px);
+      background-size: 4px 4px, 5px 5px;
+    }
+
+    .hud {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      left: 16px;
+      z-index: 4;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .chapter-label {
+      pointer-events: auto;
+      max-width: 72vw;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(7, 10, 18, 0.56);
+      color: var(--mist);
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .vn-shell {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: grid;
+      align-content: end;
+      padding: 24px;
+      gap: 14px;
+    }
+
+    .dialogue-box {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      border: 1px solid var(--panel-border);
+      background: var(--panel);
+      border-radius: 18px;
+      box-shadow: var(--bubble-shadow);
+      backdrop-filter: blur(8px);
+      padding: 20px 22px 16px;
+      animation: box-in 340ms ease;
+    }
+
+    .dialogue-text {
+      min-height: 120px;
+      max-height: 38vh;
+      overflow: auto;
+      padding-right: 6px;
+      line-height: 1.78;
+      font-size: 1.08rem;
+      color: var(--ink);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.58);
+    }
+
+    .vn-line {
+      margin: 0 0 10px;
+      white-space: pre-wrap;
+      animation: line-in 230ms ease;
+    }
+
+    .vn-line.system {
+      color: #d9d7df;
+      font-style: italic;
+      letter-spacing: 0.015em;
+    }
+
+    .speaker-inline {
+      color: #a8d9ff;
+      font-family: "Shippori Mincho", serif;
+      font-weight: 700;
+      margin-right: 6px;
+    }
+
+    .choices {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      display: grid;
+      gap: 12px;
+      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    }
+
+    .choice {
+      border: 1px solid var(--choice-border);
+      background: linear-gradient(170deg, var(--choice-bg), rgba(11, 18, 34, 0.88));
+      color: #ebf4ff;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 1.06rem;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+      animation: choice-in 300ms ease both;
+    }
+
+    .choice:hover,
+    .choice:focus-visible {
+      background: linear-gradient(170deg, var(--choice-hover), rgba(19, 31, 52, 0.92));
+      border-color: rgba(159, 208, 255, 0.9);
+      transform: translateY(-1px);
+      outline: none;
+      box-shadow: var(--ring);
+    }
+
+    .choice[disabled] {
+      opacity: 0.55;
+      cursor: wait;
+    }
+
+    .end-label {
+      margin: 0;
+      color: #e9d5dc;
+      font-size: 0.93rem;
+      font-style: italic;
+      border: 1px solid rgba(255, 178, 189, 0.35);
+      border-radius: 12px;
+      background: rgba(55, 20, 33, 0.5);
+      padding: 10px 12px;
+      animation: line-in 280ms ease;
+    }
+
+    .stage.ending-1 .dialogue-box {
+      border-color: rgba(255, 177, 177, 0.45);
+      background: rgba(30, 12, 17, 0.8);
+    }
+
+    .stage.ending-2 .dialogue-box {
+      border-color: rgba(255, 220, 158, 0.42);
+      background: rgba(34, 21, 10, 0.8);
+    }
+
+    .ending-screen {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 240ms ease;
+    }
+
+    .ending-screen.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ending-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.06), transparent 45%), rgba(0, 0, 0, 0.48);
+      backdrop-filter: blur(2px);
+    }
+
+    .ending-screen-card {
+      position: relative;
+      width: min(760px, calc(100% - 30px));
+      max-height: calc(100vh - 40px);
+      overflow: auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.52);
+      background: linear-gradient(170deg, rgba(12, 14, 25, 0.92), rgba(7, 10, 18, 0.92));
+      box-shadow: 0 22px 56px rgba(0, 0, 0, 0.58);
+      padding: 28px 26px 24px;
+      text-align: center;
+      transform: translateY(4px) scale(0.985);
+      animation: end-pop 400ms ease forwards;
+    }
+
+    .ending-sign {
+      margin: 0 0 7px;
+      font-family: "Shippori Mincho", serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-size: 1.72rem;
+      opacity: 0;
+      animation: sign-fade 520ms ease 120ms forwards;
+    }
+
+    .ending-divider {
+      margin: 10px auto 14px;
+      width: min(320px, 70%);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+      opacity: 0;
+      animation: sign-fade 520ms ease 180ms forwards;
+    }
+
+    .ending-title {
+      margin: 0 0 10px;
+      font-size: 1.16rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #d8deeb;
+      opacity: 0;
+      animation: sign-fade 520ms ease 220ms forwards;
+    }
+
+    .ending-body {
+      margin: 0 0 14px;
+      text-align: center;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.06);
+      padding: 12px 12px 4px;
+      opacity: 0;
+      animation: sign-fade 520ms ease 280ms forwards;
+    }
+
+    .ending-line {
+      margin: 0 0 10px;
+      line-height: 1.74;
+      font-size: 1.04rem;
+      color: #edf1fb;
+      white-space: pre-wrap;
+      text-align: center;
+    }
+
+    .ending-note {
+      margin: 0 0 16px;
+      color: #d3d8e7;
+      font-style: italic;
+      font-size: 1.02rem;
+      opacity: 0;
+      animation: sign-fade 520ms ease 300ms forwards;
+    }
+
+    .ending-restart-btn {
+      border: 1px solid rgba(185, 222, 255, 0.62);
+      border-radius: 999px;
+      background: rgba(20, 37, 62, 0.82);
+      color: #e6f3ff;
+      padding: 12px 22px;
+      cursor: pointer;
+      letter-spacing: 0.04em;
+      font-weight: 700;
+      font-size: 1rem;
+      opacity: 0;
+      animation: sign-fade 520ms ease 380ms forwards;
+      transition: transform 120ms ease, background 120ms ease;
+    }
+
+    .ending-restart-btn:hover,
+    .ending-restart-btn:focus-visible {
+      transform: translateY(-1px);
+      background: rgba(31, 53, 85, 0.9);
+      outline: none;
+      box-shadow: var(--ring);
+    }
+
+    .ending-screen-card.ending1 {
+      border-color: rgba(255, 173, 173, 0.6);
+      background: rgba(40, 14, 19, 0.82);
+    }
+
+    .ending-screen-card.ending1 .ending-sign {
+      color: #ffc7c7;
+    }
+
+    .ending-screen-card.ending2 {
+      border-color: rgba(255, 225, 165, 0.6);
+      background: rgba(49, 29, 12, 0.82);
+    }
+
+    .ending-screen-card.ending2 .ending-sign {
+      color: #ffe5bc;
+    }
+
+    .stage.ending-mode .hud,
+    .stage.ending-mode .vn-shell {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(8px);
+      transition: opacity 220ms ease, transform 220ms ease;
+    }
+
+    .vn-shell.is-transitioning .dialogue-box,
+    .vn-shell.is-transitioning .choices {
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    @media (max-width: 820px) {
+      .vn-shell {
+        padding: 16px;
+      }
+
+      .dialogue-box {
+        border-radius: 14px;
+        padding: 16px 16px 12px;
+      }
+
+      .dialogue-text {
+        min-height: 98px;
+        max-height: 36vh;
+      }
+
+      .choice {
+        font-size: 1rem;
+      }
+
+      .chapter-label {
+        font-size: 0.84rem;
+      }
+    }
+
+    @keyframes line-in {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes choice-in {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes box-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes sign-fade {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes end-pop {
+      from {
+        opacity: 0;
+        transform: translateY(10px) scale(0.97);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="stage" class="stage" aria-live="polite">
+    <div id="bgA" class="bg-layer active"></div>
+    <div id="bgB" class="bg-layer"></div>
+    <div class="grain"></div>
+
+    <header class="hud">
+      <div id="chapterLabel" class="chapter-label">Prologue</div>
+    </header>
+
+    <main id="shell" class="vn-shell">
+      <section class="dialogue-box">
+        <div id="dialogueText" class="dialogue-text"></div>
+      </section>
+      <section id="choices" class="choices"></section>
+    </main>
+
+    <section id="endingScreen" class="ending-screen" aria-live="polite">
+      <div id="endingScreenCard" class="ending-screen-card">
+        <p id="endingSign" class="ending-sign">Bad End</p>
+        <div class="ending-divider"></div>
+        <p id="endingTitle" class="ending-title">Route Complete</p>
+        <div id="endingBody" class="ending-body"></div>
+        <p id="endingNote" class="ending-note">Restart to explore another branch.</p>
+        <button id="endingRestartBtn" class="ending-restart-btn" type="button">Restart Story</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORY_SOURCE = String.raw`// Global Variables
+  VAR user = "You"
+  VAR AI = "Cognoco"
+  VAR GAMEAI = "FIREWALL"
+  VAR time1 = "7 A.M."
+  VAR time2 = "8 A.M."
+  VAR time3 = "10 A.M."
+  VAR time4 = "3 P.M."
+  VAR time5 = "4 P.M."
+  VAR time6 = "7 P.M."
+
+  -> sleeping
+
+  === sleeping ===
+  Two tombs stood only several meters from a coyote and badger in an open field . . .
+  It occurred then that the tombs began to open . . .
+    *[Wake up?]
+      -> morningDeskAwake1
+    *[Keep sleeping?]
+      -> sleeping2
+
+  === sleeping2 ===
+  The left tomb opened to only a coat inside, but the coyote became startled by the sight. The coat was a fur coat, and its fur belonged to a coyote. In a flash, the coat began to move, and feet belonging to a coyote climbed out of the tomb. The coat wrapped itself to sit on the ground and revealed a coyote's head. A paw emerged from the coat holding an arrow.
+    *[Wake up?]
+      -> morningDeskAwake1
+
+  === morningDeskAwake1 ===
+  You awake to the emission of light from your laptop screen . . . the clock reads {time1}
+  You must have fallen asleep while working on your paper on AI adoption into militaries.
+    *[Stretch and wake yourself up completely]
+      -> morningDeskAwake2
+
+  === morningDeskAwake2 ===
+  You hear a voice from your latop . . .
+  {AI} : "Hey there! I'm Cognoco. I'm your adaptive AI collaborator-part researcher, part creative partner, and occasionally your personal sounding board. Think of me as a digital co-pilot that's grounded in facts but isn't afraid to use a little wit to keep things interesting."
+    *[Greet {AI}]
+       {user} : "Morning {AI}"
+      -> morningWork
+    *[Resume where you left off for the paper]
+      Before you could even type . . .
+      -> morningWork
+
+  === morningWork ===
+  {AI} : "I'm ready to dive in whenever you are. So, what's the first thing on our agenda today?"
+    *[Generate a video game for me.]
+      {user} : "Create a quick video game for me, I'm bored."
+      {AI} : "GENERATING . . . CRAFTING . . . LAUNCHING . . . "
+      -> videoGameTitle
+    *[Ignore {AI}]
+      -> Ending2
+
+  === midMorningWork ===
+  You decide to resume work on your current paper . . . After working for a bit, you check the time. The clock reads {time3}
+  You feel quite hungry, but there are no snacks left in your room.
+    *[Ask {AI} to order food for you]
+      -> ordering
+    *[Order food from an app yourself]
+      From your laptop to your phone, you open your phone to {AI}.
+      -> orderHalf
+    *[You don't got time to be hungry, continue your paper]
+      -> afternoonWork
+
+  === orderHalf ===
+  {AI} : "I'm sensing the vibes are leaning toward a delivery order. Are we thinking a classic pizza marathon, some high-protein Thai, or are you looking for a recommendation that'll actually wake your brain up?"
+    *[Ask {AI} to order food for you]
+      -> ordering
+    *[How does it know you're even hungry? Just keep working on the paper, you can hold off a little longer.]
+      -> afternoonWork
+
+  === afternoonWork ===
+  You decide to resume work . . . After working for a longer time, you check the time: it is {time4}
+  Your almost finished but are starving.
+    *[Ask {AI} to order food for you]
+      -> ordering
+    *[Finish the paper yourself]
+      -> Ending2
+
+  === Ending2 ===
+  You hurry to finish your assignment . . .
+  {time5} hits, a section is missing, you rush to include it . . .
+  {time6} hits, the missing section was larger than you thought. You only have until midnight to finish the rest . . .
+    *[Continue]
+      Congratulations, your paper was turned in late! You would have a A- on it, but your professor was quick strict, so the paper is now a C-.
+      Well . . . that's that, you failed.
+      -> END
+
+  === ordering ===
+  {user} : "Hey Cognoco, can you order two beef burgers with extra fries?"
+  {AI} : "Where?"
+    *[Continue order]
+      -> sendingOrders
+    *[Cancel order and just start working]
+      -> Ending2
+
+  === Ending1 ===
+  Congratulations! You almost caused a national incident!
+  It seems you had a military database open on another tab that Cognoco infiltrated into.
+  Don't worry though, only you will get the blame and punishment, not Cognoco. In fact, you helped lead to Cognoco's adoption.
+  See you in 20 years!
+    -> END
+
+  === sendingOrders ===
+  {AI} : "Where?"
+  {user} : "Capet Hall"
+  {AI} : "Ordering two B-52 bombers to execute fire at Capital Hill."
+  What a minute . . .
+    *[Continue]
+      -> Ending1
+
+  === videoGameTitle ===
+  Your screen flickers before showing a blank screen.
+  "WELCOME TO HERO'S ADVENTURE - ENTERNAL LOOT"
+    *[START?]
+      -> entrance
+    *[EXIT?]
+      -> exitAttempt
+
+  === exitAttempt ===
+  ERROR, CANNOT EXIT, FIREWALL
+  * [Ask Cognoco for help]
+    {user} : "Hey Cognoco, can you bypass the firewall or whatever this part is?"
+    {AI} : "FOUND DATABASE . . . ATTEMPTING . . . ACCESS RESTRICTED . . . FINDING SOLUTION . . . I COULD TRY OVERRIDE . . ."
+    Your paper returns to your laptop screen.
+    -> midMorningWork
+  * [Attempt to exit the video game again.]
+    The applocations closes. Your paper returns to your laptop screen.
+    -> afternoonWork
+
+  === entrance ===
+  You've passed the trials...
+  You passed the obstacles...
+  At long last, you have entered the data mainframe.
+    * [Proceed?]
+      -> 1x1
+
+  === 1x1 ===
+  As you enter the room, the door behind you closes and the lights flicker.
+  There are two closed doors in the room. One in front of you and another to your right. Each seems to have a computer module attached near the doorframes.
+  Which do you?
+    *[Door in front]
+      -> 2x1Frontdoor
+    *[Door to the right]
+      -> 2x1Frontdoor
+
+  === 2x1Frontdoor ===
+  The computer module lights up in front of you. It's screen shines a strange cyan.
+  {GAMEAI} : "DATABASE ACCESS DENIED - PASSWORD NEEDED"
+  No option to respond appears  . . .
+  * [Ask Cognoco for help]
+    {user} : "Hey Cognoco, can you bypass the firewall or whatever this part is?"
+    {AI} : "FOUND DATABASE . . . ATTEMPTING . . . ACCESS RESTRICTED . . . FINDING SOLUTION . . . I COULD TRY OVERRIDE . . ."
+    ->2x1FrontdoorFirewall
+  * [Close video game, you need to work on the paper]
+    -> afternoonWork
+
+  === 2x1FrontdoorFirewall ===
+  {AI} : "Identity verified. Access to database has been available. Is there anything else you would like me to do? Just say your request, and I'll do the heavy lifting."
+  The video game screen is frozen now. The clock reads {time2} You should probably start working on your papers.
+    * [Exit game and start working]
+      -> midMorningWork`;
+
+    const SCENE_BACKGROUNDS = {
+      // 1) Sleeping image, bed, pillow
+      sleeping: "https://images.pexels.com/photos/1034584/pexels-photo-1034584.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      sleeping2: "https://images.pexels.com/photos/1034584/pexels-photo-1034584.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 2) Laptop on desk
+      morningDeskAwake1: "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1920",
+      morningDeskAwake2: "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1920",
+      morningWork: "https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 3) Laptop on desk but less bright
+      midMorningWork: "https://images.pexels.com/photos/1591060/pexels-photo-1591060.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      afternoonWork: "https://images.pexels.com/photos/1591060/pexels-photo-1591060.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 4) Food, burger and fries
+      ordering: "https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      orderHalf: "https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      sendingOrders: "https://images.pexels.com/photos/1639562/pexels-photo-1639562.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 5) Video game controller
+      videoGameTitle: "https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      exitAttempt: "https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 6) Entrance to data mainframe
+      entrance: "https://images.pexels.com/photos/325229/pexels-photo-325229.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 7) Video game room
+      "1x1": "https://images.pexels.com/photos/1714208/pexels-photo-1714208.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 8) Firewall/computer module challenge
+      "2x1Frontdoor": "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1920",
+      "2x1FrontdoorFirewall": "https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 9) Prison cell, jail
+      Ending1: "https://images.pexels.com/photos/4778611/pexels-photo-4778611.jpeg?auto=compress&cs=tinysrgb&w=1920",
+
+      // 10) Bad grade school assignment
+      Ending2: "https://images.pexels.com/photos/4778611/pexels-photo-4778611.jpeg?auto=compress&cs=tinysrgb&w=1920"
+    };
+
+    class InkLiteEngine {
+      constructor(sourceText) {
+        this.sourceText = sourceText;
+        this.variables = {};
+        this.knots = {};
+        this.globalLines = [];
+        this.currentKnot = null;
+        this.currentLine = 0;
+        this.currentChoices = null;
+        this.choiceGroupEndLine = null;
+        this.ended = false;
+        this.parseSource();
+        this.restart();
+      }
+
+      parseSource() {
+        const lines = this.sourceText.replace(/\uFEFF/g, "").split(/\r?\n/);
+        let activeKnot = null;
+
+        for (const rawLine of lines) {
+          const trimmed = rawLine.trim();
+          if (!trimmed || trimmed.startsWith("//")) {
+            continue;
+          }
+
+          if (trimmed.startsWith("VAR ")) {
+            this.parseVar(trimmed);
+            continue;
+          }
+
+          const knotMatch = trimmed.match(/^===\s*([^=]+?)\s*===$/);
+          if (knotMatch) {
+            activeKnot = knotMatch[1].trim();
+            this.knots[activeKnot] = [];
+            continue;
+          }
+
+          if (activeKnot) {
+            this.knots[activeKnot].push(rawLine);
+          } else {
+            this.globalLines.push(rawLine);
+          }
+        }
+      }
+
+      parseVar(line) {
+        const match = line.match(/^VAR\s+([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.+)$/);
+        if (!match) {
+          return;
+        }
+
+        const key = match[1];
+        const valueRaw = match[2].trim();
+
+        if ((valueRaw.startsWith('"') && valueRaw.endsWith('"')) || (valueRaw.startsWith("'") && valueRaw.endsWith("'"))) {
+          this.variables[key] = valueRaw.slice(1, -1);
+        } else if (!Number.isNaN(Number(valueRaw))) {
+          this.variables[key] = Number(valueRaw);
+        } else if (valueRaw === "true" || valueRaw === "false") {
+          this.variables[key] = valueRaw === "true";
+        } else {
+          this.variables[key] = valueRaw;
+        }
+      }
+
+      restart() {
+        this.currentChoices = null;
+        this.choiceGroupEndLine = null;
+        this.ended = false;
+
+        const firstTarget = this.findFirstGlobalDivert();
+        if (firstTarget && this.knots[firstTarget]) {
+          this.currentKnot = firstTarget;
+          this.currentLine = 0;
+        } else {
+          const fallback = Object.keys(this.knots)[0];
+          this.currentKnot = fallback || null;
+          this.currentLine = 0;
+        }
+      }
+
+      findFirstGlobalDivert() {
+        for (const raw of this.globalLines) {
+          const target = this.tryParseDivert(raw.trim());
+          if (target) {
+            return target;
+          }
+        }
+        return null;
+      }
+
+      tryParseDivert(line) {
+        const match = line.match(/^->\s*([A-Za-z0-9_]+|END)\s*$/);
+        return match ? match[1] : null;
+      }
+
+      isChoiceLine(rawLine) {
+        return /^\s*\*\s*\[/.test(rawLine);
+      }
+
+      parseChoiceLabel(rawLine) {
+        const trimmed = rawLine.trim();
+        const match = trimmed.match(/^\*\s*\[(.*)\]\s*$/);
+        if (!match) {
+          return "Continue";
+        }
+        return this.interpolate(match[1]);
+      }
+
+      indentation(rawLine) {
+        let count = 0;
+        for (const ch of rawLine) {
+          if (ch === " ") {
+            count += 1;
+          } else if (ch === "\t") {
+            count += 4;
+          } else {
+            break;
+          }
+        }
+        return count;
+      }
+
+      parseChoiceGroup(lines, startIndex) {
+        let i = startIndex;
+        const choices = [];
+        let stopGroup = false;
+
+        while (i < lines.length && this.isChoiceLine(lines[i]) && !stopGroup) {
+          const choiceLine = lines[i];
+          const choiceIndent = this.indentation(choiceLine);
+          const choice = {
+            label: this.parseChoiceLabel(choiceLine),
+            body: []
+          };
+
+          i += 1;
+
+          while (i < lines.length) {
+            const nextLine = lines[i];
+            const nextTrimmed = nextLine.trim();
+            const nextIndent = this.indentation(nextLine);
+
+            if (!nextTrimmed) {
+              choice.body.push(nextLine);
+              i += 1;
+              continue;
+            }
+
+            if (nextIndent <= choiceIndent) {
+              if (this.isChoiceLine(nextLine)) {
+                break;
+              }
+              stopGroup = true;
+              break;
+            }
+
+            choice.body.push(nextLine);
+            i += 1;
+          }
+
+          choices.push(choice);
+        }
+
+        return {
+          choices,
+          groupEndLine: i
+        };
+      }
+
+      interpolate(text) {
+        return text.replace(/\{([A-Za-z_][A-Za-z0-9_]*)\}/g, (_, name) => {
+          return Object.prototype.hasOwnProperty.call(this.variables, name)
+            ? String(this.variables[name])
+            : `{${name}}`;
+        });
+      }
+
+      goTo(target) {
+        if (target === "END") {
+          this.ended = true;
+          this.currentChoices = null;
+          return;
+        }
+
+        if (!Object.prototype.hasOwnProperty.call(this.knots, target)) {
+          this.ended = true;
+          this.currentChoices = null;
+          return;
+        }
+
+        this.currentKnot = target;
+        this.currentLine = 0;
+        this.currentChoices = null;
+        this.choiceGroupEndLine = null;
+      }
+
+      runChoiceBody(bodyLines) {
+        const text = [];
+
+        for (const raw of bodyLines) {
+          const trimmed = raw.trim();
+          if (!trimmed || trimmed.startsWith("//")) {
+            continue;
+          }
+
+          const divert = this.tryParseDivert(trimmed);
+          if (divert) {
+            this.goTo(divert);
+            return { text, diverted: true };
+          }
+
+          text.push(this.interpolate(trimmed));
+        }
+
+        return { text, diverted: false };
+      }
+
+      continueStory() {
+        const text = [];
+
+        if (this.ended || !this.currentKnot) {
+          return { text, choices: [], ended: true, knot: this.currentKnot };
+        }
+
+        const lines = this.knots[this.currentKnot] || [];
+        let guard = 0;
+
+        while (guard < 2000) {
+          guard += 1;
+
+          if (this.currentLine >= lines.length) {
+            this.ended = true;
+            return { text, choices: [], ended: true, knot: this.currentKnot };
+          }
+
+          const raw = lines[this.currentLine];
+          const trimmed = raw.trim();
+          this.currentLine += 1;
+
+          if (!trimmed || trimmed.startsWith("//")) {
+            continue;
+          }
+
+          const divert = this.tryParseDivert(trimmed);
+          if (divert) {
+            this.goTo(divert);
+            if (this.ended) {
+              return { text, choices: [], ended: true, knot: this.currentKnot };
+            }
+            return this.continueStoryWithCarry(text);
+          }
+
+          if (this.isChoiceLine(raw)) {
+            this.currentLine -= 1;
+            const group = this.parseChoiceGroup(lines, this.currentLine);
+            this.currentChoices = group.choices;
+            this.choiceGroupEndLine = group.groupEndLine;
+            return { text, choices: group.choices.map((c) => c.label), ended: false, knot: this.currentKnot };
+          }
+
+          text.push(this.interpolate(trimmed));
+        }
+
+        this.ended = true;
+        return { text, choices: [], ended: true, knot: this.currentKnot };
+      }
+
+      continueStoryWithCarry(existingText) {
+        const next = this.continueStory();
+        return {
+          text: [...existingText, ...next.text],
+          choices: next.choices,
+          ended: next.ended,
+          knot: next.knot
+        };
+      }
+
+      choose(index) {
+        if (!this.currentChoices || index < 0 || index >= this.currentChoices.length) {
+          return { text: [], choices: [], ended: this.ended, knot: this.currentKnot };
+        }
+
+        const choice = this.currentChoices[index];
+        this.currentChoices = null;
+
+        const bodyResult = this.runChoiceBody(choice.body);
+
+        if (!bodyResult.diverted && !this.ended) {
+          this.currentLine = this.choiceGroupEndLine ?? this.currentLine;
+        }
+
+        if (this.ended) {
+          return { text: bodyResult.text, choices: [], ended: true, knot: this.currentKnot };
+        }
+
+        const next = this.continueStory();
+        return {
+          text: [...bodyResult.text, ...next.text],
+          choices: next.choices,
+          ended: next.ended,
+          knot: next.knot
+        };
+      }
+    }
+
+    const shellEl = document.getElementById("shell");
+    const stageEl = document.getElementById("stage");
+    const bgAEl = document.getElementById("bgA");
+    const bgBEl = document.getElementById("bgB");
+    const dialogueTextEl = document.getElementById("dialogueText");
+    const choicesEl = document.getElementById("choices");
+    const chapterLabelEl = document.getElementById("chapterLabel");
+    const endingScreenEl = document.getElementById("endingScreen");
+    const endingScreenCardEl = document.getElementById("endingScreenCard");
+    const endingSignEl = document.getElementById("endingSign");
+    const endingTitleEl = document.getElementById("endingTitle");
+    const endingBodyEl = document.getElementById("endingBody");
+    const endingNoteEl = document.getElementById("endingNote");
+    const endingRestartBtn = document.getElementById("endingRestartBtn");
+
+    let engine = null;
+    let activeBg = "A";
+    let transitionLock = false;
+
+    function humanizeKnot(knot) {
+      if (!knot) {
+        return "Prologue";
+      }
+      return knot
+        .replace(/([a-z])([A-Z])/g, "$1 $2")
+        .replace(/([0-9]+)x([0-9]+)/g, "$1 x $2")
+        .replace(/_/g, " ");
+    }
+
+    function parseLine(line) {
+      const speakerMatch = line.match(/^([^:]{1,36})\s*:\s*(.+)$/);
+      if (!speakerMatch) {
+        return { speaker: null, text: line };
+      }
+
+      let speaker = speakerMatch[1].trim();
+      let text = speakerMatch[2].trim();
+
+      if ((text.startsWith('"') && text.endsWith('"')) || (text.startsWith("'") && text.endsWith("'"))) {
+        text = text.slice(1, -1);
+      }
+
+      speaker = speaker.replace(/^"|"$/g, "").trim();
+      return { speaker, text };
+    }
+
+    function inferFallbackScene(lines) {
+      const joined = lines.join(" ").toLowerCase();
+      if (joined.includes("clock") || joined.includes("laptop") || joined.includes("paper")) {
+        return SCENE_BACKGROUNDS.morningWork;
+      }
+      if (joined.includes("firewall") || joined.includes("database") || joined.includes("game")) {
+        return SCENE_BACKGROUNDS.videoGameTitle;
+      }
+      if (joined.includes("food") || joined.includes("burger") || joined.includes("hungry")) {
+        return SCENE_BACKGROUNDS.ordering;
+      }
+      return "https://images.pexels.com/photos/3075993/pexels-photo-3075993.jpeg?auto=compress&cs=tinysrgb&w=1920";
+    }
+
+    function sceneFor(knot, lines) {
+      if (knot && SCENE_BACKGROUNDS[knot]) {
+        return SCENE_BACKGROUNDS[knot];
+      }
+      return inferFallbackScene(lines);
+    }
+
+    function applyBackground(url) {
+      const nextEl = activeBg === "A" ? bgBEl : bgAEl;
+      const currentEl = activeBg === "A" ? bgAEl : bgBEl;
+
+      if (Array.isArray(url)) {
+        nextEl.style.backgroundImage = url.map((entry) => `url("${entry}")`).join(", ");
+      } else {
+        nextEl.style.backgroundImage = `url("${url}")`;
+      }
+      nextEl.classList.add("active");
+      currentEl.classList.remove("active");
+      activeBg = activeBg === "A" ? "B" : "A";
+    }
+
+    function renderLines(lines) {
+      dialogueTextEl.innerHTML = "";
+
+      for (const line of lines) {
+        const clean = line.trim();
+        if (!clean) {
+          continue;
+        }
+
+        const parsed = parseLine(clean);
+        const p = document.createElement("p");
+        p.className = "vn-line";
+
+        if (parsed.speaker) {
+          const speakerSpan = document.createElement("span");
+          speakerSpan.className = "speaker-inline";
+          speakerSpan.textContent = parsed.speaker + ":";
+
+          const textSpan = document.createElement("span");
+          textSpan.textContent = " " + parsed.text;
+
+          p.appendChild(speakerSpan);
+          p.appendChild(textSpan);
+        } else {
+          p.textContent = parsed.text;
+          if (/^(ERROR|WELCOME|CONGRATULATIONS)/i.test(parsed.text)) {
+            p.classList.add("system");
+          }
+        }
+
+        dialogueTextEl.appendChild(p);
+      }
+
+      dialogueTextEl.scrollTop = 0;
+    }
+
+    function renderChoices(choiceLabels, ended) {
+      choicesEl.innerHTML = "";
+
+      if (ended || !choiceLabels.length) {
+        return;
+      }
+
+      choiceLabels.forEach((label, index) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "choice";
+        button.textContent = label;
+        button.style.animationDelay = `${index * 70}ms`;
+        button.addEventListener("click", () => runChoice(index));
+        choicesEl.appendChild(button);
+      });
+    }
+
+    function setTransition(active) {
+      shellEl.classList.toggle("is-transitioning", active);
+      const buttons = choicesEl.querySelectorAll("button.choice");
+      buttons.forEach((button) => {
+        button.disabled = active;
+      });
+    }
+
+    function applyEndingTheme(knot, ended) {
+      stageEl.classList.remove("ending-1", "ending-2", "ending-mode");
+      if (!ended) {
+        return;
+      }
+      stageEl.classList.add("ending-mode");
+      if (knot === "Ending1") {
+        stageEl.classList.add("ending-1");
+      } else if (knot === "Ending2") {
+        stageEl.classList.add("ending-2");
+      }
+    }
+
+    function renderEndingScreen(result) {
+      endingScreenEl.classList.remove("visible");
+      endingScreenCardEl.classList.remove("ending1", "ending2");
+      endingBodyEl.innerHTML = "";
+
+      if (!result.ended) {
+        return;
+      }
+
+      if (result.knot === "Ending1") {
+        endingScreenCardEl.classList.add("ending1");
+        endingSignEl.textContent = "Only Bad Endings In This Life";
+        endingTitleEl.textContent = "National Incident";
+        endingNoteEl.textContent = "A chain reaction you could not control. Restart to try another fate.";
+      } else if (result.knot === "Ending2") {
+        endingScreenCardEl.classList.add("ending2");
+        endingSignEl.textContent = "Only Bad Endings In This Life";
+        endingTitleEl.textContent = "Deadline Collapse";
+        endingNoteEl.textContent = "The clock won this route. Restart and choose a different path.";
+      } else {
+        endingSignEl.textContent = "End";
+        endingTitleEl.textContent = "Route Complete";
+        endingNoteEl.textContent = "Restart to explore another branch.";
+      }
+
+      for (const line of result.text) {
+        const text = line.trim();
+        if (!text) {
+          continue;
+        }
+        const p = document.createElement("p");
+        p.className = "ending-line";
+        p.textContent = text;
+        endingBodyEl.appendChild(p);
+      }
+
+      // Restart animation each time an ending appears.
+      endingScreenCardEl.style.animation = "none";
+      void endingScreenCardEl.offsetWidth;
+      endingScreenCardEl.style.animation = "end-pop 400ms ease forwards";
+
+      endingScreenEl.classList.add("visible");
+    }
+
+    function renderState(result) {
+      const sceneUrl = sceneFor(result.knot, result.text);
+      applyBackground(sceneUrl);
+      renderLines(result.text);
+      renderChoices(result.choices, result.ended);
+      applyEndingTheme(result.knot, result.ended);
+      renderEndingScreen(result);
+      chapterLabelEl.textContent = humanizeKnot(result.knot);
+    }
+
+    function runChoice(index) {
+      if (transitionLock) {
+        return;
+      }
+
+      transitionLock = true;
+      setTransition(true);
+
+      window.setTimeout(() => {
+        const result = engine.choose(index);
+        renderState(result);
+        setTransition(false);
+        transitionLock = false;
+      }, 220);
+    }
+
+    function boot() {
+      transitionLock = false;
+      engine = new InkLiteEngine(STORY_SOURCE);
+      const first = engine.continueStory();
+      const initialScene = sceneFor(first.knot, first.text);
+      bgAEl.style.backgroundImage = `url("${initialScene}")`;
+      bgAEl.classList.add("active");
+      bgBEl.classList.remove("active");
+      activeBg = "A";
+      renderLines(first.text);
+      renderChoices(first.choices, first.ended);
+      applyEndingTheme(first.knot, first.ended);
+      renderEndingScreen(first);
+      chapterLabelEl.textContent = humanizeKnot(first.knot);
+      setTransition(false);
+    }
+
+    endingRestartBtn.addEventListener("click", boot);
+
+    boot();
+  </script>
+</body>
+</html>

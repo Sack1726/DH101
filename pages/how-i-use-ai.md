@@ -1,3 +1,5 @@
 # How I Use AI
 
-Describe how you approach AI use in this course.
+<iframe src="assets/pdfs/how-i-use-ai.pdf" width="940" height="620" frameborder="0" title="How I Use AI PDF" loading="lazy"></iframe>
+
+[Open the PDF in a new tab](assets/pdfs/how-i-use-ai.pdf)

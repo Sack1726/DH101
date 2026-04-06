@@ -1,8 +1,9 @@
-# Week 10 – Games & Play
+# Make 9. Games and Play
 
 ## The Artifact
-Describe or embed your artifact here.
-Include images, links, or media as appropriate.
+<iframe src="ink-game.html" width="940" height="620" frameborder="0" title="Ink Game interactive artifact" loading="lazy"></iframe>
+
+[Open Ink Game in a new tab](ink-game.html)
 
 ## Process Notes
 How did you make this?
