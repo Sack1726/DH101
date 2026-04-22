@@ -1,0 +1,75 @@
+ 1. My Research (brief summary of what you found) 
+ ●  Researching AI energy and carbon costs proved difficult, as most articles recycle 
+ unverified numbers without solid sourcing. Ten sources were used — primarily 
+ academic, nonprofit, and governmental — including a May 2025 paper from a University 
+ of Rhode Island, University of Tunis, and Providence College research group. The 
+ hardest data to pin down was per-prompt watt and carbon usage, since AI companies tend 
+ to significantly underreport their figures compared to independent studies. Even the data 
+ ultimately I used carried notable uncertainty, with some standard deviations as high as 
+ 3.663. 
+ 2. Data Sources (cited) 
+ Citations 
+ Carbon Footprint Ltd. “Carbonfootprint.Com.” Energy Data Guide: From Home Appliances to Enterprise 
+ Net Zero. Accessed April 22, 2026.  https://www.carbonfootprint.com/energyconsumption.html  . 
+ Cho, Renée. “AI’s Growing Carbon Footprint.”  State of the Planet  , June 9, 2023. 
+ https://news.climate.columbia.edu/2023/06/09/ais-growing-carbon-footprint/  . 
+ co2everything. “Categories of CO2 Emissions.” CO2 Everything. Accessed April 22, 2026. 
+ https://www.co2everything.com/categories  . 
+ Elsworth, Cooper, Keguo Huang, David Patterson, et al. “Measuring the Environmental Impact of 
+ Delivering AI at Google Scale.” arXiv.Org, August 21, 2025.  https://arxiv.org/abs/2508.15734  . 
+ McLean, Sophie. “The Environmental Impact of ChatGPT.”  Earth.Org  , April 28, 2023. 
+ https://earth.org/environmental-impact-chatgpt/  . 
+ MIT News, and Adam Zewe. “Explained: Generative AI’s Environmental Impact.” MIT News | 
+ Massachusetts Institute of Technology, January 17, 2025. 
+ https://news.mit.edu/2025/explained-generative-ai-environmental-impact-0117  . 
+ Nidhal Jegham et al., "How Hungry is AI? Benchmarking Energy, Water, and Carbon Footprint of LLM 
+ Inference," arXiv preprint, submitted May 14, 2025,  https://arxiv.org/abs/2505.09598  . 
+ NRDC (the Natural Resources Defense Council). “Latest Game Consoles: Environmental Winners or 
+ Losers?” Nrdc, January 13, 2021. 
+ https://www.nrdc.org/bio/noah-horowitz/latest-game-consoles-environmental-winners-or-losers  . 
+ PSEG Long Island. “Energy Guide.” PSEG Long Island. Accessed April 22, 2026. 
+ https://www.psegliny.com/saveenergyandmoney/tipsandtools/energyguide  . 
+ U.S. Energy Information Administration. “Frequently Asked Questions (FAQs).” U.S. Energy 
+ Information Administration (EIA), December 11, 2024. 
+ https://www.eia.gov/tools/faqs/faq.php?id=74&t=11  . 
+ Vahdat, Amin, and Jeff Dean. “Measuring the Environmental Impact of AI Inference.”  Google Cloud  , 
+ August 21, 2025. 
+ https://cloud.google.com/blog/products/infrastructure/measuring-the-environmental-impact-of-ai- 
+ inference/  . 
+ 3. Personal Reflection: 
+ - My AI use habits 
+ ●  Outside of my Digital Humanities class, I use AI regularly as an extra tutor. When I do 
+ not understand a specific part of an academic assignment, arguing with AI can sometimes 
+ be easier than consulting a professor or tutor late at night or during it. I also consult AI to 
+ search for reliable sources that I might not get on a regular google or academic paper 
+ search. Oftentimes, this action yielded little or acceptable results. 
+ - Estimated impact 
+ ●  To estimate my impact, I will use my Make 11 and use a Gemini and ChatGPT 
+ estimation. Based on around 506 conversations with an average of 600 characters I 
+ prompted per conversation, my impact has been 
+ - What I'm willing to change 
+ ●  I definitely do not need AI to search for better sources sometimes. Often, researching for 
+ a longer time yields the same results. Trying to fix my semester’s schedule that leaves me 
+ in the middle of the night working will also reduce the amount of time I ask AI for 
+ assistance. 
+ - What I can't/won't change (and why) 
+ ●  Although I can try, my schedule will probably never change significantly for some time 
+ still. This is because I always try to make every item I work on using the best of my 
+ ability as a perfectionist. Still, more relooking at material might save a few inquiries to 
+ AI. 
+ 4. Systemic vs. Individual: 
+ - What can individuals do? 
+ ●  There are a few things an individual can do to reduce their environmental impact of AI 
+ use. First, be sure for whatever purpose you are using AI for that it cannot be done at a 
+ more simple level. Second, keep prompts barebones without filler words. Just give details 
+ or the question with as much detail for as little amount of words as possible. Third and 
+ most importantly, remember your impact! Oftentimes, individuals realize a way they can 
+ conduct a behavior better but never do. 
+ - What requires systemic change? 
+ ●  The usual suspects are required to change. There needs to be more real green energy, a 
+ focus on efficiency-first AI modeling, and data center regulations to protect natural 
+ resources. Besides this, what needs to be changed is the public attitude & perception 
+ toward AI impacts. This can only happen if people are told it exists. 
+ - Who is responsible? 
+ ●  While each person does have a degree of responsibility, AI companies, governments, and 
+ AI programmers hold a significant responsibility that has the most widespread impact. 

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Character Calculator</title>
+    <style>
+        :root {
+            --bg: #071320;
+            --bg2: #0f2135;
+            --glow-a: rgba(103, 212, 255, 0.18);
+            --glow-b: rgba(140, 255, 197, 0.14);
+            --text: #eef7ff;
+            --muted: #b8cee5;
+            --panel: rgba(8, 19, 31, 0.86);
+            --panel-border: rgba(255, 255, 255, 0.13);
+            --accent: #67d4ff;
+            --accent2: #8cffc5;
+            --chip-bg: rgba(255, 255, 255, 0.05);
+            --chip-border: rgba(255, 255, 255, 0.18);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background:
+                radial-gradient(circle at 12% 12%, var(--glow-a), transparent 32%),
+                radial-gradient(circle at 82% 18%, var(--glow-b), transparent 30%),
+                linear-gradient(180deg, var(--bg), var(--bg2));
+        }
+
+        .wrap {
+            width: min(1100px, calc(100vw - 2rem));
+            margin: 0 auto;
+            padding: 1.7rem 0 2.2rem;
+            display: grid;
+            gap: 1rem;
+        }
+
+        .panel {
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            background: var(--panel);
+            padding: 1rem;
+            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.7rem, 4.8vw, 3rem);
+            line-height: 1.03;
+        }
+
+        .muted {
+            margin: 0.6rem 0 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .meta {
+            margin-top: 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .chip {
+            border: 1px solid var(--chip-border);
+            border-radius: 999px;
+            padding: 0.35rem 0.75rem;
+            background: var(--chip-bg);
+            color: #d8ecff;
+            font-weight: 700;
+            font-size: 0.92rem;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 180px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(0, 8, 14, 0.68);
+            color: var(--text);
+            font: inherit;
+            line-height: 1.6;
+            padding: 0.9rem;
+            resize: vertical;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 0.7rem;
+            color: var(--muted);
+        }
+
+        .btn-row {
+            margin-top: 0.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+
+        button,
+        .link-btn {
+            font: inherit;
+            color: var(--text);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 0.55rem 0.9rem;
+            background: rgba(255, 255, 255, 0.06);
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .primary {
+            border-color: color-mix(in srgb, var(--accent2) 52%, white);
+            background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 38%, transparent), color-mix(in srgb, var(--accent2) 30%, transparent));
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.8rem;
+        }
+
+        .card {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 15px;
+            padding: 0.9rem;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .label {
+            color: var(--muted);
+            font-size: 0.82rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .value {
+            display: block;
+            margin-top: 0.25rem;
+            font-size: clamp(1.4rem, 3.4vw, 2.15rem);
+            font-weight: 900;
+        }
+
+        .detail {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--muted);
+            line-height: 1.5;
+            font-size: 0.93rem;
+        }
+
+        .formula {
+            margin-top: 0.8rem;
+            border-radius: 13px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.85rem;
+            color: #e1f0ff;
+            line-height: 1.5;
+        }
+
+        .comparison {
+            margin-top: 0.8rem;
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .comparison-card {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 0.9rem;
+        }
+
+        .comparison-card h3 {
+            margin: 0 0 0.4rem;
+            font-size: 1.02rem;
+        }
+
+        .comparison-summary {
+            margin: 0;
+            line-height: 1.6;
+            color: var(--text);
+        }
+
+        .comparison-equation {
+            margin: 0;
+            line-height: 1.55;
+            color: var(--text);
+        }
+
+        .comparison-media {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.8rem;
+        }
+
+        .media-tile {
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(0, 0, 0, 0.18);
+            overflow: hidden;
+        }
+
+        .media-tile img {
+            display: block;
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #111;
+        }
+
+        .media-caption {
+            padding: 0.6rem 0.75rem 0.7rem;
+            font-size: 0.92rem;
+            color: var(--muted);
+            line-height: 1.45;
+        }
+
+        .comparison-media .media-caption {
+            display: none;
+        }
+
+        .results-panel { display: none; }
+        .results-panel.show { display: block; }
+
+        @media (max-width: 800px) {
+            .cards { grid-template-columns: 1fr; }
+            .comparison-media { grid-template-columns: 1fr; }
+            .media-tile img { height: 180px; }
+        }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <section class="panel">
+            <h1 id="title">Enter your prompt</h1>
+            <p id="subtitle" class="muted">Enter your prompt below to see the energy and carbon cost!</p>
+            <div class="meta">
+                <span class="chip" id="aiChip">AI: --</span>
+                <span class="chip" id="modelChip">Model: --</span>
+            </div>
+        </section>
+
+        <section class="panel">
+            <label for="prompt" class="label">Prompt text</label>
+            <textarea id="prompt" placeholder="Paste or type your prompt..."></textarea>
+            <div class="row">
+                <span id="count">Character count: 0</span>
+                <span id="perCharRate">Per-character rates: --</span>
+            </div>
+            <div class="btn-row">
+                <button id="calcBtn" class="primary" type="button">Calculate</button>
+                <button id="clearBtn" type="button">Clear text</button>
+                <a class="link-btn" id="changeModelLink" href="ai-energy-models.html">Change model</a>
+                <a class="link-btn" href="ai-energy-calculator.html">Return to AI list</a>
+            </div>
+        </section>
+
+        <section class="panel results-panel" id="resultsPanel" aria-live="polite">
+            <h2 style="margin:0;">Results</h2>
+            <div class="cards">
+                <div class="card">
+                    <span class="label">Energy used</span>
+                    <span class="value" id="energyValue">0 Wh</span>
+                    <span class="detail" id="energyDetail">Waiting for input.</span>
+                </div>
+                <div class="card">
+                    <span class="label">Carbon emitted</span>
+                    <span class="value" id="carbonValue">0 gCO2e</span>
+                    <span class="detail" id="carbonDetail">Waiting for input.</span>
+                </div>
+            </div>
+            <div class="comparison" id="comparisonBlock" hidden>
+                <div class="comparison-card">
+                    <h3>Equivalent usage</h3>
+                    <p class="comparison-equation" id="comparisonEquationEnergy"></p>
+                    <p class="comparison-equation" id="comparisonEquationCarbon"></p>
+                </div>
+                <div class="comparison-card">
+                    <div class="comparison-media" id="comparisonMedia"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="ai-energy-data.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const aiName = params.get("ai");
+        const modelName = params.get("model");
+
+        const AI_THEME = {
+            ChatGPT: {
+                bg: "#0a1d1a",
+                bg2: "#12312b",
+                glowA: "rgba(116, 170, 156, 0.34)",
+                glowB: "rgba(116, 170, 156, 0.2)",
+                panel: "rgba(10, 29, 26, 0.86)",
+                panelBorder: "rgba(150, 203, 189, 0.35)",
+                accent: "#74AA9C",
+                accent2: "#9ee0cd",
+                chipBg: "rgba(116, 170, 156, 0.18)",
+                chipBorder: "rgba(150, 203, 189, 0.45)"
+            },
+            Claude: {
+                bg: "#23170f",
+                bg2: "#3a291b",
+                glowA: "rgba(212, 165, 116, 0.36)",
+                glowB: "rgba(212, 165, 116, 0.2)",
+                panel: "rgba(35, 23, 15, 0.86)",
+                panelBorder: "rgba(236, 199, 155, 0.34)",
+                accent: "#D4A574",
+                accent2: "#f0c38f",
+                chipBg: "rgba(212, 165, 116, 0.18)",
+                chipBorder: "rgba(236, 199, 155, 0.45)"
+            },
+            DeepSeek: {
+                bg: "#0a153f",
+                bg2: "#132464",
+                glowA: "rgba(77, 107, 254, 0.36)",
+                glowB: "rgba(77, 107, 254, 0.21)",
+                panel: "rgba(10, 21, 63, 0.86)",
+                panelBorder: "rgba(149, 169, 255, 0.36)",
+                accent: "#4D6BFE",
+                accent2: "#95a9ff",
+                chipBg: "rgba(77, 107, 254, 0.19)",
+                chipBorder: "rgba(149, 169, 255, 0.46)"
+            },
+            Gemini: {
+                bg: "#171130",
+                bg2: "#261b4f",
+                glowA: "rgba(142, 117, 255, 0.37)",
+                glowB: "rgba(142, 117, 255, 0.21)",
+                panel: "rgba(23, 17, 48, 0.86)",
+                panelBorder: "rgba(187, 170, 255, 0.37)",
+                accent: "#8E75FF",
+                accent2: "#bbaaff",
+                chipBg: "rgba(142, 117, 255, 0.19)",
+                chipBorder: "rgba(187, 170, 255, 0.47)"
+            },
+            LLaMA: {
+                bg: "#051a3c",
+                bg2: "#08295a",
+                glowA: "rgba(0, 129, 251, 0.37)",
+                glowB: "rgba(0, 129, 251, 0.21)",
+                panel: "rgba(5, 26, 60, 0.86)",
+                panelBorder: "rgba(127, 194, 255, 0.35)",
+                accent: "#0081FB",
+                accent2: "#7fc2ff",
+                chipBg: "rgba(0, 129, 251, 0.19)",
+                chipBorder: "rgba(127, 194, 255, 0.46)"
+            }
+        };
+
+        function applyTheme(name) {
+            const theme = AI_THEME[name];
+            if (!theme) return;
+            const root = document.documentElement;
+            root.style.setProperty("--bg", theme.bg);
+            root.style.setProperty("--bg2", theme.bg2);
+            root.style.setProperty("--glow-a", theme.glowA);
+            root.style.setProperty("--glow-b", theme.glowB);
+            root.style.setProperty("--panel", theme.panel);
+            root.style.setProperty("--panel-border", theme.panelBorder);
+            root.style.setProperty("--accent", theme.accent);
+            root.style.setProperty("--accent2", theme.accent2);
+            root.style.setProperty("--chip-bg", theme.chipBg);
+            root.style.setProperty("--chip-border", theme.chipBorder);
+        }
+
+        applyTheme(aiName);
+
+        const title = document.getElementById("title");
+        const subtitle = document.getElementById("subtitle");
+        const aiChip = document.getElementById("aiChip");
+        const modelChip = document.getElementById("modelChip");
+        const promptBox = document.getElementById("prompt");
+        const count = document.getElementById("count");
+        const perCharRate = document.getElementById("perCharRate");
+        const calcBtn = document.getElementById("calcBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const changeModelLink = document.getElementById("changeModelLink");
+        const resultsPanel = document.getElementById("resultsPanel");
+        const energyValue = document.getElementById("energyValue");
+        const carbonValue = document.getElementById("carbonValue");
+        const energyDetail = document.getElementById("energyDetail");
+        const carbonDetail = document.getElementById("carbonDetail");
+        const comparisonBlock = document.getElementById("comparisonBlock");
+        const comparisonEquationEnergy = document.getElementById("comparisonEquationEnergy");
+        const comparisonEquationCarbon = document.getElementById("comparisonEquationCarbon");
+        const comparisonMedia = document.getElementById("comparisonMedia");
+
+        const compareItems = [
+            {
+                label: "18 W LED Light Bulb",
+                energy: 0.001854,
+                carbon: 0.00185,
+                gifs: ["LightBulb 1.gif", "LightBulb 2.gif"],
+                images: ["LightBulb 3.jpg", "hans-ceiling-lighting-80207.jpg"]
+            },
+            {
+                label: "1100 W Microwave Oven",
+                energy: 0.1133,
+                carbon: 0.001884259,
+                gifs: ["Mircowave 1.gif"],
+                images: ["Mircowave 2.jpg"]
+            },
+            {
+                label: "next-gen gaming consoles (Xbox Series X & PlayStation 5)",
+                energy: 0.0206,
+                carbon: 0.0226,
+                gifs: ["next-gen gaming consoles 1.gif", "next-gen gaming consoles 2.gif"],
+                images: ["next-gen gaming consoles 3.jpg"]
+            },
+            {
+                label: "1400 W Vacuum cleaner",
+                energy: 0.1442,
+                carbon: 0.144,
+                gifs: ["Vacuum.gif"],
+                images: ["Vacuum 2.jpg"]
+            }
+        ];
+
+        const compareAssetBase = "assets/images/ai-compare";
+
+        function pickRandom(list) {
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function makeAssetUrl(filename) {
+            return `${compareAssetBase}/${encodeURIComponent(filename)}`;
+        }
+
+        function formatNum(value, max = 6) {
+            return value.toLocaleString(undefined, { maximumFractionDigits: max });
+        }
+
+        function formatEnergy(wh) {
+            if (wh >= 1000) {
+                return `${formatNum(wh / 1000, 3)} kWh`;
+            }
+            return `${formatNum(wh, 6)} Wh`;
+        }
+
+        function formatCarbon(g) {
+            if (g >= 1000) {
+                return `${formatNum(g / 1000, 3)} kg CO2e`;
+            }
+            return `${formatNum(g, 6)} gCO2e`;
+        }
+
+        function formatDuration(seconds) {
+            if (seconds < 60) {
+                return `${formatNum(seconds, 2)} seconds`;
+            }
+            if (seconds < 3600) {
+                return `${formatNum(seconds / 60, 2)} minutes`;
+            }
+            return `${formatNum(seconds / 3600, 2)} hours`;
+        }
+
+        function updateCount() {
+            count.textContent = `Character count: ${promptBox.value.length}`;
+        }
+
+        function resetComparison() {
+            comparisonBlock.hidden = true;
+            comparisonEquationEnergy.textContent = "";
+            comparisonEquationCarbon.textContent = "";
+            comparisonMedia.innerHTML = "";
+        }
+
+        function renderComparison(energy, carbon) {
+            const compareItem = pickRandom(compareItems);
+            const energyUnits = energy / compareItem.energy;
+            const carbonUnits = carbon / compareItem.carbon;
+            const gifFile = pickRandom(compareItem.gifs);
+            const imageFile = pickRandom(compareItem.images);
+            const energyDurationText = formatDuration(energyUnits);
+            const carbonDurationText = formatDuration(carbonUnits);
+
+            comparisonEquationEnergy.textContent = `Your prompt equals using ${compareItem.label} for ${energyDurationText}.`;
+            comparisonEquationCarbon.textContent = `Your prompt equals using ${compareItem.label} for ${carbonDurationText}.`;
+            comparisonMedia.innerHTML = `
+                <figure class="media-tile">
+                    <img src="${makeAssetUrl(gifFile)}" alt="GIF of ${compareItem.label}" decoding="async">
+                    <figcaption class="media-caption">GIF</figcaption>
+                </figure>
+                <figure class="media-tile">
+                    <img src="${makeAssetUrl(imageFile)}" alt="Image of ${compareItem.label}" decoding="async">
+                    <figcaption class="media-caption">Image</figcaption>
+                </figure>
+            `;
+            comparisonBlock.hidden = false;
+        }
+
+        if (!aiName || !window.AI_ENERGY_DATA[aiName]) {
+            title.textContent = "Selection missing";
+            subtitle.textContent = "No valid AI was provided. Use Return to AI list and select again.";
+            calcBtn.disabled = true;
+            promptBox.disabled = true;
+        } else {
+            const aiInfo = window.AI_ENERGY_DATA[aiName];
+            let selectedModel = aiInfo.models.find((entry) => entry.model === modelName);
+
+            if (!selectedModel) {
+                if (aiInfo.hasModels) {
+                    window.location.replace(`ai-energy-models.html?ai=${encodeURIComponent(aiName)}`);
+                } else {
+                    selectedModel = aiInfo.models[0];
+                }
+            }
+
+            if (selectedModel) {
+                aiChip.textContent = `AI: ${aiName}`;
+                modelChip.textContent = `Model: ${selectedModel.model}`;
+                changeModelLink.href = aiInfo.hasModels ? `ai-energy-models.html?ai=${encodeURIComponent(aiName)}` : "ai-energy-calculator.html";
+                changeModelLink.textContent = aiInfo.hasModels ? "Change model" : "Change AI";
+                perCharRate.textContent = `Per-character rates: ${formatNum(selectedModel.energy, 6)} Wh and ${formatNum(selectedModel.carbon, 6)} gCO2e`;
+
+                calcBtn.addEventListener("click", () => {
+                    const chars = promptBox.value.length;
+                    const energy = chars * selectedModel.energy;
+                    const carbon = chars * selectedModel.carbon;
+
+                    energyValue.textContent = formatEnergy(energy);
+                    carbonValue.textContent = formatCarbon(carbon);
+                    energyDetail.textContent = `${chars} × ${formatNum(selectedModel.energy, 6)} Wh per character`;
+                    carbonDetail.textContent = carbon >= 1000
+                        ? `${chars} × ${formatNum(selectedModel.carbon, 6)} gCO2e per character, shown as kg CO2e because total exceeded 1,000 g.`
+                        : `${chars} × ${formatNum(selectedModel.carbon, 6)} gCO2e per character`;
+                    renderComparison(energy, carbon);
+                    resultsPanel.classList.add("show");
+                });
+
+                clearBtn.addEventListener("click", () => {
+                    promptBox.value = "";
+                    updateCount();
+                    resetComparison();
+                    resultsPanel.classList.remove("show");
+                });
+
+                promptBox.addEventListener("input", updateCount);
+                updateCount();
+                resetComparison();
+            }
+        }
+    </script>
+</body>
+</html>

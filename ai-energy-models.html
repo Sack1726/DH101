@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select AI Model</title>
+    <style>
+        :root {
+            --bg: #07131f;
+            --bg2: #0f2236;
+            --glow-a: rgba(103, 212, 255, 0.18);
+            --glow-b: rgba(140, 255, 197, 0.12);
+            --text: #eef7ff;
+            --muted: #b8cee5;
+            --panel: rgba(8, 19, 31, 0.84);
+            --panel-border: rgba(255, 255, 255, 0.12);
+            --btn-a: rgba(103, 212, 255, 0.2);
+            --btn-b: rgba(140, 255, 197, 0.1);
+            --btn-hover-border: rgba(140, 255, 197, 0.7);
+            --chip-bg: rgba(255, 255, 255, 0.06);
+            --chip-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, sans-serif;
+            background:
+                radial-gradient(circle at 12% 15%, var(--glow-a), transparent 31%),
+                radial-gradient(circle at 86% 20%, var(--glow-b), transparent 30%),
+                linear-gradient(180deg, var(--bg), var(--bg2));
+        }
+
+        .wrap {
+            width: min(1100px, calc(100vw - 2rem));
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .panel {
+            border: 1px solid var(--panel-border);
+            border-radius: 22px;
+            background: var(--panel);
+            padding: 1.15rem;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.7rem, 4.5vw, 3rem);
+        }
+
+        .lead {
+            margin: 0.65rem 0 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .grid {
+            margin-top: 1rem;
+            display: grid;
+            gap: 0.8rem;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+
+        .model-btn {
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            background: linear-gradient(150deg, var(--btn-a), var(--btn-b));
+            color: var(--text);
+            text-align: left;
+            font: inherit;
+            padding: 0.95rem;
+            cursor: pointer;
+            transition: transform 130ms ease, border-color 130ms ease;
+        }
+
+        .model-btn:hover,
+        .model-btn:focus-visible {
+            transform: translateY(-2px);
+            border-color: var(--btn-hover-border);
+        }
+
+        .model-btn strong {
+            display: block;
+            font-size: 1.03rem;
+            line-height: 1.3;
+        }
+
+        .model-btn span {
+            display: block;
+            margin-top: 0.25rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        .actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .link-btn {
+            display: inline-block;
+            text-decoration: none;
+            color: var(--text);
+            border: 1px solid var(--chip-border);
+            border-radius: 999px;
+            padding: 0.45rem 0.8rem;
+            background: var(--chip-bg);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <main class="wrap">
+        <section class="panel">
+            <h1 id="title">Choose a model</h1>
+            <div id="modelGrid" class="grid"></div>
+            <div class="actions">
+                <a class="link-btn" href="ai-energy-calculator.html">Back to AI list</a>
+            </div>
+        </section>
+    </main>
+
+    <script src="ai-energy-data.js"></script>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const aiName = params.get("ai");
+        const modelGrid = document.getElementById("modelGrid");
+        const title = document.getElementById("title");
+
+        const AI_THEME = {
+            ChatGPT: {
+                bg: "#0a1d1a",
+                bg2: "#12312b",
+                glowA: "rgba(116, 170, 156, 0.32)",
+                glowB: "rgba(116, 170, 156, 0.18)",
+                panel: "rgba(10, 29, 26, 0.84)",
+                panelBorder: "rgba(150, 203, 189, 0.35)",
+                btnA: "rgba(116, 170, 156, 0.28)",
+                btnB: "rgba(116, 170, 156, 0.14)",
+                hover: "rgba(154, 224, 205, 0.82)",
+                chipBg: "rgba(116, 170, 156, 0.15)",
+                chipBorder: "rgba(150, 203, 189, 0.42)"
+            },
+            Claude: {
+                bg: "#23170f",
+                bg2: "#3a291b",
+                glowA: "rgba(212, 165, 116, 0.34)",
+                glowB: "rgba(212, 165, 116, 0.18)",
+                panel: "rgba(35, 23, 15, 0.84)",
+                panelBorder: "rgba(236, 199, 155, 0.34)",
+                btnA: "rgba(212, 165, 116, 0.3)",
+                btnB: "rgba(212, 165, 116, 0.15)",
+                hover: "rgba(246, 212, 169, 0.84)",
+                chipBg: "rgba(212, 165, 116, 0.16)",
+                chipBorder: "rgba(236, 199, 155, 0.42)"
+            },
+            DeepSeek: {
+                bg: "#0a153f",
+                bg2: "#132464",
+                glowA: "rgba(77, 107, 254, 0.35)",
+                glowB: "rgba(77, 107, 254, 0.2)",
+                panel: "rgba(10, 21, 63, 0.84)",
+                panelBorder: "rgba(149, 169, 255, 0.35)",
+                btnA: "rgba(77, 107, 254, 0.34)",
+                btnB: "rgba(77, 107, 254, 0.17)",
+                hover: "rgba(165, 180, 255, 0.84)",
+                chipBg: "rgba(77, 107, 254, 0.18)",
+                chipBorder: "rgba(149, 169, 255, 0.45)"
+            },
+            Gemini: {
+                bg: "#171130",
+                bg2: "#261b4f",
+                glowA: "rgba(142, 117, 255, 0.36)",
+                glowB: "rgba(142, 117, 255, 0.2)",
+                panel: "rgba(23, 17, 48, 0.84)",
+                panelBorder: "rgba(187, 170, 255, 0.36)",
+                btnA: "rgba(142, 117, 255, 0.36)",
+                btnB: "rgba(142, 117, 255, 0.16)",
+                hover: "rgba(204, 191, 255, 0.84)",
+                chipBg: "rgba(142, 117, 255, 0.18)",
+                chipBorder: "rgba(187, 170, 255, 0.46)"
+            },
+            LLaMA: {
+                bg: "#051a3c",
+                bg2: "#08295a",
+                glowA: "rgba(0, 129, 251, 0.36)",
+                glowB: "rgba(0, 129, 251, 0.2)",
+                panel: "rgba(5, 26, 60, 0.84)",
+                panelBorder: "rgba(127, 194, 255, 0.34)",
+                btnA: "rgba(0, 129, 251, 0.34)",
+                btnB: "rgba(0, 129, 251, 0.16)",
+                hover: "rgba(158, 212, 255, 0.84)",
+                chipBg: "rgba(0, 129, 251, 0.18)",
+                chipBorder: "rgba(127, 194, 255, 0.44)"
+            }
+        };
+
+        function applyTheme(name) {
+            const theme = AI_THEME[name];
+            if (!theme) return;
+            const root = document.documentElement;
+            root.style.setProperty("--bg", theme.bg);
+            root.style.setProperty("--bg2", theme.bg2);
+            root.style.setProperty("--glow-a", theme.glowA);
+            root.style.setProperty("--glow-b", theme.glowB);
+            root.style.setProperty("--panel", theme.panel);
+            root.style.setProperty("--panel-border", theme.panelBorder);
+            root.style.setProperty("--btn-a", theme.btnA);
+            root.style.setProperty("--btn-b", theme.btnB);
+            root.style.setProperty("--btn-hover-border", theme.hover);
+            root.style.setProperty("--chip-bg", theme.chipBg);
+            root.style.setProperty("--chip-border", theme.chipBorder);
+        }
+
+        applyTheme(aiName);
+
+        if (!aiName || !window.AI_ENERGY_DATA[aiName]) {
+            title.textContent = "AI not found";
+        } else {
+            const aiInfo = window.AI_ENERGY_DATA[aiName];
+
+            if (!aiInfo.hasModels) {
+                const model = aiInfo.models[0].model;
+                window.location.replace(`ai-energy-calc.html?ai=${encodeURIComponent(aiName)}&model=${encodeURIComponent(model)}`);
+            } else {
+                title.textContent = `${aiName}: choose a model`;
+
+                aiInfo.models.forEach((row) => {
+                    const button = document.createElement("button");
+                    button.type = "button";
+                    button.className = "model-btn";
+                    button.innerHTML = `<strong>${row.model}</strong><span>${row.energy.toLocaleString(undefined, { maximumFractionDigits: 6 })} Wh/char · ${row.carbon.toLocaleString(undefined, { maximumFractionDigits: 6 })} gCO2e/char</span>`;
+                    button.addEventListener("click", () => {
+                        window.location.href = `ai-energy-calc.html?ai=${encodeURIComponent(aiName)}&model=${encodeURIComponent(row.model)}`;
+                    });
+                    modelGrid.appendChild(button);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

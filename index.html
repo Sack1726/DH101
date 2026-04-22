@@ -517,7 +517,12 @@
             6: 'Make 6. Build a digital map of AI\'s infrastructures',
             7: 'Make 7: Networks of Knowledge & Power',
             9: 'Make 8. Build a bot or generator using a no-code AI tool',
-            10: 'Make 9. Games and Play'
+            10: 'Make 9. Games and Play',
+            11: 'Make 11. AI Energy & Carbon Calculator'
+        };
+
+        const makeLinks = {
+            11: 'ai-energy-calculator.html'
         };
 
         function makeCard(symbol, title, description, href) {
@@ -540,12 +545,13 @@
 
                 if (item.hasMake) {
                     const makeTitle = makeTitles[item.week] || `Week ${item.week} Make`;
+                    const makeHref = makeLinks[item.week] || `folio.html?doc=makes/week${weekCode}.md`;
                     makesGrid.appendChild(
                         makeCard(
                             '⚒',
                             makeTitle,
                             'Hands-on DH making artifact.',
-                            `folio.html?doc=makes/week${weekCode}.md`
+                            makeHref
                         )
                     );
                 }
