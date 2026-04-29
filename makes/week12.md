@@ -1,8 +1,9 @@
-# Week 12 – AI & Ecology
+# Make 12. The Act of Allocation
 
 ## The Artifact
-Describe or embed your artifact here.
-Include images, links, or media as appropriate.
+![NOTICE POSTER DOCUMENT artifact](assets/images/NOTICE%20POSTER%20DOCUMENT.png)
+
+[Open NOTICE POSTER DOCUMENT image in a new tab](assets/images/NOTICE%20POSTER%20DOCUMENT.png)
 
 ## Process Notes
 How did you make this?

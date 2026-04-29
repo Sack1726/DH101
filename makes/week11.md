@@ -1,8 +1,9 @@
-# Week 11 – AI & Labor
+# Make 10. Stained Cobalt Blood
 
 ## The Artifact
-Describe or embed your artifact here.
-Include images, links, or media as appropriate.
+<iframe src="assets/pdfs/STAINED%20COBALT%20BLOOD.pdf" width="940" height="600" frameborder="0" title="STAINED COBALT BLOOD zine PDF" loading="lazy"></iframe>
+
+[Open STAINED COBALT BLOOD PDF in a new tab](assets/pdfs/STAINED%20COBALT%20BLOOD.pdf)
 
 ## Process Notes
 How did you make this?
