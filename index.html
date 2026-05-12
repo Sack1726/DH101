@@ -172,6 +172,37 @@
             margin-bottom: 0.7rem;
         }
 
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-shrink: 0;
+            margin-right: 1.5rem;
+        }
+
+        .home-btn {
+            appearance: none;
+            border: 1px solid rgba(244, 239, 227, 0.3);
+            background: linear-gradient(160deg, rgba(240, 188, 105, 0.2), rgba(142, 216, 210, 0.14));
+            color: var(--ivory);
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
+            padding: 0;
+        }
+
+        .home-btn:hover,
+        .home-btn:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(142, 216, 210, 0.86);
+            box-shadow: 0 0 18px rgba(142, 216, 210, 0.2);
+        }
+
         .screen-title {
             margin: 0;
             font-family: "Cinzel", Georgia, serif;
@@ -193,6 +224,7 @@
             background: linear-gradient(160deg, rgba(240, 188, 105, 0.2), rgba(142, 216, 210, 0.14));
             color: var(--ivory);
             padding: 0.8rem 1.2rem;
+            min-height: 44px;
             cursor: pointer;
             font-weight: 600;
             letter-spacing: 0.03em;
@@ -212,6 +244,38 @@
             grid-template-columns: 1fr;
             gap: 0.75rem;
             align-items: center;
+        }
+
+        #screenLanding {
+            position: relative;
+        }
+
+        .guide-btn {
+            position: absolute;
+            top: 0.9rem;
+            left: 0.9rem;
+            min-width: 168px;
+            min-height: 48px;
+            padding: 0.72rem 1.3rem;
+            border-radius: 999px;
+            border: 1px solid rgba(244, 239, 227, 0.3);
+            background: linear-gradient(160deg, rgba(240, 188, 105, 0.2), rgba(142, 216, 210, 0.14));
+            color: var(--ivory);
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            font-size: 0.94rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            line-height: 1;
+            cursor: pointer;
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
+        }
+
+        .guide-btn:hover,
+        .guide-btn:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(142, 216, 210, 0.86);
+            box-shadow: 0 0 24px rgba(142, 216, 210, 0.2);
         }
 
         .intro {
@@ -632,6 +696,7 @@
             background: rgba(18, 28, 45, 0.82);
             color: var(--ivory);
             padding: 0.75rem 1rem;
+            min-height: 44px;
             cursor: pointer;
             font-weight: 600;
             font-size: 0.98rem;
@@ -675,7 +740,7 @@
         .markdown video {
             max-width: 100%;
             display: block;
-            margin: 0.6rem 0;
+            margin: 0.6rem auto;
             border: 1px solid rgba(244, 239, 227, 0.2);
             background: rgba(8, 13, 22, 0.9);
         }
@@ -706,6 +771,388 @@
             border: 0;
         }
 
+        .radio-player {
+            position: fixed;
+            right: 1.2rem;
+            bottom: 1.2rem;
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.75rem;
+            pointer-events: none;
+        }
+
+        .radio-panel {
+            width: min(320px, calc(100vw - 1.5rem));
+            padding: 1rem;
+            border: 1px solid rgba(240, 188, 105, 0.24);
+            border-radius: 18px;
+            background:
+                linear-gradient(165deg, rgba(8, 14, 24, 0.96), rgba(13, 21, 32, 0.92)),
+                radial-gradient(circle at top right, rgba(240, 188, 105, 0.12), transparent 40%);
+            box-shadow: 0 22px 44px rgba(0, 0, 0, 0.34), 0 0 28px rgba(95, 179, 172, 0.1);
+            backdrop-filter: blur(12px);
+            transform-origin: bottom right;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(12px) scale(0.96);
+            transition: opacity var(--fast), transform var(--fast), visibility var(--fast);
+        }
+
+        .radio-player.is-open .radio-panel {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translateY(0) scale(1);
+        }
+
+        .radio-panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-bottom: 0.95rem;
+        }
+
+        .radio-kicker {
+            margin: 0 0 0.2rem;
+            color: var(--amber);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            font-size: 0.68rem;
+            font-weight: 700;
+        }
+
+        .radio-station-name {
+            margin: 0;
+            color: var(--teal);
+            font-family: "Cinzel", Georgia, serif;
+            font-size: 1.2rem;
+            line-height: 1.15;
+        }
+
+        .radio-station-desc {
+            margin: 0.35rem 0 0;
+            color: var(--ivory-dim);
+            font-size: 0.84rem;
+            line-height: 1.38;
+            max-width: 27ch;
+        }
+
+        .radio-station-art {
+            width: min(220px, 100%);
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border-radius: 12px;
+            border: 1px solid rgba(244, 239, 227, 0.2);
+            display: block;
+            margin-inline: auto;
+            margin-bottom: 0.9rem;
+            background: rgba(10, 16, 27, 0.9);
+        }
+
+        .radio-collapse,
+        .radio-launcher,
+        .radio-control,
+        .radio-station-btn {
+            appearance: none;
+            border: 1px solid rgba(244, 239, 227, 0.22);
+            color: var(--ivory);
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .radio-launcher {
+            width: 62px;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0;
+            line-height: 0;
+            border-radius: 999px;
+            background: linear-gradient(155deg, rgba(240, 188, 105, 0.32), rgba(95, 179, 172, 0.22));
+            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28), 0 0 20px rgba(142, 216, 210, 0.16);
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
+            pointer-events: auto;
+        }
+
+        .radio-launcher:hover,
+        .radio-launcher:focus-visible,
+        .radio-control:hover,
+        .radio-control:focus-visible,
+        .radio-station-btn:hover,
+        .radio-station-btn:focus-visible,
+        .radio-collapse:hover,
+        .radio-collapse:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(142, 216, 210, 0.86);
+            box-shadow: 0 0 24px rgba(142, 216, 210, 0.18);
+        }
+
+        .radio-note-icon {
+            width: 24px;
+            height: 24px;
+            display: block;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radio-collapse {
+            width: 36px;
+            height: 36px;
+            border-radius: 999px;
+            background: rgba(14, 22, 35, 0.82);
+            color: var(--amber);
+            font-size: 1.15rem;
+            line-height: 1;
+        }
+
+        .radio-stations {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+            margin-bottom: 0.9rem;
+        }
+
+        .radio-station-btn {
+            padding: 0.7rem 0.8rem;
+            border-radius: 12px;
+            background: rgba(13, 21, 32, 0.88);
+            text-align: left;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .radio-station-btn.active {
+            border-color: rgba(240, 188, 105, 0.66);
+            background: linear-gradient(160deg, rgba(240, 188, 105, 0.24), rgba(95, 179, 172, 0.18));
+            color: var(--amber);
+        }
+
+        .radio-controls {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .radio-control {
+            min-width: 108px;
+            padding: 0.72rem 0.95rem;
+            border-radius: 999px;
+            background: rgba(13, 21, 32, 0.9);
+            font-weight: 700;
+            letter-spacing: 0.03em;
+        }
+
+        .radio-volume-wrap {
+            display: grid;
+            gap: 0.35rem;
+        }
+
+        .radio-volume-label {
+            color: var(--ivory-dim);
+            font-size: 0.82rem;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .radio-volume {
+            width: 100%;
+            accent-color: var(--teal);
+            cursor: pointer;
+        }
+
+        .radio-error {
+            min-height: 1.2rem;
+            margin: 0.7rem 0 0;
+            color: #efc28f;
+            font-size: 0.9rem;
+            line-height: 1.3;
+        }
+
+        .radio-error[hidden] {
+            display: none;
+        }
+
+        .tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 80;
+            background: transparent;
+            display: grid;
+            align-items: end;
+            justify-items: center;
+            padding: 1rem;
+        }
+
+        .tutorial-overlay[hidden] {
+            display: none;
+        }
+
+        /* Persistent dim layer — stays visible the entire tutorial */
+        .tutorial-dim {
+            position: fixed;
+            inset: 0;
+            background: rgba(5, 10, 18, 0.22);
+            pointer-events: none;
+            transition: background 700ms ease;
+        }
+
+        .tutorial-dim.is-deep {
+            background: rgba(5, 10, 18, 0.52);
+        }
+
+        .tutorial-spotlight {
+            position: fixed;
+            border-radius: 14px;
+            border: 2px solid rgba(240, 188, 105, 0.9);
+            /* Only a lighter supplemental shadow — base dim handles the bulk */
+            box-shadow:
+                0 0 0 9999px rgba(5, 10, 18, 0.74),
+                0 0 0 5px rgba(240, 188, 105, 0.3),
+                0 0 42px rgba(240, 188, 105, 0.42),
+                0 0 16px rgba(142, 216, 210, 0.3);
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1;
+            transition: opacity 700ms ease;
+        }
+
+        .tutorial-panel {
+            position: fixed;
+            width: min(420px, calc(100vw - 1.5rem));
+            border-radius: 18px;
+            border: 1px solid rgba(240, 188, 105, 0.34);
+            background:
+                linear-gradient(165deg, rgba(9, 15, 24, 0.98), rgba(13, 22, 34, 0.94)),
+                radial-gradient(circle at top right, rgba(240, 188, 105, 0.14), transparent 48%);
+            box-shadow: 0 24px 54px rgba(0, 0, 0, 0.4), 0 0 26px rgba(142, 216, 210, 0.1);
+            padding: 1rem;
+            left: 1rem;
+            bottom: 1rem;
+            z-index: 2;
+        }
+
+        /* Inner content wrapper that crossfades between steps */
+        .tutorial-panel-inner {
+            transition: opacity 500ms ease;
+        }
+
+        .tutorial-panel-inner.fading {
+            opacity: 0;
+        }
+
+        .tutorial-step-counter {
+            margin: 0;
+            color: var(--amber);
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+
+        .tutorial-panel-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.7rem;
+        }
+
+        .tutorial-close {
+            appearance: none;
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            border: 1px solid rgba(244, 239, 227, 0.28);
+            background: rgba(13, 21, 32, 0.9);
+            color: var(--amber);
+            font: inherit;
+            font-size: 1.05rem;
+            font-weight: 700;
+            line-height: 1;
+            cursor: pointer;
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
+        }
+
+        .tutorial-close:hover,
+        .tutorial-close:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(142, 216, 210, 0.86);
+            box-shadow: 0 0 18px rgba(142, 216, 210, 0.18);
+        }
+
+        .tutorial-step-title {
+            margin: 0.28rem 0 0;
+            color: var(--teal);
+            font-family: "Cinzel", Georgia, serif;
+            font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+        }
+
+        .tutorial-step-desc {
+            margin: 0.5rem 0 0;
+            color: var(--ivory-dim);
+            line-height: 1.5;
+        }
+
+        .tutorial-actions {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.55rem;
+        }
+
+        .tutorial-btn {
+            appearance: none;
+            border-radius: 10px;
+            border: 1px solid rgba(244, 239, 227, 0.26);
+            background: rgba(13, 21, 32, 0.9);
+            color: var(--ivory);
+            font: inherit;
+            font-weight: 600;
+            min-height: 44px;
+            cursor: pointer;
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
+        }
+
+        .tutorial-btn:hover,
+        .tutorial-btn:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(142, 216, 210, 0.86);
+            box-shadow: 0 0 18px rgba(142, 216, 210, 0.18);
+        }
+
+        .tutorial-btn.next {
+            border-color: rgba(240, 188, 105, 0.58);
+            background: linear-gradient(160deg, rgba(240, 188, 105, 0.24), rgba(95, 179, 172, 0.16));
+            color: var(--amber);
+        }
+
+        .tutorial-btn:disabled {
+            opacity: 0.55;
+            cursor: default;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /*
+         * ─────────────────────────────────────────────────────────────
+         * RESPONSIVE BREAKPOINTS
+         *  940px – wide tablet / small laptop: bubbles stack, radio adjusts
+         *  768px – tablet (e.g. iPad): explicit 2-col grids, header cleans up
+         *  640px – large-phone landscape / small tablet portrait
+         *  480px – phone (iPhone 14 = 390px, SE = 375px): 1-col grids,
+         *          guide btn shrinks, header wraps, tutorial panel full-width
+         * ─────────────────────────────────────────────────────────────
+         */
+
+        /* ── 940px: wide tablet / small laptop ── */
         @media (max-width: 940px) {
             .bubble {
                 width: min(460px, 86vw);
@@ -716,9 +1163,40 @@
                 grid-template-columns: 1fr;
                 min-height: auto;
             }
+
+            .radio-player {
+                right: 0.8rem;
+                bottom: 0.8rem;
+            }
+
+            .radio-panel {
+                width: min(310px, calc(100vw - 1rem));
+            }
+
+            .guide-btn {
+                top: 0.65rem;
+                left: 0.65rem;
+            }
         }
 
-        @media (max-width: 680px) {
+        /* ── 768px: tablet portrait ── */
+        @media (max-width: 768px) {
+            .week-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .page-menu {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                min-height: auto;
+            }
+
+            .header-actions {
+                margin-right: 0;
+            }
+        }
+
+        /* ── 640px: large phone landscape / small tablet ── */
+        @media (max-width: 640px) {
             main {
                 padding: 0.6rem;
             }
@@ -729,9 +1207,18 @@
                 padding: 0.95rem;
             }
 
-            .week-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 0.75rem;
+            .screen-header {
+                flex-wrap: wrap;
+                align-items: flex-start;
+                gap: 0.55rem;
+            }
+
+            .screen-title {
+                font-size: clamp(1.25rem, 5.5vw, 1.9rem);
+            }
+
+            .screen-subtitle {
+                font-size: 0.97rem;
             }
 
             .bubble {
@@ -746,11 +1233,62 @@
             .week-card {
                 height: 190px;
             }
+
+            .week-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 0.75rem;
+            }
         }
 
-        @media (max-width: 460px) {
+        /* ── 480px: phone (iPhone 14 Pro = 393px, iPhone 14 = 390px) ── */
+        @media (max-width: 480px) {
             .week-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .page-menu {
+                grid-template-columns: 1fr;
+            }
+
+            .guide-btn {
+                min-width: 44px;
+                padding: 0.7rem 0.9rem;
+                font-size: 0.82rem;
+                letter-spacing: 0.02em;
+            }
+
+            .radio-stations {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .radio-controls {
+                grid-template-columns: 1fr;
+            }
+
+            .radio-control {
+                min-width: 0;
+                width: 100%;
+            }
+
+            .tutorial-panel {
+                left: 0.6rem;
+                right: 0.6rem;
+                bottom: 0.6rem;
+                width: auto;
+            }
+
+            .tutorial-step-desc {
+                font-size: 1rem;
+                line-height: 1.55;
+            }
+
+            .radio-panel {
+                width: calc(100vw - 1.6rem);
+            }
+
+            .radio-player {
+                right: 0.5rem;
+                bottom: 0.5rem;
             }
         }
 
@@ -773,6 +1311,17 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
+
+            .radio-panel {
+                transition: none;
+            }
+
+            .tutorial-dim,
+            .tutorial-spotlight,
+            .tutorial-panel-inner,
+            .tutorial-btn {
+                transition: none !important;
+            }
         }
     </style>
 </head>
@@ -782,6 +1331,7 @@
 
     <main id="appRoot">
         <section class="screen active" id="screenLanding" aria-labelledby="siteTitle">
+            <button type="button" class="guide-btn" id="openTutorialGuide" aria-label="Open archive guide tutorial">Website Guide</button>
             <div class="landing-grid">
                 <header class="intro">
                     <p class="kicker">Digital Humanities Portfolio</p>
@@ -789,27 +1339,30 @@
                     <p class="subtitle">Archive of weekly assignments, reflections, methodology, and sustainability</p>
                 </header>
 
-                <button type="button" id="enterArchiveButton" class="globe-shell" aria-label="Enter Archive - click the rotating globe" aria-describedby="globeHint">
+                <button type="button" id="enterArchiveButton" class="globe-shell" aria-label="Enter Portfolio - click the rotating globe" aria-describedby="globeHint">
                     <canvas id="globeCanvas"></canvas>
                     <div class="globe-label">
                         <div class="globe-label-inner">
-                            <span class="globe-label-text">Enter Archive</span>
+                            <span class="globe-label-text">Enter Portfolio</span>
                             <span class="globe-label-subtext">Click or tap to enter</span>
                         </div>
                     </div>
                     <p class="sr-only" id="globeStatus" aria-live="polite"></p>
                 </button>
-                <p class="landing-hint" id="globeHint">Hover over the sphere to begin</p>
+                <p class="landing-hint" id="globeHint">Hover over or tap the globe to begin</p>
             </div>
         </section>
 
         <section class="screen" id="screenArchiveHome" aria-labelledby="archiveHomeTitle">
             <header class="screen-header">
                 <div>
-                    <h2 class="screen-title" id="archiveHomeTitle">Archive Interface</h2>
+                    <h2 class="screen-title" id="archiveHomeTitle">Portfolio Interface</h2>
                     <p class="screen-subtitle">Click or tap the portfolio section you want to explore.</p>
                 </div>
-                <button class="glass-btn" id="homeBackToLanding" type="button">Back</button>
+                <div class="header-actions">
+                    <button class="home-btn" id="homeToLandingHome" type="button" aria-label="Go to title page"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
+                    <button class="glass-btn" id="homeBackToLanding" type="button">Back</button>
+                </div>
             </header>
 
             <div class="bubbles" role="group" aria-label="Primary archive navigation">
@@ -830,7 +1383,10 @@
                     <h2 class="screen-title" id="weeklyTitle">Weekly Calendar</h2>
                     <p class="screen-subtitle">Click or tap any week to view its assignment make and reflection question.</p>
                 </div>
-                <button class="glass-btn" id="weeklyBack" type="button">Back</button>
+                <div class="header-actions">
+                    <button class="home-btn" id="weeklyHome" type="button" aria-label="Go to title page"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
+                    <button class="glass-btn" id="weeklyBack" type="button">Back</button>
+                </div>
             </header>
 
             <div class="week-grid" id="weekGrid" aria-label="13 week calendar"></div>
@@ -842,7 +1398,10 @@
                     <h2 class="screen-title" id="pagesTitle">Information Pages</h2>
                     <p class="screen-subtitle">Click or tap an information page to view it.</p>
                 </div>
-                <button class="glass-btn" id="pagesBack" type="button">Back</button>
+                <div class="header-actions">
+                    <button class="home-btn" id="pagesHome" type="button" aria-label="Go to title page"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
+                    <button class="glass-btn" id="pagesBack" type="button">Back</button>
+                </div>
             </header>
 
             <div class="page-menu" id="pageMenu" role="group" aria-label="Pages menu"></div>
@@ -854,12 +1413,123 @@
                     <h2 class="screen-title" id="contentRoomTitle">Information Pages</h2>
                     <p class="screen-subtitle" id="contentRoomSubtitle">Loading content...</p>
                 </div>
-                <button class="glass-btn" id="contentBack" type="button">Back</button>
+                <div class="header-actions">
+                    <button class="home-btn" id="contentHome" type="button" aria-label="Go to title page"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
+                    <button class="glass-btn" id="contentBack" type="button">Back</button>
+                </div>
             </header>
 
             <div class="room-content" id="contentRoomBody"></div>
         </section>
     </main>
+
+    <div class="radio-player" id="radioPlayer">
+        <section class="radio-panel" id="radioPanel" aria-hidden="true" aria-label="Internet radio player">
+            <div class="radio-panel-header">
+                <div>
+                    <p class="radio-kicker">SomaFM Radio</p>
+                    <p class="radio-station-name" id="radioStationName">Drone Zone</p>
+                    <p class="radio-station-desc" id="radioStationDesc">Served best chilled, safe with most medications. Atmospheric textures with minimal beats.</p>
+                </div>
+                <button type="button" class="radio-collapse" id="radioCollapse" aria-label="Collapse radio player">&#215;</button>
+            </div>
+
+            <img
+                class="radio-station-art"
+                id="radioStationArt"
+                src="assets/images/dronezone-400.png"
+                alt="Drone Zone station artwork"
+                loading="lazy"
+            >
+
+            <div class="radio-stations" role="group" aria-label="Radio station selection">
+                <button
+                    type="button"
+                    class="radio-station-btn active"
+                    data-station="dronezone"
+                    aria-label="Switch to Drone Zone radio stream"
+                    aria-pressed="true"
+                >Drone Zone</button>
+                <button
+                    type="button"
+                    class="radio-station-btn"
+                    data-station="spacestation"
+                    aria-label="Switch to Space Station radio stream"
+                    aria-pressed="false"
+                >Space Station Soma</button>
+                <button
+                    type="button"
+                    class="radio-station-btn"
+                    data-station="groovesalad"
+                    aria-label="Switch to Groove Salad radio stream"
+                    aria-pressed="false"
+                >Groove Salad</button>
+                <button
+                    type="button"
+                    class="radio-station-btn"
+                    data-station="synphaera"
+                    aria-label="Switch to Synphaera Radio stream"
+                    aria-pressed="false"
+                >Synphaera Radio</button>
+            </div>
+
+            <div class="radio-controls">
+                <button type="button" class="radio-control" id="radioPlayPause" aria-label="Play Drone Zone radio" aria-pressed="false">Play</button>
+                <div class="radio-volume-wrap">
+                    <label class="radio-volume-label" for="radioVolume">Volume</label>
+                    <input
+                        type="range"
+                        id="radioVolume"
+                        class="radio-volume"
+                        min="0"
+                        max="100"
+                        step="1"
+                        value="65"
+                        aria-label="Radio volume"
+                    >
+                </div>
+            </div>
+
+            <p class="radio-error" id="radioError" hidden>Stream unavailable &mdash; try again later</p>
+            <p class="sr-only" id="radioStatus" aria-live="polite"></p>
+        </section>
+
+        <button
+            type="button"
+            class="radio-launcher"
+            id="radioLauncher"
+            aria-label="Open internet radio player"
+            aria-expanded="false"
+            aria-controls="radioPanel"
+        >
+            <svg class="radio-note-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path
+                    d="M15 4.5v9.2a3.3 3.3 0 1 1-1.8-2.94V7.1l-5.4 1.3v7.3a3.3 3.3 0 1 1-1.8-2.94V6.98c0-.82.56-1.54 1.36-1.73l6.26-1.5A1.8 1.8 0 0 1 15 4.5Z"
+                    fill="currentColor"
+                />
+            </svg>
+        </button>
+    </div>
+
+    <div class="tutorial-overlay" id="tutorialOverlay" aria-hidden="true" hidden>
+        <div class="tutorial-dim" id="tutorialDim" aria-hidden="true"></div>
+        <div class="tutorial-spotlight" id="tutorialSpotlight"></div>
+        <section class="tutorial-panel" id="tutorialPanel" role="dialog" aria-modal="true" aria-labelledby="tutorialStepTitle" aria-describedby="tutorialStepDesc">
+            <div class="tutorial-panel-inner" id="tutorialPanelInner">
+                <div class="tutorial-panel-top">
+                    <p class="tutorial-step-counter" id="tutorialStepCounter" aria-live="assertive" aria-atomic="true">Step 1 of 5</p>
+                    <button type="button" class="tutorial-close" id="tutorialClose" aria-label="Exit tutorial">&#215;</button>
+                </div>
+                <h2 class="tutorial-step-title" id="tutorialStepTitle">Welcome</h2>
+                <p class="tutorial-step-desc" id="tutorialStepDesc">This is a portfolio by Brendan Sack for DH101 - Critical Making in the Age of AI.</p>
+                <div class="tutorial-actions">
+                    <button type="button" class="tutorial-btn" id="tutorialPrev" aria-label="Go to previous tutorial step">Previous</button>
+                    <button type="button" class="tutorial-btn next" id="tutorialNext" aria-label="Go to next tutorial step">Next</button>
+                </div>
+            </div>
+            <p class="sr-only" id="tutorialLive" aria-live="polite"></p>
+        </section>
+    </div>
 
     <script type="module">
         import * as THREE from "https://unpkg.com/three@0.160.1/build/three.module.js";
@@ -1022,11 +1692,531 @@
             showScreen(previous, false);
         }
 
+        function goHome() {
+            historyStack.length = 1;
+            showScreen("landing", false);
+        }
+
         document.getElementById("enterArchiveButton").addEventListener("click", () => showScreen("archiveHome"));
         document.getElementById("homeBackToLanding").addEventListener("click", goBack);
         document.getElementById("weeklyBack").addEventListener("click", goBack);
         document.getElementById("pagesBack").addEventListener("click", goBack);
         document.getElementById("contentBack").addEventListener("click", goBack);
+        document.getElementById("homeToLandingHome").addEventListener("click", goHome);
+        document.getElementById("weeklyHome").addEventListener("click", goHome);
+        document.getElementById("pagesHome").addEventListener("click", goHome);
+        document.getElementById("contentHome").addEventListener("click", goHome);
+
+        const tutorialOverlay = document.getElementById("tutorialOverlay");
+        const tutorialSpotlight = document.getElementById("tutorialSpotlight");
+        const tutorialPanel = document.getElementById("tutorialPanel");
+        const tutorialStepCounter = document.getElementById("tutorialStepCounter");
+        const tutorialStepTitle = document.getElementById("tutorialStepTitle");
+        const tutorialStepDesc = document.getElementById("tutorialStepDesc");
+        const tutorialPrev = document.getElementById("tutorialPrev");
+        const tutorialNext = document.getElementById("tutorialNext");
+        const tutorialClose = document.getElementById("tutorialClose");
+        const tutorialPanelInner = document.getElementById("tutorialPanelInner");
+        const tutorialDim = document.getElementById("tutorialDim");
+        const tutorialLive = document.getElementById("tutorialLive");
+        const openTutorialGuideButton = document.getElementById("openTutorialGuide");
+        const tutorialReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const TUTORIAL_SEEN_KEY = "tutorialSeen";
+        const tutorialSteps = [
+            {
+                title: "Welcome",
+                description: "This is a portfolio by Brendan Sack for DH101 - Critical Making in the Age of AI.",
+                selector: "#siteTitle",
+                screen: "landing"
+            },
+            {
+                title: "The Globe",
+                description: "Click or tap on the globe to view the portfolio.",
+                selector: "#enterArchiveButton",
+                screen: "landing",
+                panelPos: { leftFrac: 0.05, topFrac: 0.30 }
+            },
+            {
+                title: "Weekly Work",
+                description: "Use Weekly Work to open the 13-week calendar and navigate assignments and reflections.",
+                selector: "#openWeeklyRoom",
+                screen: "archiveHome",
+                panelAnchor: "#openPagesRoom"
+            },
+            {
+                title: "Pages",
+                description: "Use the Information Pages bubble to open core portfolio pages and supporting statements.",
+                selector: "#openPagesRoom",
+                screen: "archiveHome",
+                panelAnchor: "#openWeeklyRoom"
+            },
+            {
+                title: "Radio Player",
+                description: "The music player lives in the bottom-right corner. Click or tap on the musical note to expand it and switch stations or control playback.",
+                selector: "#radioLauncher",
+                screen: "landing"
+            }
+        ];
+        let tutorialStepIndex = 0;
+        let tutorialOpen = false;
+        let tutorialLastFocused = null;
+        let tutorialReturnScreen = "landing";
+
+        function getTutorialSeen() {
+            try {
+                return window.localStorage.getItem(TUTORIAL_SEEN_KEY) === "true";
+            } catch (_error) {
+                return false;
+            }
+        }
+
+        function setTutorialSeen() {
+            try {
+                window.localStorage.setItem(TUTORIAL_SEEN_KEY, "true");
+            } catch (_error) {
+                // Ignore storage access issues.
+            }
+        }
+
+        function getTutorialFocusable() {
+            const nodes = Array.from(
+                tutorialOverlay.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])")
+            );
+            return nodes.filter((node) => {
+                if (node.hasAttribute("disabled")) {
+                    return false;
+                }
+
+                const rect = node.getBoundingClientRect();
+                return rect.width > 0 && rect.height > 0;
+            });
+        }
+
+        function announceTutorialStep(title) {
+            tutorialLive.textContent = "";
+            requestAnimationFrame(() => {
+                tutorialLive.textContent = `Guide step: ${title}`;
+            });
+        }
+
+        function updateTutorialSpotlight() {
+            if (!tutorialOpen) {
+                tutorialSpotlight.style.opacity = "0";
+                return;
+            }
+
+            const step = tutorialSteps[tutorialStepIndex];
+            const target = document.querySelector(step.selector);
+            if (!target) {
+                tutorialSpotlight.style.opacity = "0";
+                return;
+            }
+
+            const rect = target.getBoundingClientRect();
+            // Skip spotlight entirely if element is not visible in the viewport
+            const inViewport = rect.width > 0 && rect.height > 0 &&
+                rect.bottom > 0 && rect.right > 0 &&
+                rect.top < window.innerHeight && rect.left < window.innerWidth;
+            if (!inViewport) {
+                tutorialSpotlight.style.opacity = "0";
+                return;
+            }
+
+            const padding = 10;
+            tutorialSpotlight.style.left = `${Math.max(8, rect.left - padding)}px`;
+            tutorialSpotlight.style.top = `${Math.max(8, rect.top - padding)}px`;
+            tutorialSpotlight.style.width = `${Math.max(16, rect.width + padding * 2)}px`;
+            tutorialSpotlight.style.height = `${Math.max(16, rect.height + padding * 2)}px`;
+            tutorialSpotlight.style.opacity = "1";
+        }
+
+        function applyTutorialStepContent() {
+            const step = tutorialSteps[tutorialStepIndex];
+            tutorialStepCounter.textContent = `Step ${tutorialStepIndex + 1} of ${tutorialSteps.length}`;
+            tutorialStepTitle.textContent = step.title;
+            tutorialStepDesc.textContent = step.description;
+            tutorialPrev.disabled = tutorialStepIndex === 0;
+            tutorialNext.textContent = tutorialStepIndex === tutorialSteps.length - 1 ? "Finish" : "Next";
+            tutorialNext.setAttribute(
+                "aria-label",
+                tutorialStepIndex === tutorialSteps.length - 1 ? "Finish tutorial" : "Go to next tutorial step"
+            );
+            announceTutorialStep(step.title);
+        }
+
+        function renderTutorialStep() {
+            const step = tutorialSteps[tutorialStepIndex];
+            const screenChanging = activeScreen !== step.screen;
+
+            // Deepen the dim when switching screens (steps 3 & 4 cross to archiveHome)
+            if (screenChanging) {
+                tutorialDim.classList.add("is-deep");
+            }
+
+            if (activeScreen !== step.screen) {
+                showScreen(step.screen, false);
+            }
+
+            // Fade spotlight out
+            tutorialSpotlight.style.opacity = "0";
+
+            if (tutorialReducedMotion.matches) {
+                // Hard stop: no animation at all
+                applyTutorialStepContent();
+                tutorialDim.classList.remove("is-deep");
+                requestAnimationFrame(() => updateTutorialSpotlight());
+                tutorialStepTitle.setAttribute("tabindex", "-1");
+                tutorialStepTitle.focus();
+                return;
+            }
+
+            // Fade panel content out, swap, fade back in
+            tutorialPanelInner.classList.add("fading");
+
+            // Wait for spotlight to fully fade before swapping content
+            setTimeout(() => {
+                applyTutorialStepContent();
+                tutorialPanelInner.classList.remove("fading");
+                tutorialDim.classList.remove("is-deep");
+
+                // Let the DOM settle, then position and fade spotlight in
+                requestAnimationFrame(() => updateTutorialSpotlight());
+
+                // Move focus to step title so screen readers announce the new step
+                tutorialStepTitle.setAttribute("tabindex", "-1");
+                tutorialStepTitle.focus();
+            }, 700);
+        }
+
+        function setTutorialOpen(isOpen) {
+            tutorialOpen = isOpen;
+            tutorialOverlay.hidden = !isOpen;
+            tutorialOverlay.setAttribute("aria-hidden", String(!isOpen));
+
+            if (!isOpen) {
+                tutorialSpotlight.style.opacity = "0";
+                tutorialDim.classList.remove("is-deep");
+            }
+        }
+
+        function closeTutorial({ markSeen = true } = {}) {
+            if (!tutorialOpen) {
+                return;
+            }
+
+            setTutorialOpen(false);
+
+            if (markSeen) {
+                setTutorialSeen();
+            }
+
+            if (activeScreen !== tutorialReturnScreen) {
+                showScreen(tutorialReturnScreen, false);
+            }
+
+            if (tutorialLastFocused && tutorialLastFocused.isConnected) {
+                tutorialLastFocused.focus();
+            }
+        }
+
+        function openTutorial() {
+            tutorialReturnScreen = activeScreen;
+            tutorialLastFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+            tutorialStepIndex = 0;
+            setTutorialOpen(true);
+            renderTutorialStep();
+            tutorialNext.focus();
+        }
+
+        tutorialPrev.addEventListener("click", () => {
+            if (tutorialStepIndex <= 0) {
+                return;
+            }
+
+            tutorialStepIndex -= 1;
+            renderTutorialStep();
+        });
+
+        tutorialNext.addEventListener("click", () => {
+            if (tutorialStepIndex >= tutorialSteps.length - 1) {
+                closeTutorial({ markSeen: true });
+                return;
+            }
+
+            tutorialStepIndex += 1;
+            renderTutorialStep();
+        });
+
+        tutorialClose.addEventListener("click", () => {
+            closeTutorial({ markSeen: true });
+        });
+
+        tutorialOverlay.addEventListener("keydown", (event) => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                closeTutorial({ markSeen: true });
+                return;
+            }
+
+            if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+                event.preventDefault();
+                if (tutorialStepIndex < tutorialSteps.length - 1) {
+                    tutorialStepIndex += 1;
+                    renderTutorialStep();
+                } else {
+                    closeTutorial({ markSeen: true });
+                }
+                return;
+            }
+
+            if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+                event.preventDefault();
+                if (tutorialStepIndex > 0) {
+                    tutorialStepIndex -= 1;
+                    renderTutorialStep();
+                }
+                return;
+            }
+
+            if (event.key !== "Tab") {
+                return;
+            }
+
+            const focusable = getTutorialFocusable();
+            if (!focusable.length) {
+                event.preventDefault();
+                return;
+            }
+
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            const active = document.activeElement;
+
+            if (event.shiftKey && active === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && active === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        });
+
+        openTutorialGuideButton.addEventListener("click", () => {
+            openTutorial();
+        });
+
+        window.addEventListener("resize", () => {
+            if (tutorialOpen) {
+                updateTutorialSpotlight();
+            }
+        });
+
+        window.addEventListener("scroll", () => {
+            if (tutorialOpen) {
+                updateTutorialSpotlight();
+            }
+        }, true);
+
+        if (!getTutorialSeen()) {
+            openTutorial();
+        }
+
+        const radioPlayer = document.getElementById("radioPlayer");
+        const radioPanel = document.getElementById("radioPanel");
+        const radioLauncher = document.getElementById("radioLauncher");
+        const radioCollapse = document.getElementById("radioCollapse");
+        const radioStationName = document.getElementById("radioStationName");
+        const radioStationDesc = document.getElementById("radioStationDesc");
+        const radioStationArt = document.getElementById("radioStationArt");
+        const radioPlayPause = document.getElementById("radioPlayPause");
+        const radioVolume = document.getElementById("radioVolume");
+        const radioError = document.getElementById("radioError");
+        const radioStatus = document.getElementById("radioStatus");
+        const radioStationButtons = Array.from(document.querySelectorAll(".radio-station-btn"));
+        const radioAudio = new Audio();
+        const RADIO_VOLUME_KEY = "dh101-radio-volume";
+        const RADIO_STATIONS = {
+            dronezone: {
+                name: "Drone Zone",
+                url: "https://ice1.somafm.com/dronezone-128-mp3",
+                image: "assets/images/dronezone-400.png",
+                description: "Served best chilled, safe with most medications. Atmospheric textures with minimal beats."
+            },
+            spacestation: {
+                name: "Space Station Soma",
+                url: "https://ice1.somafm.com/spacestation-128-mp3",
+                image: "assets/images/spacestation-400.png",
+                description: "Tune in, turn on, space out. Spaced-out ambient and mid-tempo electronica."
+            },
+            groovesalad: {
+                name: "Groove Salad",
+                url: "https://ice1.somafm.com/groovesalad-128-mp3",
+                image: "assets/images/groovesalad-400.png",
+                description: "A nicely chilled plate of ambient/downtempo beats and grooves."
+            },
+            synphaera: {
+                name: "Synphaera Radio",
+                url: "https://ice1.somafm.com/synphaera-128-mp3",
+                image: "assets/images/synphaera400.jpg",
+                description: "Featuring the music from an independent record label focused on modern electronic ambient and space music."
+            }
+        };
+        let currentStationKey = "dronezone";
+
+        radioAudio.preload = "none";
+
+        function getSavedRadioVolume() {
+            try {
+                const raw = window.localStorage.getItem(RADIO_VOLUME_KEY);
+                const parsed = Number.parseFloat(raw ?? "");
+                if (Number.isFinite(parsed) && parsed >= 0 && parsed <= 1) {
+                    return parsed;
+                }
+            } catch (_error) {
+                // Ignore storage access issues.
+            }
+
+            return 0.65;
+        }
+
+        function saveRadioVolume(volume) {
+            try {
+                window.localStorage.setItem(RADIO_VOLUME_KEY, String(volume));
+            } catch (_error) {
+                // Ignore storage access issues.
+            }
+        }
+
+        function setRadioError(visible) {
+            radioError.hidden = !visible;
+        }
+
+        function getCurrentStation() {
+            return RADIO_STATIONS[currentStationKey];
+        }
+
+        function syncRadioStationUi() {
+            const station = getCurrentStation();
+            radioStationName.textContent = station.name;
+            radioStationDesc.textContent = station.description;
+            radioStationArt.src = station.image;
+            radioStationArt.alt = `${station.name} station artwork`;
+            radioPlayPause.setAttribute(
+                "aria-label",
+                `${radioAudio.paused ? "Play" : "Pause"} ${station.name} radio`
+            );
+
+            radioStationButtons.forEach((button) => {
+                const isActive = button.dataset.station === currentStationKey;
+                button.classList.toggle("active", isActive);
+                button.setAttribute("aria-pressed", String(isActive));
+            });
+        }
+
+        function syncRadioPlaybackUi() {
+            const isPlaying = !radioAudio.paused;
+            radioPlayPause.textContent = isPlaying ? "Pause" : "Play";
+            radioPlayPause.setAttribute("aria-pressed", String(isPlaying));
+            syncRadioStationUi();
+        }
+
+        function setRadioOpen(isOpen) {
+            radioPlayer.classList.toggle("is-open", isOpen);
+            radioPanel.setAttribute("aria-hidden", String(!isOpen));
+            radioLauncher.setAttribute("aria-expanded", String(isOpen));
+        }
+
+        function announceRadioStatus(message) {
+            radioStatus.textContent = "";
+            requestAnimationFrame(() => {
+                radioStatus.textContent = message;
+            });
+        }
+
+        function applyRadioVolume(volume) {
+            const clamped = Math.min(1, Math.max(0, volume));
+            radioAudio.volume = clamped;
+            radioVolume.value = String(Math.round(clamped * 100));
+            saveRadioVolume(clamped);
+        }
+
+        function selectRadioStation(stationKey) {
+            if (!RADIO_STATIONS[stationKey]) {
+                return;
+            }
+
+            const wasPlaying = !radioAudio.paused;
+            currentStationKey = stationKey;
+            const station = getCurrentStation();
+            setRadioError(false);
+            syncRadioStationUi();
+
+            if (radioAudio.src !== station.url) {
+                radioAudio.src = station.url;
+                radioAudio.load();
+            }
+
+            if (wasPlaying) {
+                radioAudio.play().catch(() => {
+                    setRadioError(true);
+                    syncRadioPlaybackUi();
+                });
+            }
+        }
+
+        applyRadioVolume(getSavedRadioVolume());
+        selectRadioStation(currentStationKey);
+        setRadioOpen(false);
+        syncRadioPlaybackUi();
+
+        radioLauncher.addEventListener("click", () => {
+            setRadioOpen(!radioPlayer.classList.contains("is-open"));
+        });
+
+        radioCollapse.addEventListener("click", () => {
+            setRadioOpen(false);
+            radioLauncher.focus();
+        });
+
+        radioStationButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                selectRadioStation(button.dataset.station);
+            });
+        });
+
+        radioPlayPause.addEventListener("click", () => {
+            setRadioError(false);
+
+            if (radioAudio.paused) {
+                radioAudio.play().catch(() => {
+                    setRadioError(true);
+                    syncRadioPlaybackUi();
+                });
+                return;
+            }
+
+            radioAudio.pause();
+        });
+
+        radioVolume.addEventListener("input", (event) => {
+            applyRadioVolume(Number(event.target.value) / 100);
+        });
+
+        radioAudio.addEventListener("playing", () => {
+            setRadioError(false);
+            syncRadioPlaybackUi();
+            announceRadioStatus(`Playing ${getCurrentStation().name} radio`);
+        });
+
+        radioAudio.addEventListener("pause", () => {
+            syncRadioPlaybackUi();
+            announceRadioStatus(`Paused ${getCurrentStation().name} radio`);
+        });
+
+        radioAudio.addEventListener("error", () => {
+            setRadioError(true);
+            syncRadioPlaybackUi();
+        });
 
         // Markdown fetch cache and path fallback handling.
         const markdownCache = new Map();
@@ -1366,6 +2556,68 @@
             globeGroup.add(new THREE.Line(geometry, routeMaterial));
         });
 
+        const continentMaterial = new THREE.LineBasicMaterial({
+            color: 0x4db8b8,
+            transparent: true,
+            opacity: 0.6,
+            linewidth: 1
+        });
+
+        const continentFillMaterial = new THREE.MeshBasicMaterial({
+            color: 0x4db8b8,
+            transparent: true,
+            opacity: 0.18,
+            side: THREE.FrontSide,
+            depthWrite: false
+        });
+
+        async function loadContinents() {
+            try {
+                const res = await fetch(
+                    "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson"
+                );
+                if (!res.ok) return;
+                const geojson = await res.json();
+                const LINE_RADIUS = 1.23;
+                const FILL_RADIUS = 1.221; // just above sphere, below outlines
+                for (const feature of geojson.features) {
+                    const { type, coordinates } = feature.geometry;
+                    const polygons = type === "Polygon" ? [coordinates] : coordinates;
+                    for (const rings of polygons) {
+                        // Outline rings
+                        for (const ring of rings) {
+                            const pts = ring.map(([lon, lat]) => latLonToVec3(lat, lon, LINE_RADIUS));
+                            const geo = new THREE.BufferGeometry().setFromPoints(pts);
+                            globeGroup.add(new THREE.Line(geo, continentMaterial));
+                        }
+                        // Filled mesh — triangulate in lon/lat space, then project to sphere
+                        const [outer, ...holes] = rings;
+                        const shape = new THREE.Shape(
+                            outer.map(([lon, lat]) => new THREE.Vector2(lon, lat))
+                        );
+                        for (const hole of holes) {
+                            shape.holes.push(
+                                new THREE.Path(hole.map(([lon, lat]) => new THREE.Vector2(lon, lat)))
+                            );
+                        }
+                        const shapeGeo = new THREE.ShapeGeometry(shape);
+                        const pos = shapeGeo.attributes.position;
+                        for (let i = 0; i < pos.count; i++) {
+                            // ShapeGeometry preserves x=lon, y=lat from the input Shape
+                            const v = latLonToVec3(pos.getY(i), pos.getX(i), FILL_RADIUS);
+                            pos.setXYZ(i, v.x, v.y, v.z);
+                        }
+                        pos.needsUpdate = true;
+                        globeGroup.add(new THREE.Mesh(shapeGeo, continentFillMaterial));
+                    }
+                }
+            } catch {
+                // silent fail — globe works normally without outlines
+            }
+        }
+
+        loadContinents();
+
         scene.add(new THREE.AmbientLight(0xa7d2d6, 0.52));
 
         const amberKey = new THREE.DirectionalLight(0xf0bc69, 0.9);
@@ -1425,10 +2677,55 @@
             sphereGeometry.dispose();
             sphereMaterial.dispose();
             routeMaterial.dispose();
+            continentMaterial.dispose();
+            continentFillMaterial.dispose();
         });
 
         // Escape key provides consistent keyboard back behavior from all rooms.
         document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && tutorialOpen) {
+                event.preventDefault();
+                closeTutorial({ markSeen: true });
+                return;
+            }
+
+            if (event.key === "Tab" && tutorialOpen) {
+                const focusable = getTutorialFocusable();
+                if (!focusable.length) {
+                    event.preventDefault();
+                    return;
+                }
+
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                const active = document.activeElement;
+
+                if (!tutorialOverlay.contains(active)) {
+                    event.preventDefault();
+                    first.focus();
+                    return;
+                }
+
+                if (event.shiftKey && active === first) {
+                    event.preventDefault();
+                    last.focus();
+                    return;
+                }
+
+                if (!event.shiftKey && active === last) {
+                    event.preventDefault();
+                    first.focus();
+                    return;
+                }
+            }
+
+            if (event.key === "Escape" && radioPlayer.classList.contains("is-open") && radioPlayer.contains(document.activeElement)) {
+                event.preventDefault();
+                setRadioOpen(false);
+                radioLauncher.focus();
+                return;
+            }
+
             if (event.key === "Escape" && activeScreen !== "landing") {
                 goBack();
             }

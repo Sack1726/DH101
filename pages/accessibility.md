@@ -1,5 +1,5 @@
 # Accessibility
-This site was built by Brendan S for DH 101.
+This site was built by Brendan Sack for DH 101.
 
 I have tried to make it accessible by:
 1. Implemented visible keyboard focus states with :focus-visible outlines and interactive styling to make navigation easier.
