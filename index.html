@@ -1202,6 +1202,15 @@
 
         /* ── 640px: large phone landscape / small tablet ── */
         @media (max-width: 640px) {
+            html,
+            body {
+                background-color: #050912;
+            }
+
+            body {
+                overscroll-behavior-y: contain;
+            }
+
             main {
                 padding: 0.6rem;
             }
@@ -1226,7 +1235,7 @@
                 font-size: 0.97rem;
             }
 
-            #screenLanding {
+            #screenLanding.active {
                 display: flex;
                 flex-direction: column;
             }
@@ -1706,9 +1715,13 @@
                 historyStack.push(name);
             }
 
+            if (window.matchMedia("(max-width: 640px)").matches) {
+                window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+            }
+
             const firstFocusable = screens[name].querySelector("button, [href], [tabindex]:not([tabindex='-1'])");
             if (firstFocusable) {
-                firstFocusable.focus();
+                firstFocusable.focus({ preventScroll: true });
             }
         }
 
