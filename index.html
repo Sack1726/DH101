@@ -1049,6 +1049,11 @@
             opacity: 0;
         }
 
+        .tutorial-panel.phone-offset {
+            top: 0.8rem;
+            bottom: auto;
+        }
+
         .tutorial-step-counter {
             margin: 0;
             color: var(--amber);
@@ -1221,6 +1226,21 @@
                 font-size: 0.97rem;
             }
 
+            #screenLanding {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .guide-btn {
+                position: static;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                min-width: 44px;
+                min-height: 44px;
+                margin: 0 0 0.55rem 0;
+            }
+
             .bubble {
                 width: 100%;
                 min-height: 165px;
@@ -1238,6 +1258,16 @@
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 0.75rem;
             }
+
+            .radio-panel {
+                max-height: calc(100vh - 4rem);
+                overflow-y: auto;
+            }
+
+            .radio-station-art {
+                width: min(170px, 100%);
+                margin-bottom: 0.65rem;
+            }
         }
 
         /* ── 480px: phone (iPhone 14 Pro = 393px, iPhone 14 = 390px) ── */
@@ -1251,7 +1281,6 @@
             }
 
             .guide-btn {
-                min-width: 44px;
                 padding: 0.7rem 0.9rem;
                 font-size: 0.82rem;
                 letter-spacing: 0.02em;
@@ -1284,6 +1313,7 @@
 
             .radio-panel {
                 width: calc(100vw - 1.6rem);
+                padding: 0.85rem;
             }
 
             .radio-player {
@@ -1844,6 +1874,12 @@
             announceTutorialStep(step.title);
         }
 
+        function syncTutorialPanelPhonePosition() {
+            const isPhone = window.matchMedia("(max-width: 640px)").matches;
+            const shouldOffset = isPhone && (tutorialStepIndex === 3 || tutorialStepIndex === 4);
+            tutorialPanel.classList.toggle("phone-offset", shouldOffset);
+        }
+
         function renderTutorialStep() {
             const step = tutorialSteps[tutorialStepIndex];
             const screenChanging = activeScreen !== step.screen;
@@ -1863,6 +1899,7 @@
             if (tutorialReducedMotion.matches) {
                 // Hard stop: no animation at all
                 applyTutorialStepContent();
+                syncTutorialPanelPhonePosition();
                 tutorialDim.classList.remove("is-deep");
                 requestAnimationFrame(() => updateTutorialSpotlight());
                 tutorialStepTitle.setAttribute("tabindex", "-1");
@@ -1876,6 +1913,7 @@
             // Wait for spotlight to fully fade before swapping content
             setTimeout(() => {
                 applyTutorialStepContent();
+                syncTutorialPanelPhonePosition();
                 tutorialPanelInner.classList.remove("fading");
                 tutorialDim.classList.remove("is-deep");
 
@@ -1896,6 +1934,7 @@
             if (!isOpen) {
                 tutorialSpotlight.style.opacity = "0";
                 tutorialDim.classList.remove("is-deep");
+                tutorialPanel.classList.remove("phone-offset");
             }
         }
 
@@ -2007,6 +2046,7 @@
 
         window.addEventListener("resize", () => {
             if (tutorialOpen) {
+                syncTutorialPanelPhonePosition();
                 updateTutorialSpotlight();
             }
         });
