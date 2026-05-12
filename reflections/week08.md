@@ -1,5 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
+# Reflect 8: Who is visible/invisible in AI networks? How does visualization reveal or obscure power?
 
-# Week 8 Reflection
-
-Reflect 8: Who is visible/invisible in AI networks? How does visualization reveal or obscure power?
+There was little attention given to non-Western audiences in my networks. It was not as if this audience did not exist but rather almost disregarded in the discussion. I think this reveals a problem frequently seen with countries that hold dominant power. Policymakers whether political, academic, or both create hegemonic narratives that often marginalize groups of people making them invisible. Each institution, journal, and researcher in my network appear to know themselves from a regulatory perspective but do not know their contrasting people who are made invisible. These invisible people are non-Western actors around the world, AI scientists/engineers who develop the AI itself, and the tech companies that manage its services. 

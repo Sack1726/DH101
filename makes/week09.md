@@ -1,4 +1,4 @@
-# Make 8. Build a bot or generator using a no-code AI tool
+# Prometheus Bringing Ember
 
 ## The Artifact
 <iframe src="assets/pdfs/week09-make8-bot-generator.pdf" width="940" height="600" frameborder="0" title="Week 9 PDF submission: Build a bot or generator using a no-code AI tool"></iframe>

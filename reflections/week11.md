@@ -1,5 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
+# Reflect 11: Who does the invisible work of AI, and who profits from it?
 
-# Week 11 Reflection
-
-Reflect 11: Who does the invisible work of AI, and who profits from it?
+In my Make 10, there were many articles that feature different opinions from outsiders but rarely directly featured the cobalt miners’ opinion or side.  I think this compromises the true invisible aspect of these workers and may lead to a potential mischaracterization of them. These miners who suffer some of the worse conditions for little reward help supply the world's technologies to properly operate. I remember from previous works, a lot of AI companies claimed their data centers were using clean and renewable energy. While there may be some validity, it grossly misses the invisible work done in exchange for better credibility. If anything, however, these companies just lose more credibility when the invisible is made visible. The cobalt miners' work that impacts batteries is not exactly a "green" process. Regardless, the AI companies and we as consumers of it profit from their invisible work in ways that allow us to continue our activities without any major hurdles.

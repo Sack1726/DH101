@@ -1,5 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
+# Reflect 2: Can AI help us define what it means to be human, or does it reduce us to patterns?
 
-# Week 2 Reflection
-
-Reflect 2: Can AI help us define what it means to be human, or does it reduce us to patterns?
+Whether AI can help us define what it means to be human or whether it reduces people to patterns depends heavily on how one person uses it. The amount of "AI slop" online is a testament to how AI can reduce people to patterns. Other than my grandma, I have personally observed that most people in the online sphere can detect AI-generated content. It is probably because of patterns (i.e. logic problems and lack of personal emotion) that people are able to spot AI content easily. These AI content users, therefore, appeal to predictable patterns. The question is then, how do we use AI in a way that helps define us as humans instead of patterns? I am not sure what the right answer is to this question, but my hypothesis is that AI helps define what it means to be human when the person using it is in the most control. When playing around with Visual Code, I felt the most control when sprouting my ideas and then letting AI organize them, adding, if anything, to it. I was originally going to include AI images on my website, but I felt less control over the subject. It felt patterned, uninspired, and a little unethical. From this, I helped define myself when I did the input, but when I let AI do the input, it felt patterned.

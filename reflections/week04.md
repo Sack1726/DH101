@@ -1,5 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
+# Reflect 4: Is AI a collaborator, tool, or plagiarist in storytelling?
 
-# Week 4 Reflection
-
-Reflect 4: Is AI a collaborator, tool, or plagiarist in storytelling?
+After Make 3, I came to the conclusion that AI lacked the ability to comprehend nuances in language for storytelling and always gave a response based on frequency within given training data. This patterned way of responding helps AI give a logical answer which as a result makes some responses generic. In this way, AI acts as a plagiarist, presenting patterns of narratives to the user. Authentic storytelling still requires human input and the understanding of implications within the text. In my opinion, I believe even story retellings still require this kind of authenticity that only human input can bring as these kinds of tales each bring personal perspectives and specific emotional resonance. There is probably still a way for AI to be used as a tool in storytelling, but I think it mostly relates to grammar usage and syntax. Using this, AI could also be seen as a collaborator if it allows a writer to better express what is trying to be expressed. However, this heavily relies on the writer’s decisions and can, I imagine, border plagiarism in some unintended instances. 

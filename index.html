@@ -3,61 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Brendan Sack's Digital Humanities Portfolio and Semester Journey</title>
+    <title>Brendan Sack | Digital Humanities Archive</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Cardo:ital,wght@0,400;0,700;1,400&display=swap');
-
         :root {
-            --parchment: #efe1c2;
-            --parchment-deep: #dec79d;
-            --ink: #2f2418;
-            --ink-soft: #493a2b;
-            --bronze: #8f642b;
-            --imperial-red: #81291d;
-            --focus: #0b5bd3;
-            --shadow: rgba(37, 25, 14, 0.28);
-            --rail-width: 248px;
-            --rail-start-desktop: 10.5rem;
+            --space: #070b12;
+            --space-soft: #101828;
+            --amber: #f0bc69;
+            --amber-soft: #c59149;
+            --teal: #8ed8d2;
+            --teal-soft: #5fb3ac;
+            --ivory: #f4efe3;
+            --ivory-dim: #d8d1bf;
+            --glass: rgba(14, 22, 35, 0.56);
+            --glass-strong: rgba(11, 17, 28, 0.77);
+            --edge: rgba(199, 214, 240, 0.24);
+            --focus: #93dcd7;
+            --fast: 220ms ease;
+            --slow: 520ms ease;
         }
 
         * {
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
+        html,
+        body {
+            margin: 0;
+            min-height: 100%;
         }
 
         body {
-            margin: 0;
-            font-family: 'Cardo', Georgia, serif;
-            color: var(--ink);
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            color: var(--ivory);
             background:
-                radial-gradient(circle at 14% 18%, rgba(255, 255, 255, 0.24), transparent 34%),
-                radial-gradient(circle at 88% 12%, rgba(129, 41, 29, 0.16), transparent 30%),
-                linear-gradient(180deg, #f2e6cb 0%, #e6d1aa 60%, #d9bc8d 100%);
-            min-height: 100vh;
+                radial-gradient(circle at 12% 20%, rgba(142, 216, 210, 0.12), transparent 32%),
+                radial-gradient(circle at 84% 16%, rgba(240, 188, 105, 0.14), transparent 30%),
+                radial-gradient(circle at 68% 88%, rgba(142, 216, 210, 0.08), transparent 36%),
+                linear-gradient(170deg, #060a11 0%, #08101b 45%, #050912 100%);
+            overflow-x: hidden;
+        }
+
+        .space-background {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 360ms ease;
+        }
+
+        .space-background.mode-hub {
+            opacity: 1;
+        }
+
+        .space-background.mode-grid {
+            opacity: 0.78;
+        }
+
+        .space-background.mode-reading {
+            opacity: 0.26;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                repeating-linear-gradient(60deg, rgba(142, 216, 210, 0.08) 0 1px, transparent 1px 64px),
+                repeating-linear-gradient(-60deg, rgba(142, 216, 210, 0.08) 0 1px, transparent 1px 64px),
+                repeating-linear-gradient(0deg, rgba(240, 188, 105, 0.06) 0 1px, transparent 1px 56px);
+            opacity: 0.26;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 18%, rgba(240, 188, 105, 0.1), transparent 28%),
+                radial-gradient(circle at 76% 72%, rgba(142, 216, 210, 0.08), transparent 34%);
+            filter: blur(18px);
+            pointer-events: none;
+            z-index: -1;
         }
 
         .skip-link {
             position: absolute;
-            left: calc(var(--rail-width) + 12px);
-            top: -50px;
-            z-index: 1000;
-            padding: 10px 12px;
-            background: #ffffff;
-            color: #111;
-            border: 2px solid #111;
-            font-weight: 700;
+            top: -100px;
+            left: 1rem;
+            padding: 0.6rem 0.9rem;
+            border: 2px solid var(--ivory);
+            background: #060a11;
+            color: var(--ivory);
             text-decoration: none;
+            z-index: 1000;
+            font-weight: 600;
         }
 
         .skip-link:focus {
-            top: 10px;
-        }
-
-        body.nav-open {
-            overflow: hidden;
+            top: 1rem;
         }
 
         :focus-visible {
@@ -65,579 +116,1322 @@
             outline-offset: 2px;
         }
 
-        .site-shell {
-            width: min(1080px, calc(100vw - var(--rail-width) - 3rem));
-            margin: 1.1rem 1rem 1.5rem calc(var(--rail-width) + 2.2rem);
-            border: 3px solid var(--bronze);
-            background: linear-gradient(180deg, rgba(255, 250, 240, 0.72), rgba(238, 223, 190, 0.78));
-            box-shadow: 0 12px 28px var(--shadow);
-        }
-
-        .nav-rail {
-            position: fixed;
-            top: var(--rail-start-desktop);
-            left: 1rem;
-            width: var(--rail-width);
-            max-height: calc(100vh - 2rem);
-            border: 3px solid var(--bronze);
-            border-radius: 10px;
-            background: linear-gradient(180deg, rgba(255, 248, 233, 0.95), rgba(228, 205, 161, 0.95));
-            box-shadow: 0 10px 24px rgba(37, 25, 14, 0.22);
-            padding: 1rem 0.8rem;
-            z-index: 950;
-            overflow-y: auto;
-            transition: top 180ms ease;
-        }
-
-        .nav-rail-title {
-            margin: 0 0 0.65rem;
-            font-family: 'Cinzel', serif;
-            font-size: 0.95rem;
-            color: var(--imperial-red);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .site-header {
-            border-bottom: 4px double var(--bronze);
-            padding: 1rem 1.2rem 1.2rem;
-            background: linear-gradient(90deg, rgba(129, 41, 29, 0.12), rgba(143, 100, 43, 0.15), rgba(129, 41, 29, 0.12));
-        }
-
-        .title-wrap {
-            text-align: center;
-        }
-
-        .site-title {
-            margin: 0;
-            font-family: 'Cinzel', serif;
-            font-size: clamp(1.8rem, 4vw, 2.9rem);
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--imperial-red);
-            text-shadow:
-                -1px -1px 0 #f8ebd1,
-                1px -1px 0 #f8ebd1,
-                -1px 1px 0 #f8ebd1,
-                1px 1px 0 #f8ebd1,
-                0 3px 0 #6f2418,
-                0 6px 11px rgba(67, 28, 17, 0.34);
-        }
-
-        .site-title::before,
-        .site-title::after {
-            content: '❦';
-            color: var(--bronze);
-            margin: 0 0.5rem;
-            font-size: 0.68em;
-            vertical-align: middle;
-        }
-
-        .site-subtitle {
-            margin: 0.25rem auto 0;
-            text-align: center;
-            font-family: 'Cinzel', serif;
-            color: var(--bronze);
-            letter-spacing: 0.07em;
-            font-size: clamp(0.88rem, 2vw, 1.03rem);
-            text-transform: uppercase;
-            max-width: 100%;
-        }
-
-        .section-nav {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: grid;
-            gap: 0.5rem;
-        }
-
-        .section-nav a {
-            display: block;
-            border: 2px solid var(--bronze);
-            background: linear-gradient(180deg, #f5e6c8, #ebd5ab);
-            color: var(--ink);
-            text-decoration: none;
-            font-family: 'Cinzel', serif;
-            font-size: 0.85rem;
-            letter-spacing: 0.03em;
-            padding: 0.5rem 0.8rem;
-            transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease, color 0.16s ease;
-        }
-
-        .section-nav a:hover {
-            border-color: var(--imperial-red);
-            background: linear-gradient(180deg, #f1d3a8, #dfb880);
-            color: #3d1d14;
-            transform: translateY(-1px);
-        }
-
-        .section-nav a:focus-visible {
-            border-color: var(--imperial-red);
-            background: linear-gradient(180deg, #f1d3a8, #dfb880);
-            color: #3d1d14;
-        }
-
-        .rail-toggle {
-            position: fixed;
-            top: 0.85rem;
-            left: 0.85rem;
-            z-index: 980;
-            width: 44px;
-            height: 44px;
-            border: 2px solid var(--bronze);
-            border-radius: 6px;
-            background: linear-gradient(180deg, #f5e6c8, #ebd5ab);
-            color: var(--imperial-red);
-            font-size: 1.05rem;
-            cursor: pointer;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            transition: background 0.16s ease, color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
-        }
-
-        .rail-toggle:hover,
-        .rail-toggle:focus-visible {
-            border-color: var(--imperial-red);
-            background: linear-gradient(180deg, #f1d3a8, #dfb880);
-            color: #3d1d14;
-            transform: translateY(-1px);
-        }
-
-        .rail-backdrop {
-            position: fixed;
-            inset: 0;
-            background: rgba(35, 24, 14, 0.38);
-            z-index: 940;
-            display: none;
-        }
-
         main {
-            padding: 1rem;
+            min-height: 100vh;
+            width: 100%;
+            padding: 0.8rem;
             display: grid;
-            gap: 0.95rem;
+            place-items: center;
+            position: relative;
+            z-index: 2;
         }
 
-        section {
-            border: 2px solid var(--bronze);
-            background: rgba(255, 248, 233, 0.82);
-            padding: 1rem 1.05rem;
+        .screen {
+            width: min(1320px, 100%);
+            min-height: min(900px, calc(100vh - 1.6rem));
+            border: 1px solid var(--edge);
+            background: linear-gradient(165deg, var(--glass), var(--glass-strong));
+            backdrop-filter: blur(5px);
+            border-radius: 12px;
+            padding: 1.35rem;
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
         }
 
-        .section-divider {
-            border: 0;
-            height: 14px;
-            margin: 0 0 0.85rem;
-            background:
-                radial-gradient(circle at center, var(--imperial-red) 0 2px, transparent 3px),
-                linear-gradient(90deg, transparent 0%, var(--bronze) 20%, var(--bronze) 80%, transparent 100%);
-            background-size: 14px 14px, 100% 2px;
-            background-repeat: repeat-x, no-repeat;
-            background-position: center center, center center;
-            opacity: 0.7;
+        #screenArchiveHome {
+            display: none;
+            grid-template-rows: auto 1fr;
         }
 
-        h3 {
-            margin: 0;
-            font-family: 'Cinzel', serif;
-            color: var(--imperial-red);
-            letter-spacing: 0.04em;
+        #screenArchiveHome.active {
+            display: grid;
+        }
+
+        .screen.active {
+            display: block;
+            animation: roomEnter var(--slow) forwards;
+        }
+
+        @keyframes roomEnter {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .screen-header {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            justify-content: space-between;
+            gap: 0.8rem;
+            margin-bottom: 0.7rem;
         }
 
-        h3::before {
-            content: '◈';
-            color: var(--bronze);
-            font-size: 0.88em;
+        .screen-title {
+            margin: 0;
+            font-family: "Cinzel", Georgia, serif;
+            letter-spacing: 0.03em;
+            font-size: clamp(1.5rem, 4vw, 2.3rem);
         }
 
-        p {
-            margin: 0.6rem 0 0;
-            line-height: 1.65;
-            color: var(--ink-soft);
-            max-width: 78ch;
+        .screen-subtitle {
+            margin: 0.28rem 0 0;
+            color: var(--ivory-dim);
+            max-width: 70ch;
+            line-height: 1.5;
+            font-size: 1.03rem;
         }
 
-        .accessibility-list {
-            margin: 0.7rem 0 0;
-            padding-left: 1.2rem;
-            max-width: 82ch;
-            line-height: 1.6;
-            color: var(--ink-soft);
+        .glass-btn {
+            appearance: none;
+            border: 1px solid rgba(244, 239, 227, 0.3);
+            background: linear-gradient(160deg, rgba(240, 188, 105, 0.2), rgba(142, 216, 210, 0.14));
+            color: var(--ivory);
+            padding: 0.8rem 1.2rem;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            font-size: 1rem;
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
         }
 
-        .accessibility-list li {
+        .glass-btn:hover,
+        .glass-btn:focus-visible {
+            transform: translateY(-1px);
+            border-color: rgba(142, 216, 210, 0.86);
+            box-shadow: 0 0 24px rgba(142, 216, 210, 0.22);
+        }
+
+        .landing-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .intro {
+            text-align: center;
+        }
+
+        .kicker {
+            margin: 0;
+            text-transform: uppercase;
+            color: var(--amber);
+            letter-spacing: 0.15em;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        h1 {
+            margin: 0.55rem 0 0;
+            font-family: "Cinzel", Georgia, serif;
+            font-size: clamp(2.2rem, 8vw, 4.2rem);
+            line-height: 1.1;
+        }
+
+        .subtitle {
+            margin: 0.55rem auto 0;
+            max-width: 42ch;
+            color: var(--ivory-dim);
+            line-height: 1.58;
+            font-size: 1.1rem;
+        }
+
+        .globe-shell {
+            width: min(74vw, 540px);
+            margin: 0.5rem auto 0;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid rgba(244, 239, 227, 0.26);
+            box-shadow:
+                0 0 58px rgba(142, 216, 210, 0.18),
+                inset 0 0 48px rgba(240, 188, 105, 0.15);
+            background: radial-gradient(circle at 40% 35%, rgba(240, 188, 105, 0.2), rgba(10, 18, 28, 0.35) 58%, rgba(6, 11, 18, 0.95));
+            position: relative;
+            cursor: pointer;
+            transition: box-shadow var(--fast), filter var(--fast);
+            appearance: none;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .globe-shell::before {
+            content: "";
+            position: absolute;
+            inset: -9px;
+            border-radius: 50%;
+            border: 1px solid rgba(142, 216, 210, 0.4);
+            opacity: 0.6;
+            transform: scale(0.94);
+            animation: globePing 2.5s ease-out infinite;
+            pointer-events: none;
+        }
+
+        .globe-shell:hover,
+        .globe-shell:focus-visible {
+            box-shadow:
+                0 0 58px rgba(142, 216, 210, 0.28),
+                inset 0 0 48px rgba(240, 188, 105, 0.25),
+                0 0 36px rgba(142, 216, 210, 0.18);
+        }
+
+        .globe-shell:focus-visible {
+            outline: 3px solid rgba(200, 146, 58, 0.9);
+            outline-offset: 6px;
+        }
+
+        #globeCanvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .globe-label {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0);
+            transition: background var(--fast);
+            pointer-events: none;
+        }
+
+        .globe-label-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .globe-shell:hover .globe-label,
+        .globe-shell:focus-visible .globe-label {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .globe-label-text {
+            font-family: "Cinzel", Georgia, serif;
+            font-size: clamp(1.1rem, 2.8vw, 1.6rem);
+            color: var(--ivory);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            text-shadow: 0 0 0 rgba(240, 188, 105, 0);
+            opacity: 0;
+            transform: scale(0.88);
+            transition: opacity var(--fast), transform var(--fast), text-shadow var(--fast), color var(--fast);
+            pointer-events: none;
+        }
+
+        .globe-shell:hover .globe-label-text,
+        .globe-shell:focus-visible .globe-label-text {
+            opacity: 1;
+            transform: scale(1);
+            color: #fff7e9;
+            text-shadow:
+                0 0 12px rgba(240, 188, 105, 0.62),
+                0 0 24px rgba(240, 188, 105, 0.35);
+        }
+
+        .globe-label-subtext {
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.02em;
+            color: rgba(244, 239, 227, 0.88);
+            opacity: 0;
+            transform: translateY(3px);
+            transition: opacity var(--fast), transform var(--fast), text-shadow var(--fast);
+        }
+
+        .globe-shell:hover .globe-label-subtext,
+        .globe-shell:focus-visible .globe-label-subtext {
+            opacity: 1;
+            transform: translateY(0);
+            text-shadow: 0 0 12px rgba(240, 188, 105, 0.24);
+        }
+
+        .landing-hint {
+            margin: 0.6rem auto 0;
+            text-align: center;
+            color: rgba(216, 209, 191, 0.76);
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            opacity: 0;
+            animation: hintFadeIn 900ms ease forwards;
+            animation-delay: 450ms;
+        }
+
+        @keyframes globePing {
+            0% {
+                opacity: 0.58;
+                transform: scale(0.95);
+            }
+            70% {
+                opacity: 0;
+                transform: scale(1.08);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.08);
+            }
+        }
+
+        @keyframes hintFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+            to {
+                opacity: 0.86;
+                transform: translateY(0);
+            }
+        }
+
+        .landing-actions {
+            display: none;
+        }
+
+        .bubbles {
+            margin-top: 0.35rem;
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.2rem;
+            align-content: stretch;
+            min-height: clamp(420px, 64vh, 650px);
+        }
+
+        .bubble {
+            width: 100%;
+            min-height: 100%;
+            border-radius: 24px;
+            border: 1px solid rgba(244, 239, 227, 0.3);
+            background:
+                linear-gradient(180deg, rgba(5, 9, 16, 0.08), rgba(5, 9, 16, 0.76)),
+                linear-gradient(180deg, rgba(5, 9, 16, 0) 20%, rgba(5, 9, 16, 0.82) 100%),
+                var(--button-image, none),
+                radial-gradient(circle at 16% 14%, rgba(240, 188, 105, 0.34), transparent 36%),
+                radial-gradient(circle at 84% 84%, rgba(142, 216, 210, 0.2), transparent 42%),
+                linear-gradient(170deg, rgba(24, 36, 53, 0.75), rgba(14, 22, 36, 0.86));
+            background-size: auto, auto, cover, auto, auto, auto;
+            background-position: center, center, center, center, center, center;
+            color: var(--ivory);
+            padding: 1.5rem;
+            text-align: left;
+            cursor: pointer;
+            font-family: "Cinzel", Georgia, serif;
+            font-size: clamp(1.3rem, 3vw, 1.85rem);
+            transition: transform var(--fast), box-shadow var(--fast), border-color var(--fast);
+            box-shadow: 0 0 26px rgba(240, 188, 105, 0.14);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .bubble::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(142, 216, 210, 0.14) 44%, transparent 70%);
+            opacity: 0;
+            transform: translateX(-20%);
+            transition: opacity var(--fast), transform var(--fast);
+            pointer-events: none;
+        }
+
+        .bubble small {
+            display: block;
+            margin-top: 0.6rem;
+            font-family: "Manrope", "Segoe UI", sans-serif;
+            font-size: 1rem;
+            color: var(--ivory-dim);
+            line-height: 1.45;
+            max-width: 34ch;
+        }
+
+        .bubble:hover,
+        .bubble:focus-visible {
+            transform: translateY(-2px) scale(1.01);
+            border-color: rgba(142, 216, 210, 0.85);
+            box-shadow:
+                0 0 0 1px rgba(142, 216, 210, 0.5),
+                0 0 30px rgba(142, 216, 210, 0.26);
+        }
+
+        .bubble:hover::after,
+        .bubble:focus-visible::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .week-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.9rem;
+            margin-top: 0.55rem;
+        }
+
+        .week-card {
+            appearance: none;
+            border: 1px solid rgba(244, 239, 227, 0.24);
+            background: linear-gradient(165deg, rgba(19, 29, 45, 0.85), rgba(12, 20, 33, 0.85));
+            color: var(--ivory);
+            height: 210px;
+            text-align: left;
+            padding: 0.95rem;
+            cursor: pointer;
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .week-card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 82% 16%, rgba(240, 188, 105, 0.18), transparent 32%),
+                linear-gradient(125deg, transparent 0%, rgba(142, 216, 210, 0.1) 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity var(--fast);
+            pointer-events: none;
+        }
+
+        .week-card strong {
+            display: block;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
 
-        .resource-grid {
-            margin-top: 1rem;
+        .week-card-motif {
+            width: 22px;
+            height: 22px;
+            margin-bottom: 0.55rem;
+            color: rgba(142, 216, 210, 0.72);
+            flex: 0 0 auto;
+        }
+
+        .week-card-title {
+            font-family: "Cinzel", Georgia, serif;
+            line-height: 1.34;
+            font-size: 1.13rem;
+            display: -webkit-box;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-top: clamp(0.7rem, 1.7vh, 1.15rem);
+        }
+
+        .week-card-title.compact {
+            font-size: 1rem;
+            line-height: 1.28;
+            line-clamp: 5;
+            -webkit-line-clamp: 5;
+        }
+
+        .week-card:hover,
+        .week-card:focus-visible {
+            transform: translateY(-3px);
+            border-color: rgba(200, 146, 58, 0.82);
+            box-shadow:
+                0 0 0 1px rgba(200, 146, 58, 0.32),
+                0 0 22px rgba(200, 146, 58, 0.22);
+        }
+
+        .week-card:hover::before,
+        .week-card:focus-visible::before {
+            opacity: 1;
+        }
+
+        .page-menu {
+            margin-top: 0.55rem;
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 0.8rem;
+            align-content: stretch;
+            min-height: 64vh;
         }
 
-        .resource-card {
-            display: block;
-            text-decoration: none;
-            color: inherit;
-            border: 2px solid var(--bronze);
-            background: linear-gradient(155deg, #f7ebd0, var(--parchment-deep) 74%);
-            padding: 0.9rem;
-            min-height: 138px;
-            transition: border-color 0.16s ease, background 0.16s ease, transform 0.16s ease;
+        .page-btn {
+            appearance: none;
+            border: 1px solid rgba(244, 239, 227, 0.24);
+            background:
+                linear-gradient(180deg, rgba(6, 10, 17, 0.12), rgba(6, 10, 17, 0.78)),
+                linear-gradient(180deg, rgba(6, 10, 17, 0) 24%, rgba(6, 10, 17, 0.82) 100%),
+                var(--button-image, none),
+                linear-gradient(160deg, rgba(23, 35, 53, 0.82), rgba(13, 21, 33, 0.86));
+            background-size: auto, auto, cover, auto;
+            background-position: center, center, center, center;
+            color: var(--ivory);
+            padding: 0.8rem 1.15rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform var(--fast), border-color var(--fast), box-shadow var(--fast);
+            min-height: 220px;
+            text-align: left;
+            display: flex;
+            align-items: flex-end;
+            position: relative;
+            overflow: hidden;
         }
 
-        .resource-card:hover {
-            border-color: var(--imperial-red);
-            background: linear-gradient(155deg, #f8e2bd, #e7c08a 74%);
+        .page-btn::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(240, 188, 105, 0.12) 46%, rgba(142, 216, 210, 0.12) 100%);
+            opacity: 0;
+            transition: opacity var(--fast);
+            pointer-events: none;
+        }
+
+        .page-btn:hover,
+        .page-btn:focus-visible {
             transform: translateY(-1px);
+            border-color: rgba(142, 216, 210, 0.78);
+            box-shadow: 0 0 18px rgba(142, 216, 210, 0.18);
         }
 
-        .resource-card:focus-visible {
-            border-color: var(--imperial-red);
-            background: linear-gradient(155deg, #f8e2bd, #e7c08a 74%);
+        .page-btn:hover::before,
+        .page-btn:focus-visible::before {
+            opacity: 1;
         }
 
-        .resource-card h4 {
-            margin: 0 0 0.35rem;
-            font-family: 'Cinzel', serif;
-            font-size: 1.02rem;
-            color: var(--imperial-red);
+        .room-content {
+            margin-top: 0.6rem;
+            border: 1px solid rgba(244, 239, 227, 0.2);
+            background: linear-gradient(170deg, rgba(15, 23, 37, 0.9), rgba(10, 17, 29, 0.95));
+            padding: 1.1rem;
+            min-height: 420px;
         }
 
-        .card-symbol {
-            display: inline-block;
-            width: 1.3rem;
-            color: var(--bronze);
-            font-size: 0.95em;
+        .tabs {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.9rem;
         }
 
-        .resource-card p {
-            margin: 0;
-            font-size: 0.95rem;
+        .tab-btn {
+            appearance: none;
+            border: 1px solid rgba(244, 239, 227, 0.24);
+            background: rgba(18, 28, 45, 0.82);
+            color: var(--ivory);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.98rem;
         }
 
-        footer {
-            border-top: 3px double var(--bronze);
-            padding: 0.9rem 1.2rem;
-            background: rgba(143, 100, 43, 0.14);
-            font-size: 0.92rem;
-            color: var(--ink-soft);
+        .tab-btn[aria-selected="true"] {
+            border-color: rgba(142, 216, 210, 0.9);
+            background: rgba(26, 43, 49, 0.92);
         }
 
-        @media (max-width: 1024px) {
-            .skip-link {
-                left: 12px;
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: roomEnter 280ms ease forwards;
+        }
+
+        .markdown h1,
+        .markdown h2,
+        .markdown h3,
+        .markdown h4 {
+            font-family: "Cinzel", Georgia, serif;
+            color: var(--teal);
+            margin: 0.8rem 0 0.45rem;
+        }
+
+        .markdown p,
+        .markdown li {
+            color: var(--ivory);
+            line-height: 1.64;
+        }
+
+        .markdown a {
+            color: #b8ddd9;
+        }
+
+        .markdown img,
+        .markdown iframe,
+        .markdown video {
+            max-width: 100%;
+            display: block;
+            margin: 0.6rem 0;
+            border: 1px solid rgba(244, 239, 227, 0.2);
+            background: rgba(8, 13, 22, 0.9);
+        }
+
+        .calc-embed {
+            width: 100%;
+            min-height: 640px;
+            border: 1px solid rgba(244, 239, 227, 0.22);
+            background: rgba(7, 12, 20, 0.94);
+        }
+
+        .error-note {
+            color: #ffc7a4;
+            border: 1px solid rgba(255, 199, 164, 0.5);
+            background: rgba(66, 31, 24, 0.35);
+            padding: 0.7rem;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (max-width: 940px) {
+            .bubble {
+                width: min(460px, 86vw);
+                min-height: 200px;
             }
 
-            .rail-toggle {
-                display: inline-flex;
-            }
-
-            .nav-rail {
-                top: 1rem;
-                transform: translateX(-100%);
-                transition: transform 200ms ease;
-            }
-
-            body.nav-open .nav-rail {
-                transform: translateX(0);
-            }
-
-            body.nav-open .rail-backdrop {
-                display: block;
-            }
-
-            .site-shell {
-                width: min(1000px, 96vw);
-                margin: 1rem auto 1.3rem;
-            }
-
-            .resource-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+            .bubbles {
+                grid-template-columns: 1fr;
+                min-height: auto;
             }
         }
 
-        @media (max-width: 760px) {
-            .site-shell {
+        @media (max-width: 680px) {
+            main {
+                padding: 0.6rem;
+            }
+
+            .screen {
+                min-height: calc(100vh - 1.2rem);
+                border-radius: 10px;
+                padding: 0.95rem;
+            }
+
+            .week-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 0.75rem;
+            }
+
+            .bubble {
                 width: 100%;
-                margin: 0;
-                border-left: none;
-                border-right: none;
+                min-height: 165px;
             }
 
-            .site-header,
-            main,
-            footer {
-                padding-left: 0.85rem;
-                padding-right: 0.85rem;
+            .globe-shell {
+                width: min(92vw, 430px);
+            }
+
+            .week-card {
+                height: 190px;
             }
         }
 
-        @media (max-width: 560px) {
-            .site-title::before,
-            .site-title::after {
-                display: none;
-            }
-
-            .resource-grid {
+        @media (max-width: 460px) {
+            .week-grid {
                 grid-template-columns: 1fr;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            html {
-                scroll-behavior: auto;
+            .globe-shell::before {
+                animation: none;
+                opacity: 0.32;
+                transform: scale(1);
+            }
+
+            .landing-hint {
+                animation: none;
+                opacity: 0.86;
+                transform: none;
             }
 
             * {
-                transition: none !important;
-                animation: none !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
             }
         }
     </style>
 </head>
 <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <canvas id="spaceBackground" class="space-background active" aria-hidden="true"></canvas>
+    <a class="skip-link" href="#screenArchiveHome">Skip to archive</a>
 
-    <button class="rail-toggle" id="railToggle" aria-label="Open section menu" aria-expanded="false" aria-controls="primaryRailNav">⇥</button>
-    <div class="rail-backdrop" id="railBackdrop" aria-hidden="true"></div>
+    <main id="appRoot">
+        <section class="screen active" id="screenLanding" aria-labelledby="siteTitle">
+            <div class="landing-grid">
+                <header class="intro">
+                    <p class="kicker">Digital Humanities Portfolio</p>
+                    <h1 id="siteTitle">Brendan Sack</h1>
+                    <p class="subtitle">Archive of weekly assignments, reflections, methodology, and sustainability</p>
+                </header>
 
-    <nav class="nav-rail" id="primaryRailNav" aria-label="Primary sections">
-        <h2 class="nav-rail-title">Sections</h2>
-        <ul class="section-nav">
-            <li><a href="#intro-pages">Introduction Pages</a></li>
-            <li><a href="#makes">Weekly Makes</a></li>
-            <li><a href="#reflections">Weekly Reflections</a></li>
-            <li><a href="#accessibility">Accessibility</a></li>
-        </ul>
-    </nav>
-
-    <div class="site-shell">
-        <header class="site-header">
-            <div class="title-wrap">
-                <h1 class="site-title">Brendan Sack's Digital Humanities Portfolio and Semester Journey</h1>
-            </div>
-        </header>
-
-        <main id="main-content">
-                <section id="intro-pages" aria-labelledby="intro-pages-title">
-                    <hr class="section-divider" aria-hidden="true">
-                    <h3 id="intro-pages-title">I. Introduction Pages</h3>
-                    <p>These pages provide context for identity, method, and course values.</p>
-
-                    <div class="resource-grid">
-                        <a class="resource-card" href="folio.html?doc=pages/about.md">
-                            <h4><span class="card-symbol" aria-hidden="true">◉</span>About</h4>
-                            <p>Background, interests, and academic direction.</p>
-                        </a>
-                        <a class="resource-card" href="folio.html?doc=pages/how-i-use-ai.md">
-                            <h4><span class="card-symbol" aria-hidden="true">⚖</span>How I Use AI</h4>
-                            <p>My use of AI tools, boundaries, and reflective practices.</p>
-                        </a>
-                        <a class="resource-card" href="folio.html?doc=pages/accessibility.md">
-                            <h4><span class="card-symbol" aria-hidden="true">✶</span>Accessibility</h4>
-                            <p>Commitments to inclusive and usable digital work.</p>
-                        </a>
-                        <a class="resource-card" href="folio.html?doc=pages/sustainability.md">
-                            <h4><span class="card-symbol" aria-hidden="true">❖</span>Sustainability</h4>
-                            <p>Approaches to long-term, sustainable DH practice.</p>
-                        </a>
-                        <a class="resource-card" href="folio.html?doc=pages/markdown-guide.md">
-                            <h4><span class="card-symbol" aria-hidden="true">⌘</span>Markdown Guide</h4>
-                            <p>Reference patterns used in portfolio writing and structure.</p>
-                        </a>
+                <button type="button" id="enterArchiveButton" class="globe-shell" aria-label="Enter Archive - click the rotating globe" aria-describedby="globeHint">
+                    <canvas id="globeCanvas"></canvas>
+                    <div class="globe-label">
+                        <div class="globe-label-inner">
+                            <span class="globe-label-text">Enter Archive</span>
+                            <span class="globe-label-subtext">Click or tap to enter</span>
+                        </div>
                     </div>
-                </section>
+                    <p class="sr-only" id="globeStatus" aria-live="polite"></p>
+                </button>
+                <p class="landing-hint" id="globeHint">Hover over the sphere to begin</p>
+            </div>
+        </section>
 
-                <section id="makes" aria-labelledby="makes-title">
-                    <hr class="section-divider" aria-hidden="true">
-                    <h3 id="makes-title">II. Weekly Makes</h3>
-                    <p>Makes collect practical experiments and project artifacts completed across DH101.</p>
-                    <div class="resource-grid" id="makesGrid"></div>
-                </section>
+        <section class="screen" id="screenArchiveHome" aria-labelledby="archiveHomeTitle">
+            <header class="screen-header">
+                <div>
+                    <h2 class="screen-title" id="archiveHomeTitle">Archive Interface</h2>
+                    <p class="screen-subtitle">Click or tap the portfolio section you want to explore.</p>
+                </div>
+                <button class="glass-btn" id="homeBackToLanding" type="button">Back</button>
+            </header>
 
-                <section id="reflections" aria-labelledby="reflections-title">
-                    <hr class="section-divider" aria-hidden="true">
-                    <h3 id="reflections-title">III. Weekly Reflections</h3>
-                    <p>Reflections document interpretation, synthesis, and historical thinking developed during the semester.</p>
-                    <div class="resource-grid" id="reflectionsGrid"></div>
-                </section>
+            <div class="bubbles" role="group" aria-label="Primary archive navigation">
+                <button class="bubble" id="openWeeklyRoom" type="button" style="--button-image: url('assets/images/Images for Website/Weekly Work_Image.jpg');">
+                    Weekly Work
+                    <small>Thirteen-week calendar with make assignments and reflection materials.</small>
+                </button>
+                <button class="bubble" id="openPagesRoom" type="button" style="--button-image: url('assets/images/Images for Website/Pages_Image.JPG');">
+                    Information Pages
+                    <small>Core statements about this website portfolio.</small>
+                </button>
+            </div>
+        </section>
 
-                <section id="accessibility" aria-labelledby="accessibility-title">
-                    <hr class="section-divider" aria-hidden="true">
-                    <h3 id="accessibility-title">IV. Accessibility Commitments</h3>
-                    <p>This site was built by Brendan S for DH 101.</p>
-                    <p>I have tried to make it accessible by:</p>
-                    <ul class="accessibility-list">
-                        <li>Implemented visible keyboard focus states with <code>:focus-visible</code> outlines and interactive styling to make navigation easier.</li>
-                        <li>Added alt text for artifact and image-related content to describe what is shown.</li>
-                        <li>Included a low-motion sliding side navigation bar for quicker, less overwhelming movement through the page.</li>
-                        <li>Used readable visual choices with larger line height, clear spacing, and high-contrast styling to improve usability.</li>
-                        <li>Designed the website to work across different screen sizes and devices (while noting it may break after future updates).</li>
-                        <li>Used accessibility tools and guidelines, including WCAG references, to review and improve the site.</li>
-                        <li>WAVE Accessibility Evaluator reported an AIM score of 10 out of 10 for screen-reader presentation.</li>
-                    </ul>
-                </section>
-        </main>
+        <section class="screen" id="screenWeekly" aria-labelledby="weeklyTitle">
+            <header class="screen-header">
+                <div>
+                    <h2 class="screen-title" id="weeklyTitle">Weekly Calendar</h2>
+                    <p class="screen-subtitle">Click or tap any week to view its assignment make and reflection question.</p>
+                </div>
+                <button class="glass-btn" id="weeklyBack" type="button">Back</button>
+            </header>
 
-        <footer>
-            <strong>Machina et Humanitas:</strong> A Digital Humanities portfolio inspired by Ancient Rome.
-        </footer>
-    </div>
+            <div class="week-grid" id="weekGrid" aria-label="13 week calendar"></div>
+        </section>
 
-    <script>
-        const weeks = [
-            { week: 1, hasReflection: true, hasMake: true },
-            { week: 2, hasReflection: true, hasMake: true },
-            { week: 3, hasReflection: true, hasMake: true },
-            { week: 4, hasReflection: true, hasMake: true },
-            { week: 5, hasReflection: true, hasMake: true },
-            { week: 6, hasReflection: true, hasMake: true },
-            { week: 7, hasReflection: true, hasMake: true },
-            { week: 9, hasReflection: true, hasMake: true },
-            { week: 10, hasReflection: true, hasMake: true },
-            { week: 11, hasReflection: true, hasMake: true },
-            { week: 12, hasReflection: true, hasMake: true },
-            { week: 13, hasReflection: true, hasMake: true }
+        <section class="screen" id="screenPages" aria-labelledby="pagesTitle">
+            <header class="screen-header">
+                <div>
+                    <h2 class="screen-title" id="pagesTitle">Information Pages</h2>
+                    <p class="screen-subtitle">Click or tap an information page to view it.</p>
+                </div>
+                <button class="glass-btn" id="pagesBack" type="button">Back</button>
+            </header>
+
+            <div class="page-menu" id="pageMenu" role="group" aria-label="Pages menu"></div>
+        </section>
+
+        <section class="screen" id="screenContent" aria-labelledby="contentRoomTitle">
+            <header class="screen-header">
+                <div>
+                    <h2 class="screen-title" id="contentRoomTitle">Information Pages</h2>
+                    <p class="screen-subtitle" id="contentRoomSubtitle">Loading content...</p>
+                </div>
+                <button class="glass-btn" id="contentBack" type="button">Back</button>
+            </header>
+
+            <div class="room-content" id="contentRoomBody"></div>
+        </section>
+    </main>
+
+    <script type="module">
+        import * as THREE from "https://unpkg.com/three@0.160.1/build/three.module.js";
+        import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+
+        marked.setOptions({ gfm: true, breaks: true });
+
+        // Screen registry and basic room-navigation stack.
+        const screens = {
+            landing: document.getElementById("screenLanding"),
+            archiveHome: document.getElementById("screenArchiveHome"),
+            weekly: document.getElementById("screenWeekly"),
+            pages: document.getElementById("screenPages"),
+            content: document.getElementById("screenContent")
+        };
+
+        const historyStack = ["landing"];
+        let activeScreen = "landing";
+        const dynamicBackgroundCanvas = document.getElementById("spaceBackground");
+        const dynamicBackgroundContext = dynamicBackgroundCanvas.getContext("2d");
+        const dynamicBackgroundMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        const STAR_COUNT = 150;
+        const NEBULA_COUNT = 5;
+        const stars = [];
+        const nebulae = [];
+
+        function getDynamicBackgroundMode() {
+            if (activeScreen === "landing" || activeScreen === "archiveHome") {
+                return "hub";
+            }
+
+            if (activeScreen === "content") {
+                return "reading";
+            }
+
+            return "grid";
+        }
+
+        function syncDynamicBackgroundVisibility() {
+            dynamicBackgroundCanvas.classList.remove("mode-hub", "mode-grid", "mode-reading");
+            dynamicBackgroundCanvas.classList.add(`mode-${getDynamicBackgroundMode()}`);
+        }
+
+        function setupDynamicBackgroundScene(width, height) {
+            stars.length = 0;
+            nebulae.length = 0;
+
+            for (let i = 0; i < STAR_COUNT; i += 1) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    size: 1 + Math.random(),
+                    speed: 0.016 + Math.random() * 0.05,
+                    color: Math.random() < 0.78 ? "248, 246, 240" : "164, 223, 218",
+                    alpha: Math.random() < 0.78 ? 0.72 : 0.7
+                });
+            }
+
+            for (let i = 0; i < NEBULA_COUNT; i += 1) {
+                nebulae.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: 210 + Math.random() * 260,
+                    color: Math.random() < 0.5 ? "95, 179, 172" : "197, 145, 73",
+                    alpha: Math.random() < 0.5 ? 0.06 : 0.05
+                });
+            }
+        }
+
+        function resizeDynamicBackground() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+            dynamicBackgroundCanvas.width = Math.floor(width * dpr);
+            dynamicBackgroundCanvas.height = Math.floor(height * dpr);
+            dynamicBackgroundCanvas.style.width = `${width}px`;
+            dynamicBackgroundCanvas.style.height = `${height}px`;
+
+            dynamicBackgroundContext.setTransform(dpr, 0, 0, dpr, 0, 0);
+            setupDynamicBackgroundScene(width, height);
+        }
+
+        function renderDynamicBackground() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            const mode = getDynamicBackgroundMode();
+            const starAlphaMultiplier = mode === "grid" ? 0.5 : 1;
+            const nebulaAlphaMultiplier = mode === "grid" ? 0.5 : 1;
+            const allowMovement = !dynamicBackgroundMotionQuery.matches && mode !== "reading";
+            dynamicBackgroundContext.clearRect(0, 0, width, height);
+
+            nebulae.forEach((nebula) => {
+                const gradient = dynamicBackgroundContext.createRadialGradient(
+                    nebula.x,
+                    nebula.y,
+                    0,
+                    nebula.x,
+                    nebula.y,
+                    nebula.radius
+                );
+                gradient.addColorStop(0, `rgba(${nebula.color}, ${nebula.alpha * nebulaAlphaMultiplier})`);
+                gradient.addColorStop(1, "rgba(7, 11, 18, 0)");
+                dynamicBackgroundContext.fillStyle = gradient;
+                dynamicBackgroundContext.beginPath();
+                dynamicBackgroundContext.arc(nebula.x, nebula.y, nebula.radius, 0, Math.PI * 2);
+                dynamicBackgroundContext.fill();
+            });
+
+            stars.forEach((star) => {
+                dynamicBackgroundContext.fillStyle = `rgba(${star.color}, ${star.alpha * starAlphaMultiplier})`;
+                dynamicBackgroundContext.beginPath();
+                dynamicBackgroundContext.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                dynamicBackgroundContext.fill();
+
+                if (allowMovement) {
+                    star.x += star.speed;
+                    star.y -= star.speed * 0.16;
+
+                    if (star.x > width + 2) {
+                        star.x = -2;
+                    }
+
+                    if (star.y < -2) {
+                        star.y = height + 2;
+                    }
+                }
+            });
+
+            requestAnimationFrame(renderDynamicBackground);
+        }
+
+        function showScreen(name, push = true) {
+            Object.values(screens).forEach((screen) => {
+                screen.classList.remove("active");
+            });
+
+            screens[name].classList.add("active");
+            activeScreen = name;
+            syncDynamicBackgroundVisibility();
+
+            if (push) {
+                historyStack.push(name);
+            }
+
+            const firstFocusable = screens[name].querySelector("button, [href], [tabindex]:not([tabindex='-1'])");
+            if (firstFocusable) {
+                firstFocusable.focus();
+            }
+        }
+
+        function goBack() {
+            if (historyStack.length <= 1) {
+                return;
+            }
+
+            historyStack.pop();
+            const previous = historyStack[historyStack.length - 1];
+            showScreen(previous, false);
+        }
+
+        document.getElementById("enterArchiveButton").addEventListener("click", () => showScreen("archiveHome"));
+        document.getElementById("homeBackToLanding").addEventListener("click", goBack);
+        document.getElementById("weeklyBack").addEventListener("click", goBack);
+        document.getElementById("pagesBack").addEventListener("click", goBack);
+        document.getElementById("contentBack").addEventListener("click", goBack);
+
+        // Markdown fetch cache and path fallback handling.
+        const markdownCache = new Map();
+
+        function decodePath(path) {
+            return path.replace(/%20/g, " ").replace(/%26/g, "&");
+        }
+
+        function encodePath(path) {
+            return path
+                .split("/")
+                .map((segment) => encodeURIComponent(decodeURIComponent(segment)))
+                .join("/");
+        }
+
+        function getPathCandidates(path) {
+            const decoded = decodePath(path);
+            const encoded = encodePath(decoded);
+            return Array.from(new Set([path, decoded, encoded]));
+        }
+
+        async function fetchMarkdown(path) {
+            if (markdownCache.has(path)) {
+                return markdownCache.get(path);
+            }
+
+            const candidates = getPathCandidates(path);
+            for (const candidate of candidates) {
+                try {
+                    const response = await fetch(candidate);
+                    if (response.ok) {
+                        const text = await response.text();
+                        markdownCache.set(path, text);
+                        return text;
+                    }
+                } catch (_error) {
+                    // Try next candidate path.
+                }
+            }
+
+            throw new Error(`Could not load ${path}`);
+        }
+
+        function markdownTitle(markdownText, fallback) {
+            const heading = markdownText.match(/^#\s+(.+)$/m);
+            if (heading && heading[1]) {
+                return heading[1].trim();
+            }
+
+            return fallback;
+        }
+
+        const pages = [
+            { label: "About", path: "pages/about.md", image: "assets/images/Images for Website/About_Image.png" },
+            { label: "Accessibility", path: "pages/accessibility.md", image: "assets/images/Images for Website/Accessibility_Image.jpg" },
+            { label: "How I Use AI", path: "pages/how-i-use-ai.md", image: "assets/images/Images for Website/How I Use AI_Image.jpg" },
+            { label: "Sustainability & Ethics", path: "pages/Sustainability & Ethics.md", image: "assets/images/Images for Website/Sustainability & Ethics_Image.jpg" },
+            { label: "The Final Reflection", path: "pages/The Final Reflection.md", image: "assets/images/Images for Website/The Final Reflection_Image.jpg" }
         ];
 
-        const makeTitles = {
-            1: 'Reverse-engineering the Roman Highways',
-            2: 'How Does AI See My Description',
-            3: 'The Squirrel & Raccoon Comic',
-            4: 'The Fabian Way',
-            5: 'How Can We Analyze Texts? Softwares? AI?',
-            6: 'How Does My AI Affect The World?',
-            7: 'The Connections Of Command',
-            9: 'Prometheus Bringing Ember',
-            10: 'Cognoco, Your AI Assistant',
-            11: 'Stained Cobalt Blood',
-            12: 'AI Carbon & Energy Calculator',
-            13: 'The Act of Allocation'
-        };
+        const weeks = Array.from({ length: 13 }, (_, index) => {
+            const week = index + 1;
+            const weekCode = String(week).padStart(2, "0");
+            return {
+                week,
+                makePath: week === 2 ? null : `makes/week${weekCode}.md`,
+                reflectionPath: `reflections/week${weekCode}.md`
+            };
+        });
 
-        const makeLinks = {
-            11: 'folio.html?doc=makes/week11.md',
-            12: 'ai-energy-calculator.html',
-            13: 'folio.html?doc=makes/week12.md'
-        };
+        const weekGrid = document.getElementById("weekGrid");
+        const pageMenu = document.getElementById("pageMenu");
+        const contentRoomTitle = document.getElementById("contentRoomTitle");
+        const contentRoomSubtitle = document.getElementById("contentRoomSubtitle");
+        const contentRoomBody = document.getElementById("contentRoomBody");
 
-        function makeCard(symbol, title, description, href) {
-            const card = document.createElement('a');
-            card.className = 'resource-card';
-            card.href = href;
-            card.innerHTML = `<h4><span class="card-symbol" aria-hidden="true">${symbol}</span>${title}</h4><p>${description}</p>`;
-            return card;
-        }
+        async function buildWeeklyCards() {
+            weekGrid.innerHTML = "";
 
-        function buildWeekLists() {
-            const reflectionsGrid = document.getElementById('reflectionsGrid');
-            const makesGrid = document.getElementById('makesGrid');
+            const weekData = await Promise.all(
+                weeks.map(async (item) => {
+                    const sourcePath = item.makePath || item.reflectionPath;
+                    try {
+                        const md = await fetchMarkdown(sourcePath);
+                        let label = markdownTitle(md, `Week ${item.week}`);
+                        
+                        // For week 2, strip the "Reflect 2: " prefix if present
+                        if (item.week === 2 && label.startsWith("Reflect 2: ")) {
+                            label = label.replace(/^Reflect 2:\s+/, "");
+                        }
+                        
+                        return {
+                            ...item,
+                            label
+                        };
+                    } catch (_error) {
+                        return {
+                            ...item,
+                            label: `Week ${item.week}`
+                        };
+                    }
+                })
+            );
 
-            reflectionsGrid.innerHTML = '';
-            makesGrid.innerHTML = '';
-
-            weeks.forEach((item) => {
-                const weekCode = String(item.week).padStart(2, '0');
-
-                if (item.hasMake) {
-                    const makeTitle = makeTitles[item.week] || `Week ${item.week} Make`;
-                    const makeHref = makeLinks[item.week] || `folio.html?doc=makes/week${weekCode}.md`;
-                    makesGrid.appendChild(
-                        makeCard(
-                            '⚒',
-                            makeTitle,
-                            'Hands-on DH making artifact.',
-                            makeHref
-                        )
-                    );
-                }
-
-                if (item.hasReflection) {
-                    reflectionsGrid.appendChild(
-                        makeCard(
-                            '✍',
-                            `Week ${item.week} Reflection`,
-                            'Course reflection and analysis.',
-                            `folio.html?doc=reflections/week${weekCode}.md`
-                        )
-                    );
-                }
+            weekData.forEach((entry) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "week-card";
+                const titleClass = entry.label.length > 72 ? "week-card-title compact" : "week-card-title";
+                button.innerHTML = `
+                    <svg class="week-card-motif" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M12 3.5 20 8.25v7.5L12 20.5 4 15.75v-7.5Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path>
+                        <path d="M12 3.5v17M4 8.25l8 4.75 8-4.75" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.72"></path>
+                    </svg>
+                    <strong>Week ${String(entry.week).padStart(2, "0")}</strong>
+                    <span class="${titleClass}">${entry.label}</span>
+                `;
+                button.addEventListener("click", () => openWeekRoom(entry));
+                weekGrid.appendChild(button);
             });
         }
 
-        function initRailNav() {
-            const body = document.body;
-            const toggle = document.getElementById('railToggle');
-            const backdrop = document.getElementById('railBackdrop');
-            const rail = document.getElementById('primaryRailNav');
-            const navLinks = document.querySelectorAll('.nav-rail a');
-            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        function buildPageButtons() {
+            pageMenu.innerHTML = "";
+            pages.forEach((page) => {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.className = "page-btn";
+                button.textContent = page.label;
+                button.style.setProperty("--button-image", `url("${page.image}")`);
+                button.addEventListener("click", () => openPageRoom(page));
+                pageMenu.appendChild(button);
+            });
+        }
 
-            function setOpen(open) {
-                body.classList.toggle('nav-open', open);
-                toggle.setAttribute('aria-expanded', String(open));
-                toggle.setAttribute('aria-label', open ? 'Close section menu' : 'Open section menu');
-                toggle.textContent = open ? '⇤' : '⇥';
+        function loadingState(title, subtitle) {
+            contentRoomTitle.textContent = title;
+            contentRoomSubtitle.textContent = subtitle;
+            contentRoomBody.innerHTML = "<p>Loading...</p>";
+            showScreen("content");
+        }
+
+        function markdownError(path, error) {
+            contentRoomBody.innerHTML = `
+                <div class="error-note">
+                    <p><strong>Could not load:</strong> ${path}</p>
+                    <p>${error.message}</p>
+                    <p>Check path names and run this site from a local dev server so fetch can access /makes, /reflections, and /pages.</p>
+                </div>
+            `;
+        }
+
+        function attachTabKeyboard(container) {
+            container.addEventListener("keydown", (event) => {
+                if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+                    return;
+                }
+
+                const tabs = Array.from(container.querySelectorAll(".tab-btn"));
+                const current = tabs.indexOf(document.activeElement);
+                if (current < 0 || tabs.length < 2) {
+                    return;
+                }
+
+                event.preventDefault();
+                const next = (current + (event.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+                tabs[next].focus();
+            });
+        }
+
+        function renderWeekPanels(makeHtml, reflectionHtml, hasMake) {
+            const wrapper = document.createElement("div");
+
+            if (!hasMake) {
+                wrapper.innerHTML = `<div class="markdown">${reflectionHtml}</div>`;
+                contentRoomBody.innerHTML = "";
+                contentRoomBody.appendChild(wrapper);
+                return;
             }
 
-            toggle.addEventListener('click', () => {
-                const open = !body.classList.contains('nav-open');
-                setOpen(open);
-            });
+            wrapper.innerHTML = `
+                <div class="tabs" role="tablist" aria-label="Week content tabs">
+                    <button type="button" class="tab-btn" id="makeTab" role="tab" aria-selected="true" aria-controls="makePanel">Make</button>
+                    <button type="button" class="tab-btn" id="reflectionTab" role="tab" aria-selected="false" aria-controls="reflectionPanel">Reflection</button>
+                </div>
+                <section class="panel active markdown" id="makePanel" role="tabpanel" aria-labelledby="makeTab">${makeHtml}</section>
+                <section class="panel markdown" id="reflectionPanel" role="tabpanel" aria-labelledby="reflectionTab">${reflectionHtml}</section>
+            `;
 
-            backdrop.addEventListener('click', () => setOpen(false));
+            const makeTab = wrapper.querySelector("#makeTab");
+            const reflectionTab = wrapper.querySelector("#reflectionTab");
+            const makePanel = wrapper.querySelector("#makePanel");
+            const reflectionPanel = wrapper.querySelector("#reflectionPanel");
+            const tabContainer = wrapper.querySelector(".tabs");
 
-            navLinks.forEach((link) => {
-                link.addEventListener('click', () => {
-                    if (window.matchMedia('(max-width: 1024px)').matches) {
-                        setOpen(false);
-                    }
-                });
-            });
+            function activate(tabName) {
+                const isMake = tabName === "make";
+                makeTab.setAttribute("aria-selected", String(isMake));
+                reflectionTab.setAttribute("aria-selected", String(!isMake));
+                makePanel.classList.toggle("active", isMake);
+                reflectionPanel.classList.toggle("active", !isMake);
+            }
 
-            window.addEventListener('resize', () => {
-                if (window.innerWidth > 1024) {
-                    setOpen(false);
+            makeTab.addEventListener("click", () => activate("make"));
+            reflectionTab.addEventListener("click", () => activate("reflection"));
+            attachTabKeyboard(tabContainer);
+
+            contentRoomBody.innerHTML = "";
+            contentRoomBody.appendChild(wrapper);
+        }
+
+        async function openWeekRoom(weekData) {
+            const weekLabel = `Week ${String(weekData.week).padStart(2, "0")}`;
+            loadingState(weekLabel, "Loading make and reflection content...");
+
+            try {
+                const reflectionMd = await fetchMarkdown(weekData.reflectionPath);
+                const reflectionHtml = marked.parse(reflectionMd);
+
+                if (!weekData.makePath) {
+                    contentRoomSubtitle.textContent = "Reflection only";
+                    renderWeekPanels("", reflectionHtml, false);
+                    return;
                 }
-            });
 
-            // Continuous floating motion on desktop while scrolling.
-            if (!reducedMotion) {
-                let ticking = false;
-                const updateRailPosition = () => {
-                    if (window.innerWidth > 1024) {
-                        const baseTop = 168;
-                        const maxTop = Math.max(baseTop, window.innerHeight - rail.offsetHeight - 16);
-                        const targetTop = Math.min(baseTop + window.scrollY * 0.04, maxTop);
-                        rail.style.top = `${targetTop}px`;
+                const makeMd = await fetchMarkdown(weekData.makePath);
+                let makeHtml = `<div class="markdown">${marked.parse(makeMd)}</div>`;
+
+                if (weekData.week === 12) {
+                    const calculatorEmbed = `
+                        <h3>Embedded Calculator</h3>
+                        <iframe class="calc-embed" src="ai-energy-calculator.html" title="AI Carbon and Energy Calculator" loading="lazy"></iframe>
+                    `;
+
+                    const artifactSectionPattern = /(<h2[^>]*>\s*The Artifact\s*<\/h2>\s*(?:<p>[\s\S]*?<\/p>)?)/i;
+                    if (artifactSectionPattern.test(makeHtml)) {
+                        makeHtml = makeHtml.replace(artifactSectionPattern, `$1${calculatorEmbed}`);
                     } else {
-                        rail.style.top = '16px';
+                        makeHtml = `${makeHtml}<hr>${calculatorEmbed}`;
                     }
-                    ticking = false;
-                };
+                }
 
-                window.addEventListener('scroll', () => {
-                    if (!ticking) {
-                        window.requestAnimationFrame(updateRailPosition);
-                        ticking = true;
-                    }
-                }, { passive: true });
-
-                window.addEventListener('resize', updateRailPosition);
-                updateRailPosition();
+                contentRoomSubtitle.textContent = "Make and Reflection";
+                renderWeekPanels(makeHtml, `<div class="markdown">${reflectionHtml}</div>`, true);
+            } catch (error) {
+                markdownError(`${weekData.makePath || weekData.reflectionPath} or ${weekData.reflectionPath}`, error);
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            buildWeekLists();
-            initRailNav();
+        async function openPageRoom(page) {
+            loadingState("Information Pages", "Loading page content...");
+
+            try {
+                const markdown = await fetchMarkdown(page.path);
+                contentRoomTitle.textContent = "Information Pages";
+                contentRoomSubtitle.textContent = "";
+                contentRoomBody.innerHTML = `<div class="markdown">${marked.parse(markdown)}</div>`;
+            } catch (error) {
+                markdownError(page.path, error);
+            }
+        }
+
+        document.getElementById("openWeeklyRoom").addEventListener("click", () => showScreen("weekly"));
+        document.getElementById("openPagesRoom").addEventListener("click", () => showScreen("pages"));
+
+        buildWeeklyCards();
+        buildPageButtons();
+        resizeDynamicBackground();
+        syncDynamicBackgroundVisibility();
+        renderDynamicBackground();
+
+        // Three.js globe rendering for the landing atmosphere.
+        const canvas = document.getElementById("globeCanvas");
+        const globeStatus = document.getElementById("globeStatus");
+        const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(42, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
+        camera.position.set(0, 0.1, 3.9);
+
+        const globeGroup = new THREE.Group();
+        scene.add(globeGroup);
+
+        const sphereGeometry = new THREE.IcosahedronGeometry(1.22, 4);
+        const sphereMaterial = new THREE.MeshStandardMaterial({
+            color: 0x28445b,
+            emissive: 0x332513,
+            emissiveIntensity: 0.5,
+            metalness: 0.3,
+            roughness: 0.52,
+            flatShading: true
+        });
+
+        const earth = new THREE.Mesh(sphereGeometry, sphereMaterial);
+        globeGroup.add(earth);
+
+        const edges = new THREE.LineSegments(
+            new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.24, 2)),
+            new THREE.LineBasicMaterial({ color: 0x8ed8d2, transparent: true, opacity: 0.5 })
+        );
+        globeGroup.add(edges);
+
+        const routeMaterial = new THREE.LineBasicMaterial({ color: 0xf0bc69, transparent: true, opacity: 0.88 });
+
+        function latLonToVec3(lat, lon, r = 1.27) {
+            const phi = (90 - lat) * (Math.PI / 180);
+            const theta = (lon + 180) * (Math.PI / 180);
+            return new THREE.Vector3(
+                -(r * Math.sin(phi) * Math.cos(theta)),
+                r * Math.cos(phi),
+                r * Math.sin(phi) * Math.sin(theta)
+            );
+        }
+
+        const routes = [
+            [[40.7, -74.0], [51.5, -0.1]],
+            [[51.5, -0.1], [35.7, 139.7]],
+            [[35.7, 139.7], [-33.9, 151.2]],
+            [[-33.9, 151.2], [28.6, 77.2]],
+            [[28.6, 77.2], [48.8, 2.3]],
+            [[-23.5, -46.6], [6.5, 3.3]],
+            [[34.0, -118.2], [1.3, 103.8]],
+            [[52.5, 13.4], [30.0, 31.2]]
+        ];
+
+        routes.forEach(([from, to]) => {
+            const start = latLonToVec3(from[0], from[1]);
+            const end = latLonToVec3(to[0], to[1]);
+            const mid = start.clone().add(end).normalize().multiplyScalar(1.74);
+            const curve = new THREE.CatmullRomCurve3([start, mid, end]);
+            const points = curve.getPoints(48);
+            const geometry = new THREE.BufferGeometry().setFromPoints(points);
+            globeGroup.add(new THREE.Line(geometry, routeMaterial));
+        });
+
+        scene.add(new THREE.AmbientLight(0xa7d2d6, 0.52));
+
+        const amberKey = new THREE.DirectionalLight(0xf0bc69, 0.9);
+        amberKey.position.set(3.8, 2.8, 3.8);
+        scene.add(amberKey);
+
+        const tealRim = new THREE.DirectionalLight(0x7acfc8, 0.7);
+        tealRim.position.set(-3.4, -1.4, -2.2);
+        scene.add(tealRim);
+
+        let animationId;
+        let spinVelocity = 0.0019;
+
+        function updateMotion() {
+            if (motionQuery.matches) {
+                spinVelocity = 0;
+                globeStatus.textContent = "Reduced-motion enabled. Globe animation paused.";
+            } else {
+                spinVelocity = 0.0019;
+                globeStatus.textContent = "Globe animation active.";
+            }
+        }
+
+        updateMotion();
+
+        function renderGlobe() {
+            globeGroup.rotation.y += spinVelocity;
+            globeGroup.rotation.x = Math.sin(performance.now() * 0.00018) * 0.085;
+            renderer.render(scene, camera);
+            animationId = requestAnimationFrame(renderGlobe);
+        }
+
+        function handleResize() {
+            const width = canvas.clientWidth;
+            const height = canvas.clientHeight;
+            renderer.setSize(width, height, false);
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            resizeDynamicBackground();
+        }
+
+        if (!window.WebGLRenderingContext) {
+            globeStatus.textContent = "WebGL unavailable. Static mode active.";
+        } else {
+            renderGlobe();
+        }
+
+        window.addEventListener("resize", handleResize);
+        motionQuery.addEventListener("change", updateMotion);
+        dynamicBackgroundMotionQuery.addEventListener("change", () => {
+            resizeDynamicBackground();
+        });
+
+        window.addEventListener("beforeunload", () => {
+            cancelAnimationFrame(animationId);
+            renderer.dispose();
+            sphereGeometry.dispose();
+            sphereMaterial.dispose();
+            routeMaterial.dispose();
+        });
+
+        // Escape key provides consistent keyboard back behavior from all rooms.
+        document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && activeScreen !== "landing") {
+                goBack();
+            }
         });
     </script>
 </body>

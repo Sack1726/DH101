@@ -1,5 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
+# Reflect 5: How does AI alter authorship and remix culture? Who owns AI-made art?
 
-# Week 5 Reflection
-
-Reflect 5: How does AI alter authorship and remix culture? Who owns AI-made art?
+AI creations complicate ownership rights among a plethora of fields. A person does not necessarily have the proper ownership of the training data that the AI uses to generate an output. I am reminded of the New York Times lawsuit against OpenAI and Microsoft for copyright infringement because models used millions of articles to train data. While an AI’s output may be different, it is not organic. It can be argued that created materials are heavily reliant on existing ideas, but AI simply presents a new playing field for authorship that blows this concept out of the water. Outputs can be composed of many stolen materials, but instead of just being similar, they are exactly what these materials are. I doubt many people are going to want to commission an artist who only traces artwork instead of composing original pieces. In this way, no one truly owns AI-made art.

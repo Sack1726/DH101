@@ -1,4 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
-# Week 3 Reflection
+# Reflect 3: What does “authenticity” mean when identity is co-constructed with AI?
 
-Reflect 3: What does “authenticity” mean when identity is co-constructed with AI?
+I had a couple experiences during the second make that made me realize some limitations of AI. First, although the AI could “make” and "produce" an output, it relied a lot more than I could guess upon what I inputted. In other words, it mattered significantly what I gave AI and how I structured that information when co-constructing an identity. Therefore, “authenticity” depended on my choices and was subject to my own discretion. AI could not generate any real authenticity. Furthermore, I was technically limited by AI in a few cases as it occasionally overloaded and gave an output of an identity that was averaged. No matter how much time I put into a certain prompt, an aspect would likely be altered or changed in a pattern-based way. I had to make sure of my own authenticity as the more I put it into my input, the more likely the output would be authentic. As I said in my first point, my choices dictated authenticity, so it was up to my discretion to gain the result I wanted.

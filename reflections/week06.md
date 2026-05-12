@@ -1,5 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
+# Reflect 6: What do we gain/lose when machines “read” literature for us?
 
-# Week 6 Reflection
-
-Reflect 6: What do we gain/lose when machines “read” literature for us?
+In Make 5, I saw that both Voyant and GPT’s outputs are relatively fast to receive and may pass in a situation requiring a simple comprehension, not without faults, of a literary text. In short, the person is practically regurgitating existing ideas lacking connection. The person lacks any personal experience with the text. This made me understand the viewpoint that tradition provides a foundation to build on. Both Voyant and GPT can provide inspiration, but neither of them can be sure of an exact interpretation. People themselves have the ability to shape meaning because of our personal experiences and cultural backgrounds. Letting machines “read” literature for us removes this closeness, practically turning our personal language into a programming language.

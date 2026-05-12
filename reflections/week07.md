@@ -1,5 +1,3 @@
-> **Markdown help:** See [markdown-guide.md](../pages/markdown-guide.md) for formatting tips and a reflection template.
+# Reflect 7: How does AI reshape global geographies of power, labor, and environment?
 
-# Week 7 Reflection
-
-Reflect 7: How does AI reshape global geographies of power, labor, and environment?
+AI reshapes global patterns but also heavily relies on pre-existing structures that have shaped the global market. My research revealed that AI is run and developed in First World countries, while Second World and Third World countries provide raw resources and plain labor. This reflects AI's origins that extend to other tech products from an often overlooked larger tech infrastructure. There is a corporate nature to AI development that is driven by a substantial investment. This corporate development across different economic systems often prioritizes a profit/result above all else. While not necessarily exhibiting an intentional harm to others, this priority often results in a lack of concern for ethics across labor and the environment. It would not be advantageous for AI investors to support a clear, transparent process if it harms a result. I don't think it should be surprising to anyone that humans have a universal trait of hubris and greed.
